@@ -20,9 +20,9 @@ namespace JugaAgenda
 
         private void butWerkToevoegen_Click(object sender, EventArgs e)
         {
-            if (checkWerkGegevens())
+            if (checkWerkGegevens(textWerkBeschrijving.Text, numWerkUren.Value))
             {
-                Werk test = new Werk(textWerkBeschrijving.Text, numWerkUren.Value, checkWerkPrioriteit.Checked);
+                Werk newWerk = new Werk(textWerkBeschrijving.Text, numWerkUren.Value, checkWerkPrioriteit.Checked);
                 
                 if (checkWerkPrioriteit.Checked)
                 {
@@ -35,10 +35,10 @@ namespace JugaAgenda
                         }
                         index++;
                     }
-                    listWerk.Items.Insert(index, test);
+                    listWerk.Items.Insert(index, newWerk);
                 } else
                 {
-                    listWerk.Items.Add(test);
+                    listWerk.Items.Add(newWerk);
                 }
                 
 
@@ -49,13 +49,13 @@ namespace JugaAgenda
             
         }
 
-        private bool checkWerkGegevens()
+        private bool checkWerkGegevens(string beschrijving, decimal uren)
         {
-            if (textWerkBeschrijving.Text.Equals(""))
+            if (beschrijving.Equals(""))
             {
                 MessageBox.Show("Vul een beschrijving in.", "Error");
             }
-            else if (numWerkUren.Value == 0)
+            else if (uren == 0)
             {
                 MessageBox.Show("Het aantal uren moet groter zijn dan 0.", "Error");
             }
@@ -152,7 +152,65 @@ namespace JugaAgenda
         {
             MessageBox.Show("Gemaakt door Arno ;)", "Info");
         }
-        
+
+        private void listWerk_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listWerk.SelectedItem != null)
+            {
+                Werk selectedItem = (Werk)listWerk.SelectedItem;
+                textBewBeschrijving.Text = selectedItem.getBeschrijving();
+                numBewUren.Value = selectedItem.getUren();
+                numBewIndex.Value = listWerk.SelectedIndex;
+                checkBewPrioriteit.Checked = selectedItem.getPrioriteit();
+                butBewerken.Enabled = true;
+                butVerwijderen.Enabled = true;
+            }
+        }
+
+        private void butBewerken_Click(object sender, EventArgs e)
+        {
+            if (checkWerkGegevens(textBewBeschrijving.Text, numBewUren.Value))
+            {
+                Werk werk = (Werk) listWerk.SelectedItem;
+
+                werk.setBeschrijving(textBewBeschrijving.Text);
+                werk.setUren(numBewUren.Value);
+                werk.setPrioriteit(checkBewPrioriteit.Checked);
+
+                int index = listWerk.SelectedIndex;
+                listWerk.Items.RemoveAt(index);
+
+                if (numBewIndex.Value > listWerk.Items.Count)
+                {
+                    listWerk.Items.Add(werk);
+                } else
+                {
+                    listWerk.Items.Insert((int)numBewIndex.Value, werk);
+                }
+
+                textBewBeschrijving.Text = "";
+                numBewUren.Value = 0;
+                numBewIndex.Value = 0;
+                checkBewPrioriteit.Checked = false;
+                butBewerken.Enabled = false;
+                butVerwijderen.Enabled = false;
+            }
+        }
+
+        private void butVerwijderen_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Zeker dat je het geselecteerde wilt verwijderen?", "Verwijderen", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                listWerk.Items.RemoveAt(listWerk.SelectedIndex);
+                textBewBeschrijving.Text = "";
+                numBewUren.Value = 0;
+                numBewIndex.Value = 0;
+                checkBewPrioriteit.Checked = false;
+                butBewerken.Enabled = false;
+                butVerwijderen.Enabled = false;
+            }
+        }
     }
     public class Werk
     {
@@ -161,7 +219,7 @@ namespace JugaAgenda
         decimal uren;
         bool prioriteit;
 
-        public Werk(String beschrijving, decimal uren, bool prioriteit)
+        public Werk(string beschrijving, decimal uren, bool prioriteit)
         {
             this.beschrijving = beschrijving;
             this.uren = uren;
@@ -180,10 +238,22 @@ namespace JugaAgenda
         {
             return this.prioriteit;
         }
+        public void setBeschrijving(string beschrijving)
+        {
+            this.beschrijving = beschrijving;
+        }
+        public void setUren(decimal uren)
+        {
+            this.uren = uren;
+        }
+        public void setPrioriteit(bool prioriteit)
+        {
+            this.prioriteit = prioriteit;
+        }
 
         public override string ToString()
         {
-            String returnString = this.uren.ToString() + "u - " + this.beschrijving;
+            string returnString = this.uren.ToString() + "u - " + this.beschrijving;
             if (this.prioriteit)
             {
                 returnString += " - Prioriteit";
