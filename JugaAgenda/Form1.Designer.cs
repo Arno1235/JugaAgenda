@@ -61,6 +61,8 @@ namespace JugaAgenda
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupExtra = new System.Windows.Forms.GroupBox();
+            this.listExtra = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupZondag.SuspendLayout();
@@ -80,6 +82,7 @@ namespace JugaAgenda
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWerkUren)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.groupExtra.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -90,11 +93,12 @@ namespace JugaAgenda
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1278, 490);
+            this.tabControl1.Size = new System.Drawing.Size(1452, 490);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupExtra);
             this.tabPage1.Controls.Add(this.groupZondag);
             this.tabPage1.Controls.Add(this.groupZaterdag);
             this.tabPage1.Controls.Add(this.groupVrijdag);
@@ -105,7 +109,7 @@ namespace JugaAgenda
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1270, 462);
+            this.tabPage1.Size = new System.Drawing.Size(1444, 462);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Agenda";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -386,7 +390,7 @@ namespace JugaAgenda
             this.menuInfo});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1278, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1452, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "Menu";
             // 
@@ -404,11 +408,32 @@ namespace JugaAgenda
             this.menuInfo.Text = "Info";
             this.menuInfo.Click += new System.EventHandler(this.menuInfo_Click);
             // 
+            // groupExtra
+            // 
+            this.groupExtra.AutoSize = true;
+            this.groupExtra.Controls.Add(this.listExtra);
+            this.groupExtra.Location = new System.Drawing.Point(1261, 6);
+            this.groupExtra.Name = "groupExtra";
+            this.groupExtra.Size = new System.Drawing.Size(173, 443);
+            this.groupExtra.TabIndex = 8;
+            this.groupExtra.TabStop = false;
+            this.groupExtra.Text = "Extra";
+            // 
+            // listExtra
+            // 
+            this.listExtra.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listExtra.FormattingEnabled = true;
+            this.listExtra.ItemHeight = 15;
+            this.listExtra.Location = new System.Drawing.Point(3, 19);
+            this.listExtra.Name = "listExtra";
+            this.listExtra.Size = new System.Drawing.Size(167, 421);
+            this.listExtra.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1278, 514);
+            this.ClientSize = new System.Drawing.Size(1452, 514);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -436,6 +461,7 @@ namespace JugaAgenda
             ((System.ComponentModel.ISupportInitialize)(this.numWerkUren)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.groupExtra.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -475,6 +501,8 @@ namespace JugaAgenda
         private System.Windows.Forms.NumericUpDown numVrijdagUren;
         private System.Windows.Forms.ListBox listVrijdag;
         private System.Windows.Forms.ToolStripMenuItem menuInfo;
+        private System.Windows.Forms.GroupBox groupExtra;
+        private System.Windows.Forms.ListBox listExtra;
     }
 }
 
