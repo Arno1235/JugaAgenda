@@ -31,6 +31,8 @@ namespace JugaAgenda
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupExtra = new System.Windows.Forms.GroupBox();
+            this.listExtra = new System.Windows.Forms.ListBox();
             this.groupZondag = new System.Windows.Forms.GroupBox();
             this.numZondagUren = new System.Windows.Forms.NumericUpDown();
             this.listZondag = new System.Windows.Forms.ListBox();
@@ -53,18 +55,30 @@ namespace JugaAgenda
             this.numMaandagUren = new System.Windows.Forms.NumericUpDown();
             this.listMaandag = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.numWerkUren = new System.Windows.Forms.NumericUpDown();
-            this.checkWerkPrioriteit = new System.Windows.Forms.CheckBox();
+            this.groupWerkBewerken = new System.Windows.Forms.GroupBox();
+            this.butVerwijderen = new System.Windows.Forms.Button();
+            this.numBewIndex = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBewBeschrijving = new System.Windows.Forms.TextBox();
+            this.numBewUren = new System.Windows.Forms.NumericUpDown();
+            this.butBewerken = new System.Windows.Forms.Button();
+            this.checkBewPrioriteit = new System.Windows.Forms.CheckBox();
+            this.groupWerkToevoegen = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.textWerkBeschrijving = new System.Windows.Forms.TextBox();
+            this.numWerkUren = new System.Windows.Forms.NumericUpDown();
             this.butWerkToevoegen = new System.Windows.Forms.Button();
+            this.checkWerkPrioriteit = new System.Windows.Forms.CheckBox();
             this.listWerk = new System.Windows.Forms.ListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuInfo = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupExtra = new System.Windows.Forms.GroupBox();
-            this.listExtra = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupExtra.SuspendLayout();
             this.groupZondag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numZondagUren)).BeginInit();
             this.groupZaterdag.SuspendLayout();
@@ -80,9 +94,12 @@ namespace JugaAgenda
             this.groupMaandag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMaandagUren)).BeginInit();
             this.tabPage2.SuspendLayout();
+            this.groupWerkBewerken.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numBewIndex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numBewUren)).BeginInit();
+            this.groupWerkToevoegen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWerkUren)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            this.groupExtra.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -113,6 +130,27 @@ namespace JugaAgenda
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Agenda";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupExtra
+            // 
+            this.groupExtra.AutoSize = true;
+            this.groupExtra.Controls.Add(this.listExtra);
+            this.groupExtra.Location = new System.Drawing.Point(1261, 6);
+            this.groupExtra.Name = "groupExtra";
+            this.groupExtra.Size = new System.Drawing.Size(173, 443);
+            this.groupExtra.TabIndex = 8;
+            this.groupExtra.TabStop = false;
+            this.groupExtra.Text = "Extra";
+            // 
+            // listExtra
+            // 
+            this.listExtra.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listExtra.FormattingEnabled = true;
+            this.listExtra.ItemHeight = 15;
+            this.listExtra.Location = new System.Drawing.Point(3, 19);
+            this.listExtra.Name = "listExtra";
+            this.listExtra.Size = new System.Drawing.Size(167, 421);
+            this.listExtra.TabIndex = 0;
             // 
             // groupZondag
             // 
@@ -326,52 +364,185 @@ namespace JugaAgenda
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.numWerkUren);
-            this.tabPage2.Controls.Add(this.checkWerkPrioriteit);
-            this.tabPage2.Controls.Add(this.textWerkBeschrijving);
-            this.tabPage2.Controls.Add(this.butWerkToevoegen);
+            this.tabPage2.Controls.Add(this.groupWerkBewerken);
+            this.tabPage2.Controls.Add(this.groupWerkToevoegen);
             this.tabPage2.Controls.Add(this.listWerk);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1270, 462);
+            this.tabPage2.Size = new System.Drawing.Size(1444, 462);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Bewerken";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // numWerkUren
+            // groupWerkBewerken
             // 
-            this.numWerkUren.Location = new System.Drawing.Point(325, 36);
-            this.numWerkUren.Name = "numWerkUren";
-            this.numWerkUren.Size = new System.Drawing.Size(59, 23);
-            this.numWerkUren.TabIndex = 5;
+            this.groupWerkBewerken.AutoSize = true;
+            this.groupWerkBewerken.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupWerkBewerken.Controls.Add(this.butVerwijderen);
+            this.groupWerkBewerken.Controls.Add(this.numBewIndex);
+            this.groupWerkBewerken.Controls.Add(this.label5);
+            this.groupWerkBewerken.Controls.Add(this.label4);
+            this.groupWerkBewerken.Controls.Add(this.label3);
+            this.groupWerkBewerken.Controls.Add(this.textBewBeschrijving);
+            this.groupWerkBewerken.Controls.Add(this.numBewUren);
+            this.groupWerkBewerken.Controls.Add(this.butBewerken);
+            this.groupWerkBewerken.Controls.Add(this.checkBewPrioriteit);
+            this.groupWerkBewerken.Location = new System.Drawing.Point(325, 164);
+            this.groupWerkBewerken.Name = "groupWerkBewerken";
+            this.groupWerkBewerken.Size = new System.Drawing.Size(223, 208);
+            this.groupWerkBewerken.TabIndex = 7;
+            this.groupWerkBewerken.TabStop = false;
+            this.groupWerkBewerken.Text = "Werk Bewerken";
             // 
-            // checkWerkPrioriteit
+            // butVerwijderen
             // 
-            this.checkWerkPrioriteit.AutoSize = true;
-            this.checkWerkPrioriteit.Location = new System.Drawing.Point(465, 40);
-            this.checkWerkPrioriteit.Name = "checkWerkPrioriteit";
-            this.checkWerkPrioriteit.Size = new System.Drawing.Size(71, 19);
-            this.checkWerkPrioriteit.TabIndex = 4;
-            this.checkWerkPrioriteit.Text = "Prioriteit";
-            this.checkWerkPrioriteit.UseVisualStyleBackColor = true;
+            this.butVerwijderen.Enabled = false;
+            this.butVerwijderen.Location = new System.Drawing.Point(133, 163);
+            this.butVerwijderen.Name = "butVerwijderen";
+            this.butVerwijderen.Size = new System.Drawing.Size(84, 23);
+            this.butVerwijderen.TabIndex = 10;
+            this.butVerwijderen.Text = "Verwijderen";
+            this.butVerwijderen.UseVisualStyleBackColor = true;
+            this.butVerwijderen.Click += new System.EventHandler(this.butVerwijderen_Click);
+            // 
+            // numBewIndex
+            // 
+            this.numBewIndex.Location = new System.Drawing.Point(7, 134);
+            this.numBewIndex.Name = "numBewIndex";
+            this.numBewIndex.Size = new System.Drawing.Size(59, 23);
+            this.numBewIndex.TabIndex = 9;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 115);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 15);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Index";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 67);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 15);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Aantal Uren";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 19);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 15);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Beschrijving";
+            // 
+            // textBewBeschrijving
+            // 
+            this.textBewBeschrijving.Location = new System.Drawing.Point(6, 37);
+            this.textBewBeschrijving.Name = "textBewBeschrijving";
+            this.textBewBeschrijving.Size = new System.Drawing.Size(211, 23);
+            this.textBewBeschrijving.TabIndex = 2;
+            // 
+            // numBewUren
+            // 
+            this.numBewUren.Location = new System.Drawing.Point(7, 85);
+            this.numBewUren.Name = "numBewUren";
+            this.numBewUren.Size = new System.Drawing.Size(59, 23);
+            this.numBewUren.TabIndex = 5;
+            // 
+            // butBewerken
+            // 
+            this.butBewerken.Enabled = false;
+            this.butBewerken.Location = new System.Drawing.Point(6, 163);
+            this.butBewerken.Name = "butBewerken";
+            this.butBewerken.Size = new System.Drawing.Size(75, 23);
+            this.butBewerken.TabIndex = 1;
+            this.butBewerken.Text = "Bewerken";
+            this.butBewerken.UseVisualStyleBackColor = true;
+            this.butBewerken.Click += new System.EventHandler(this.butBewerken_Click);
+            // 
+            // checkBewPrioriteit
+            // 
+            this.checkBewPrioriteit.AutoSize = true;
+            this.checkBewPrioriteit.Location = new System.Drawing.Point(146, 86);
+            this.checkBewPrioriteit.Name = "checkBewPrioriteit";
+            this.checkBewPrioriteit.Size = new System.Drawing.Size(71, 19);
+            this.checkBewPrioriteit.TabIndex = 4;
+            this.checkBewPrioriteit.Text = "Prioriteit";
+            this.checkBewPrioriteit.UseVisualStyleBackColor = true;
+            // 
+            // groupWerkToevoegen
+            // 
+            this.groupWerkToevoegen.AutoSize = true;
+            this.groupWerkToevoegen.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupWerkToevoegen.Controls.Add(this.label2);
+            this.groupWerkToevoegen.Controls.Add(this.label1);
+            this.groupWerkToevoegen.Controls.Add(this.textWerkBeschrijving);
+            this.groupWerkToevoegen.Controls.Add(this.numWerkUren);
+            this.groupWerkToevoegen.Controls.Add(this.butWerkToevoegen);
+            this.groupWerkToevoegen.Controls.Add(this.checkWerkPrioriteit);
+            this.groupWerkToevoegen.Location = new System.Drawing.Point(325, 6);
+            this.groupWerkToevoegen.Name = "groupWerkToevoegen";
+            this.groupWerkToevoegen.Size = new System.Drawing.Size(223, 152);
+            this.groupWerkToevoegen.TabIndex = 6;
+            this.groupWerkToevoegen.TabStop = false;
+            this.groupWerkToevoegen.Text = "Werk Toevoegen";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 63);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 15);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Aantal uren";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(71, 15);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Beschrijving";
             // 
             // textWerkBeschrijving
             // 
-            this.textWerkBeschrijving.Location = new System.Drawing.Point(325, 6);
+            this.textWerkBeschrijving.Location = new System.Drawing.Point(6, 37);
             this.textWerkBeschrijving.Name = "textWerkBeschrijving";
             this.textWerkBeschrijving.Size = new System.Drawing.Size(211, 23);
             this.textWerkBeschrijving.TabIndex = 2;
             // 
+            // numWerkUren
+            // 
+            this.numWerkUren.Location = new System.Drawing.Point(6, 81);
+            this.numWerkUren.Name = "numWerkUren";
+            this.numWerkUren.Size = new System.Drawing.Size(60, 23);
+            this.numWerkUren.TabIndex = 5;
+            // 
             // butWerkToevoegen
             // 
-            this.butWerkToevoegen.Location = new System.Drawing.Point(461, 65);
+            this.butWerkToevoegen.Location = new System.Drawing.Point(142, 107);
             this.butWerkToevoegen.Name = "butWerkToevoegen";
             this.butWerkToevoegen.Size = new System.Drawing.Size(75, 23);
             this.butWerkToevoegen.TabIndex = 1;
             this.butWerkToevoegen.Text = "Teovoegen";
             this.butWerkToevoegen.UseVisualStyleBackColor = true;
             this.butWerkToevoegen.Click += new System.EventHandler(this.butWerkToevoegen_Click);
+            // 
+            // checkWerkPrioriteit
+            // 
+            this.checkWerkPrioriteit.AutoSize = true;
+            this.checkWerkPrioriteit.Location = new System.Drawing.Point(146, 82);
+            this.checkWerkPrioriteit.Name = "checkWerkPrioriteit";
+            this.checkWerkPrioriteit.Size = new System.Drawing.Size(71, 19);
+            this.checkWerkPrioriteit.TabIndex = 4;
+            this.checkWerkPrioriteit.Text = "Prioriteit";
+            this.checkWerkPrioriteit.UseVisualStyleBackColor = true;
             // 
             // listWerk
             // 
@@ -382,6 +553,7 @@ namespace JugaAgenda
             this.listWerk.Name = "listWerk";
             this.listWerk.Size = new System.Drawing.Size(316, 456);
             this.listWerk.TabIndex = 0;
+            this.listWerk.SelectedIndexChanged += new System.EventHandler(this.listWerk_SelectedIndexChanged);
             // 
             // menuStrip1
             // 
@@ -408,27 +580,6 @@ namespace JugaAgenda
             this.menuInfo.Text = "Info";
             this.menuInfo.Click += new System.EventHandler(this.menuInfo_Click);
             // 
-            // groupExtra
-            // 
-            this.groupExtra.AutoSize = true;
-            this.groupExtra.Controls.Add(this.listExtra);
-            this.groupExtra.Location = new System.Drawing.Point(1261, 6);
-            this.groupExtra.Name = "groupExtra";
-            this.groupExtra.Size = new System.Drawing.Size(173, 443);
-            this.groupExtra.TabIndex = 8;
-            this.groupExtra.TabStop = false;
-            this.groupExtra.Text = "Extra";
-            // 
-            // listExtra
-            // 
-            this.listExtra.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listExtra.FormattingEnabled = true;
-            this.listExtra.ItemHeight = 15;
-            this.listExtra.Location = new System.Drawing.Point(3, 19);
-            this.listExtra.Name = "listExtra";
-            this.listExtra.Size = new System.Drawing.Size(167, 421);
-            this.listExtra.TabIndex = 0;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -442,6 +593,7 @@ namespace JugaAgenda
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupExtra.ResumeLayout(false);
             this.groupZondag.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numZondagUren)).EndInit();
             this.groupZaterdag.ResumeLayout(false);
@@ -458,10 +610,15 @@ namespace JugaAgenda
             ((System.ComponentModel.ISupportInitialize)(this.numMaandagUren)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.groupWerkBewerken.ResumeLayout(false);
+            this.groupWerkBewerken.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numBewIndex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numBewUren)).EndInit();
+            this.groupWerkToevoegen.ResumeLayout(false);
+            this.groupWerkToevoegen.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWerkUren)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.groupExtra.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -503,6 +660,19 @@ namespace JugaAgenda
         private System.Windows.Forms.ToolStripMenuItem menuInfo;
         private System.Windows.Forms.GroupBox groupExtra;
         private System.Windows.Forms.ListBox listExtra;
+        private System.Windows.Forms.GroupBox groupWerkToevoegen;
+        private System.Windows.Forms.GroupBox groupWerkBewerken;
+        private System.Windows.Forms.TextBox textBewBeschrijving;
+        private System.Windows.Forms.NumericUpDown numBewUren;
+        private System.Windows.Forms.Button butBewerken;
+        private System.Windows.Forms.CheckBox checkBewPrioriteit;
+        private System.Windows.Forms.Button butVerwijderen;
+        private System.Windows.Forms.NumericUpDown numBewIndex;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
