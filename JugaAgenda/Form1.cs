@@ -26,8 +26,16 @@ namespace JugaAgenda
                 
                 if (checkWerkPrioriteit.Checked)
                 {
-                    //TODO: insert after other prioriteit elements
-                    listWerk.Items.Insert(0, test);
+                    int index = 0;
+                    foreach (Werk werk in listWerk.Items)
+                    {
+                        if (!werk.getPrioriteit())
+                        {
+                            break;
+                        }
+                        index++;
+                    }
+                    listWerk.Items.Insert(index, test);
                 } else
                 {
                     listWerk.Items.Add(test);
@@ -68,29 +76,73 @@ namespace JugaAgenda
             int currentDay = 0;
             List <ListBox> listBoxList = new List<ListBox>() { listMaandag, listDinsdag, listWoensdag, listDonderdag, listVrijdag, listZaterdag, listZondag };
             List<NumericUpDown> numericList = new List<NumericUpDown>() { numMaandagUren, numDinsdagUren, numWoensdagUren, numDonderdagUren, numVrijdagUren, numZaterdagUren, numZondagUren };
-            decimal overtime = 0;
+
+            foreach (ListBox listBox in listBoxList)
+            {
+                listBox.Items.Clear();
+            }
+            listExtra.Items.Clear();
 
             foreach (Werk werk in listWerk.Items)
             {
-                if (currentDay < listBoxList.Count())
+                decimal timeOver = werk.getUren();
+                while (timeOver > 0)
                 {
-                    decimal timeToFillIn = numericList[currentDay].Value;
-                    foreach (Werk dagWerk in listBoxList[currentDay].Items)
+                    if (currentDay < listBoxList.Count())
+                    {
+                        decimal timeToFillIn = numericList[currentDay].Value;
+                        foreach (Werk dagWerk in listBoxList[currentDay].Items)
+                        {
+                            timeToFillIn -= dagWerk.getUren();
+                        }
+                        if (timeOver < timeToFillIn)
+                        {
+                            listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), timeOver, werk.getPrioriteit()));
+                            timeOver = 0;
+                            break;
+                        }
+                        else if (timeOver == timeToFillIn)
+                        {
+                            listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), timeOver, werk.getPrioriteit()));
+                            currentDay++;
+                            timeOver = 0;
+                            break;
+                        }
+                        else
+                        {
+                            if (timeToFillIn > 0)
+                            {
+                                listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), timeToFillIn, werk.getPrioriteit()));
+                                timeOver -= timeToFillIn;
+                            }
+                            currentDay++;
+                        }
+                    } else
+                    {
+                        listExtra.Items.Add(new Werk(werk.getBeschrijving(), timeOver, werk.getPrioriteit()));
+                        timeOver = 0;
+                        break;
+                    }
+                }
+            }
+            decimal totalExtraTime = 0;
+            foreach (Werk werk in listExtra.Items)
+            {
+                totalExtraTime += werk.getUren();
+            }
+            listExtra.Items.Add("Totaal: " + totalExtraTime.ToString() + "u");
+            if (totalExtraTime == 0)
+            {
+                for (int i = 0; i < listBoxList.Count(); i++)
+                {
+                    decimal timeToFillIn = numericList[i].Value;
+                    foreach (Werk dagWerk in listBoxList[i].Items)
                     {
                         timeToFillIn -= dagWerk.getUren();
                     }
-                    if (werk.getUren() < timeToFillIn)
+                    if (timeToFillIn > 0)
                     {
-                        listBoxList[currentDay].Items.Add(werk);
-                    } else if (werk.getUren() == timeToFillIn)
-                    {
-                        listBoxList[currentDay].Items.Add(werk);
-                        currentDay++;
-                    } else
-                    {
-                        listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), timeToFillIn, werk.getPrioriteit()));
-                        overtime = werk.getUren() - timeToFillIn;
-                        currentDay++;
+                        listBoxList[i].Items.Add("Uren nog in te vullen: " + timeToFillIn.ToString() + "u");
                     }
                 }
             }
