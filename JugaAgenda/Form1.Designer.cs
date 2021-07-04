@@ -56,6 +56,10 @@ namespace JugaAgenda
             this.listMaandag = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupWerkBewerken = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBewTel = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBewNaam = new System.Windows.Forms.TextBox();
             this.butVerwijderen = new System.Windows.Forms.Button();
             this.numBewIndex = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
@@ -66,6 +70,10 @@ namespace JugaAgenda
             this.butBewerken = new System.Windows.Forms.Button();
             this.checkBewPrioriteit = new System.Windows.Forms.CheckBox();
             this.groupWerkToevoegen = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textWerkTel = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textWerkNaam = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textWerkBeschrijving = new System.Windows.Forms.TextBox();
@@ -76,6 +84,18 @@ namespace JugaAgenda
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuUpdate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuInfo = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textToevTel = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textToevNaam = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textToevBeschrijving = new System.Windows.Forms.TextBox();
+            this.numToevUren = new System.Windows.Forms.NumericUpDown();
+            this.butToevoegen = new System.Windows.Forms.Button();
+            this.checkToevPrioriteit = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupExtra.SuspendLayout();
@@ -100,12 +120,16 @@ namespace JugaAgenda
             this.groupWerkToevoegen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWerkUren)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numToevUren)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
@@ -379,6 +403,10 @@ namespace JugaAgenda
             // 
             this.groupWerkBewerken.AutoSize = true;
             this.groupWerkBewerken.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupWerkBewerken.Controls.Add(this.label9);
+            this.groupWerkBewerken.Controls.Add(this.textBewTel);
+            this.groupWerkBewerken.Controls.Add(this.label8);
+            this.groupWerkBewerken.Controls.Add(this.textBewNaam);
             this.groupWerkBewerken.Controls.Add(this.butVerwijderen);
             this.groupWerkBewerken.Controls.Add(this.numBewIndex);
             this.groupWerkBewerken.Controls.Add(this.label5);
@@ -388,17 +416,49 @@ namespace JugaAgenda
             this.groupWerkBewerken.Controls.Add(this.numBewUren);
             this.groupWerkBewerken.Controls.Add(this.butBewerken);
             this.groupWerkBewerken.Controls.Add(this.checkBewPrioriteit);
-            this.groupWerkBewerken.Location = new System.Drawing.Point(325, 164);
+            this.groupWerkBewerken.Location = new System.Drawing.Point(554, 6);
             this.groupWerkBewerken.Name = "groupWerkBewerken";
-            this.groupWerkBewerken.Size = new System.Drawing.Size(223, 208);
+            this.groupWerkBewerken.Size = new System.Drawing.Size(223, 287);
             this.groupWerkBewerken.TabIndex = 7;
             this.groupWerkBewerken.TabStop = false;
             this.groupWerkBewerken.Text = "Werk Bewerken";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 107);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(102, 15);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "Telefoon nummer";
+            // 
+            // textBewTel
+            // 
+            this.textBewTel.Location = new System.Drawing.Point(6, 125);
+            this.textBewTel.Name = "textBewTel";
+            this.textBewTel.Size = new System.Drawing.Size(211, 23);
+            this.textBewTel.TabIndex = 13;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 63);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(39, 15);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "Naam";
+            // 
+            // textBewNaam
+            // 
+            this.textBewNaam.Location = new System.Drawing.Point(6, 81);
+            this.textBewNaam.Name = "textBewNaam";
+            this.textBewNaam.Size = new System.Drawing.Size(211, 23);
+            this.textBewNaam.TabIndex = 11;
+            // 
             // butVerwijderen
             // 
             this.butVerwijderen.Enabled = false;
-            this.butVerwijderen.Location = new System.Drawing.Point(133, 163);
+            this.butVerwijderen.Location = new System.Drawing.Point(133, 242);
             this.butVerwijderen.Name = "butVerwijderen";
             this.butVerwijderen.Size = new System.Drawing.Size(84, 23);
             this.butVerwijderen.TabIndex = 10;
@@ -408,7 +468,7 @@ namespace JugaAgenda
             // 
             // numBewIndex
             // 
-            this.numBewIndex.Location = new System.Drawing.Point(7, 134);
+            this.numBewIndex.Location = new System.Drawing.Point(6, 213);
             this.numBewIndex.Name = "numBewIndex";
             this.numBewIndex.Size = new System.Drawing.Size(59, 23);
             this.numBewIndex.TabIndex = 9;
@@ -416,7 +476,7 @@ namespace JugaAgenda
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 115);
+            this.label5.Location = new System.Drawing.Point(6, 195);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(35, 15);
             this.label5.TabIndex = 8;
@@ -425,7 +485,7 @@ namespace JugaAgenda
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 67);
+            this.label4.Location = new System.Drawing.Point(6, 151);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 15);
             this.label4.TabIndex = 7;
@@ -449,7 +509,7 @@ namespace JugaAgenda
             // 
             // numBewUren
             // 
-            this.numBewUren.Location = new System.Drawing.Point(7, 85);
+            this.numBewUren.Location = new System.Drawing.Point(6, 169);
             this.numBewUren.Name = "numBewUren";
             this.numBewUren.Size = new System.Drawing.Size(59, 23);
             this.numBewUren.TabIndex = 5;
@@ -457,7 +517,7 @@ namespace JugaAgenda
             // butBewerken
             // 
             this.butBewerken.Enabled = false;
-            this.butBewerken.Location = new System.Drawing.Point(6, 163);
+            this.butBewerken.Location = new System.Drawing.Point(6, 242);
             this.butBewerken.Name = "butBewerken";
             this.butBewerken.Size = new System.Drawing.Size(75, 23);
             this.butBewerken.TabIndex = 1;
@@ -468,7 +528,7 @@ namespace JugaAgenda
             // checkBewPrioriteit
             // 
             this.checkBewPrioriteit.AutoSize = true;
-            this.checkBewPrioriteit.Location = new System.Drawing.Point(146, 86);
+            this.checkBewPrioriteit.Location = new System.Drawing.Point(146, 170);
             this.checkBewPrioriteit.Name = "checkBewPrioriteit";
             this.checkBewPrioriteit.Size = new System.Drawing.Size(71, 19);
             this.checkBewPrioriteit.TabIndex = 4;
@@ -479,6 +539,10 @@ namespace JugaAgenda
             // 
             this.groupWerkToevoegen.AutoSize = true;
             this.groupWerkToevoegen.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupWerkToevoegen.Controls.Add(this.label7);
+            this.groupWerkToevoegen.Controls.Add(this.textWerkTel);
+            this.groupWerkToevoegen.Controls.Add(this.label6);
+            this.groupWerkToevoegen.Controls.Add(this.textWerkNaam);
             this.groupWerkToevoegen.Controls.Add(this.label2);
             this.groupWerkToevoegen.Controls.Add(this.label1);
             this.groupWerkToevoegen.Controls.Add(this.textWerkBeschrijving);
@@ -487,15 +551,47 @@ namespace JugaAgenda
             this.groupWerkToevoegen.Controls.Add(this.checkWerkPrioriteit);
             this.groupWerkToevoegen.Location = new System.Drawing.Point(325, 6);
             this.groupWerkToevoegen.Name = "groupWerkToevoegen";
-            this.groupWerkToevoegen.Size = new System.Drawing.Size(223, 152);
+            this.groupWerkToevoegen.Size = new System.Drawing.Size(223, 243);
             this.groupWerkToevoegen.TabIndex = 6;
             this.groupWerkToevoegen.TabStop = false;
             this.groupWerkToevoegen.Text = "Werk Toevoegen";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 107);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(102, 15);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Telefoon nummer";
+            // 
+            // textWerkTel
+            // 
+            this.textWerkTel.Location = new System.Drawing.Point(6, 125);
+            this.textWerkTel.Name = "textWerkTel";
+            this.textWerkTel.Size = new System.Drawing.Size(211, 23);
+            this.textWerkTel.TabIndex = 10;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 63);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(39, 15);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Naam";
+            // 
+            // textWerkNaam
+            // 
+            this.textWerkNaam.Location = new System.Drawing.Point(6, 81);
+            this.textWerkNaam.Name = "textWerkNaam";
+            this.textWerkNaam.Size = new System.Drawing.Size(211, 23);
+            this.textWerkNaam.TabIndex = 8;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 63);
+            this.label2.Location = new System.Drawing.Point(6, 151);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 15);
             this.label2.TabIndex = 7;
@@ -519,14 +615,14 @@ namespace JugaAgenda
             // 
             // numWerkUren
             // 
-            this.numWerkUren.Location = new System.Drawing.Point(6, 81);
+            this.numWerkUren.Location = new System.Drawing.Point(6, 169);
             this.numWerkUren.Name = "numWerkUren";
             this.numWerkUren.Size = new System.Drawing.Size(60, 23);
             this.numWerkUren.TabIndex = 5;
             // 
             // butWerkToevoegen
             // 
-            this.butWerkToevoegen.Location = new System.Drawing.Point(142, 107);
+            this.butWerkToevoegen.Location = new System.Drawing.Point(6, 198);
             this.butWerkToevoegen.Name = "butWerkToevoegen";
             this.butWerkToevoegen.Size = new System.Drawing.Size(75, 23);
             this.butWerkToevoegen.TabIndex = 1;
@@ -537,7 +633,7 @@ namespace JugaAgenda
             // checkWerkPrioriteit
             // 
             this.checkWerkPrioriteit.AutoSize = true;
-            this.checkWerkPrioriteit.Location = new System.Drawing.Point(146, 82);
+            this.checkWerkPrioriteit.Location = new System.Drawing.Point(146, 170);
             this.checkWerkPrioriteit.Name = "checkWerkPrioriteit";
             this.checkWerkPrioriteit.Size = new System.Drawing.Size(71, 19);
             this.checkWerkPrioriteit.TabIndex = 4;
@@ -580,6 +676,122 @@ namespace JugaAgenda
             this.menuInfo.Text = "Info";
             this.menuInfo.Click += new System.EventHandler(this.menuInfo_Click);
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.groupBox1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1444, 462);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Toevoegen";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.AutoSize = true;
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.textToevTel);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.textToevNaam);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.textToevBeschrijving);
+            this.groupBox1.Controls.Add(this.numToevUren);
+            this.groupBox1.Controls.Add(this.butToevoegen);
+            this.groupBox1.Controls.Add(this.checkToevPrioriteit);
+            this.groupBox1.Location = new System.Drawing.Point(8, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(223, 243);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Werk Toevoegen";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 107);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(102, 15);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "Telefoon nummer";
+            // 
+            // textToevTel
+            // 
+            this.textToevTel.Location = new System.Drawing.Point(6, 125);
+            this.textToevTel.Name = "textToevTel";
+            this.textToevTel.Size = new System.Drawing.Size(211, 23);
+            this.textToevTel.TabIndex = 10;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 63);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(39, 15);
+            this.label11.TabIndex = 9;
+            this.label11.Text = "Naam";
+            // 
+            // textToevNaam
+            // 
+            this.textToevNaam.Location = new System.Drawing.Point(6, 81);
+            this.textToevNaam.Name = "textToevNaam";
+            this.textToevNaam.Size = new System.Drawing.Size(211, 23);
+            this.textToevNaam.TabIndex = 8;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 151);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(68, 15);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "Aantal uren";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 19);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(71, 15);
+            this.label13.TabIndex = 6;
+            this.label13.Text = "Beschrijving";
+            // 
+            // textToevBeschrijving
+            // 
+            this.textToevBeschrijving.Location = new System.Drawing.Point(6, 37);
+            this.textToevBeschrijving.Name = "textToevBeschrijving";
+            this.textToevBeschrijving.Size = new System.Drawing.Size(211, 23);
+            this.textToevBeschrijving.TabIndex = 2;
+            // 
+            // numToevUren
+            // 
+            this.numToevUren.Location = new System.Drawing.Point(6, 169);
+            this.numToevUren.Name = "numToevUren";
+            this.numToevUren.Size = new System.Drawing.Size(60, 23);
+            this.numToevUren.TabIndex = 5;
+            // 
+            // butToevoegen
+            // 
+            this.butToevoegen.Location = new System.Drawing.Point(6, 198);
+            this.butToevoegen.Name = "butToevoegen";
+            this.butToevoegen.Size = new System.Drawing.Size(75, 23);
+            this.butToevoegen.TabIndex = 1;
+            this.butToevoegen.Text = "Teovoegen";
+            this.butToevoegen.UseVisualStyleBackColor = true;
+            this.butToevoegen.Click += new System.EventHandler(this.butToevoegen_Click);
+            // 
+            // checkToevPrioriteit
+            // 
+            this.checkToevPrioriteit.AutoSize = true;
+            this.checkToevPrioriteit.Location = new System.Drawing.Point(146, 170);
+            this.checkToevPrioriteit.Name = "checkToevPrioriteit";
+            this.checkToevPrioriteit.Size = new System.Drawing.Size(71, 19);
+            this.checkToevPrioriteit.TabIndex = 4;
+            this.checkToevPrioriteit.Text = "Prioriteit";
+            this.checkToevPrioriteit.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -619,6 +831,11 @@ namespace JugaAgenda
             ((System.ComponentModel.ISupportInitialize)(this.numWerkUren)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numToevUren)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -673,6 +890,26 @@ namespace JugaAgenda
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBewTel;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBewNaam;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textWerkTel;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textWerkNaam;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textToevTel;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textToevNaam;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox textToevBeschrijving;
+        private System.Windows.Forms.NumericUpDown numToevUren;
+        private System.Windows.Forms.Button butToevoegen;
+        private System.Windows.Forms.CheckBox checkToevPrioriteit;
     }
 }
 
