@@ -22,7 +22,7 @@ namespace JugaAgenda
         {
             if (checkWerkGegevens(textWerkBeschrijving.Text, numWerkUren.Value))
             {
-                Werk newWerk = new Werk(textWerkBeschrijving.Text, numWerkUren.Value, checkWerkPrioriteit.Checked);
+                Werk newWerk = new Werk(textWerkBeschrijving.Text, textWerkNaam.Text, textWerkTel.Text, numWerkUren.Value, checkWerkPrioriteit.Checked);
                 
                 if (checkWerkPrioriteit.Checked)
                 {
@@ -43,6 +43,8 @@ namespace JugaAgenda
                 
 
                 textWerkBeschrijving.Text = "";
+                textWerkNaam.Text = "";
+                textWerkTel.Text = "";
                 numWerkUren.Value = 0;
                 checkWerkPrioriteit.Checked = false;
             }
@@ -97,13 +99,13 @@ namespace JugaAgenda
                         }
                         if (timeOver < timeToFillIn)
                         {
-                            listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), timeOver, werk.getPrioriteit()));
+                            listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), werk.getNaam(), werk.getTel(), timeOver, werk.getPrioriteit()));
                             timeOver = 0;
                             break;
                         }
                         else if (timeOver == timeToFillIn)
                         {
-                            listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), timeOver, werk.getPrioriteit()));
+                            listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), werk.getNaam(), werk.getTel(), timeOver, werk.getPrioriteit()));
                             currentDay++;
                             timeOver = 0;
                             break;
@@ -112,14 +114,14 @@ namespace JugaAgenda
                         {
                             if (timeToFillIn > 0)
                             {
-                                listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), timeToFillIn, werk.getPrioriteit()));
+                                listBoxList[currentDay].Items.Add(new Werk(werk.getBeschrijving(), werk.getNaam(), werk.getTel(), timeToFillIn, werk.getPrioriteit()));
                                 timeOver -= timeToFillIn;
                             }
                             currentDay++;
                         }
                     } else
                     {
-                        listExtra.Items.Add(new Werk(werk.getBeschrijving(), timeOver, werk.getPrioriteit()));
+                        listExtra.Items.Add(new Werk(werk.getBeschrijving(), werk.getNaam(), werk.getTel(), timeOver, werk.getPrioriteit()));
                         timeOver = 0;
                         break;
                     }
@@ -159,6 +161,8 @@ namespace JugaAgenda
             {
                 Werk selectedItem = (Werk)listWerk.SelectedItem;
                 textBewBeschrijving.Text = selectedItem.getBeschrijving();
+                textBewNaam.Text = selectedItem.getNaam();
+                textBewTel.Text = selectedItem.getTel();
                 numBewUren.Value = selectedItem.getUren();
                 numBewIndex.Value = listWerk.SelectedIndex;
                 checkBewPrioriteit.Checked = selectedItem.getPrioriteit();
@@ -174,6 +178,8 @@ namespace JugaAgenda
                 Werk werk = (Werk) listWerk.SelectedItem;
 
                 werk.setBeschrijving(textBewBeschrijving.Text);
+                werk.setNaam(textBewNaam.Text);
+                werk.setTel(textBewTel.Text);
                 werk.setUren(numBewUren.Value);
                 werk.setPrioriteit(checkBewPrioriteit.Checked);
 
@@ -189,6 +195,8 @@ namespace JugaAgenda
                 }
 
                 textBewBeschrijving.Text = "";
+                textBewNaam.Text = "";
+                textBewTel.Text = "";
                 numBewUren.Value = 0;
                 numBewIndex.Value = 0;
                 checkBewPrioriteit.Checked = false;
@@ -204,6 +212,8 @@ namespace JugaAgenda
             {
                 listWerk.Items.RemoveAt(listWerk.SelectedIndex);
                 textBewBeschrijving.Text = "";
+                textBewNaam.Text = "";
+                textBewTel.Text = "";
                 numBewUren.Value = 0;
                 numBewIndex.Value = 0;
                 checkBewPrioriteit.Checked = false;
@@ -211,17 +221,26 @@ namespace JugaAgenda
                 butVerwijderen.Enabled = false;
             }
         }
+
+        private void butToevoegen_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     public class Werk
     {
 
-        String beschrijving;
+        string beschrijving;
+        string naam;
+        string tel;
         decimal uren;
         bool prioriteit;
 
-        public Werk(string beschrijving, decimal uren, bool prioriteit)
+        public Werk(string beschrijving, string naam, string tel, decimal uren, bool prioriteit)
         {
             this.beschrijving = beschrijving;
+            this.naam = naam;
+            this.tel = tel;
             this.uren = uren;
             this.prioriteit = prioriteit;
         }
@@ -229,6 +248,14 @@ namespace JugaAgenda
         public string getBeschrijving()
         {
             return this.beschrijving;
+        }
+        public string getNaam()
+        {
+            return this.naam;
+        }
+        public string getTel()
+        {
+            return this.tel;
         }
         public decimal getUren()
         {
@@ -241,6 +268,14 @@ namespace JugaAgenda
         public void setBeschrijving(string beschrijving)
         {
             this.beschrijving = beschrijving;
+        }
+        public void setNaam(string naam)
+        {
+            this.naam = naam;
+        }
+        public void setTel(string tel)
+        {
+            this.tel = tel;
         }
         public void setUren(decimal uren)
         {
