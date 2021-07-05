@@ -81,9 +81,6 @@ namespace JugaAgenda
             this.butWerkToevoegen = new System.Windows.Forms.Button();
             this.checkWerkPrioriteit = new System.Windows.Forms.CheckBox();
             this.listWerk = new System.Windows.Forms.ListBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.menuUpdate = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -96,6 +93,9 @@ namespace JugaAgenda
             this.numToevUren = new System.Windows.Forms.NumericUpDown();
             this.butToevoegen = new System.Windows.Forms.Button();
             this.checkToevPrioriteit = new System.Windows.Forms.CheckBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuUpdate = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupExtra.SuspendLayout();
@@ -119,10 +119,10 @@ namespace JugaAgenda
             ((System.ComponentModel.ISupportInitialize)(this.numBewUren)).BeginInit();
             this.groupWerkToevoegen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWerkUren)).BeginInit();
-            this.menuStrip1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numToevUren)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -651,31 +651,6 @@ namespace JugaAgenda
             this.listWerk.TabIndex = 0;
             this.listWerk.SelectedIndexChanged += new System.EventHandler(this.listWerk_SelectedIndexChanged);
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuUpdate,
-            this.menuInfo});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1452, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "Menu";
-            // 
-            // menuUpdate
-            // 
-            this.menuUpdate.Name = "menuUpdate";
-            this.menuUpdate.Size = new System.Drawing.Size(57, 20);
-            this.menuUpdate.Text = "Update";
-            this.menuUpdate.Click += new System.EventHandler(this.menuUpdate_Click);
-            // 
-            // menuInfo
-            // 
-            this.menuInfo.Name = "menuInfo";
-            this.menuInfo.Size = new System.Drawing.Size(40, 20);
-            this.menuInfo.Text = "Info";
-            this.menuInfo.Click += new System.EventHandler(this.menuInfo_Click);
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.groupBox1);
@@ -792,6 +767,31 @@ namespace JugaAgenda
             this.checkToevPrioriteit.Text = "Prioriteit";
             this.checkToevPrioriteit.UseVisualStyleBackColor = true;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuUpdate,
+            this.menuInfo});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1452, 24);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "Menu";
+            // 
+            // menuUpdate
+            // 
+            this.menuUpdate.Name = "menuUpdate";
+            this.menuUpdate.Size = new System.Drawing.Size(57, 20);
+            this.menuUpdate.Text = "Update";
+            this.menuUpdate.Click += new System.EventHandler(this.menuUpdate_Click);
+            // 
+            // menuInfo
+            // 
+            this.menuInfo.Name = "menuInfo";
+            this.menuInfo.Size = new System.Drawing.Size(40, 20);
+            this.menuInfo.Text = "Info";
+            this.menuInfo.Click += new System.EventHandler(this.menuInfo_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -829,13 +829,13 @@ namespace JugaAgenda
             this.groupWerkToevoegen.ResumeLayout(false);
             this.groupWerkToevoegen.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numWerkUren)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numToevUren)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
