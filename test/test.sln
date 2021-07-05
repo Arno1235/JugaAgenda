@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JugaAgenda", "JugaAgenda.csproj", "{E2DF48EE-0AB4-442A-939A-247895ED3DD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test.csproj", "{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E2DF48EE-0AB4-442A-939A-247895ED3DD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2DF48EE-0AB4-442A-939A-247895ED3DD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2DF48EE-0AB4-442A-939A-247895ED3DD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2DF48EE-0AB4-442A-939A-247895ED3DD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8999132A-8CF5-43C8-9CEF-C20F1CB1719F}
+		SolutionGuid = {40A7B30D-5676-4283-A3DE-A8B3ED338AA9}
 	EndGlobalSection
 EndGlobal
