@@ -36,10 +36,13 @@ namespace test
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange5 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             this.calendar1 = new System.Windows.Forms.Calendar.Calendar();
             this.monthView1 = new System.Windows.Forms.Calendar.MonthView();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // calendar1
             // 
+            this.calendar1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.calendar1.FirstDayOfWeek = System.DayOfWeek.Monday;
             this.calendar1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             calendarHighlightRange1.DayOfWeek = System.DayOfWeek.Monday;
             calendarHighlightRange1.EndTime = System.TimeSpan.Parse("17:00:00");
@@ -62,11 +65,14 @@ namespace test
         calendarHighlightRange3,
         calendarHighlightRange4,
         calendarHighlightRange5};
-            this.calendar1.Location = new System.Drawing.Point(152, 98);
+            this.calendar1.Location = new System.Drawing.Point(453, 0);
             this.calendar1.Name = "calendar1";
-            this.calendar1.Size = new System.Drawing.Size(493, 250);
+            this.calendar1.Size = new System.Drawing.Size(747, 617);
             this.calendar1.TabIndex = 0;
             this.calendar1.Text = "calendar1";
+            this.calendar1.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            this.calendar1.LoadItems += new System.Windows.Forms.Calendar.Calendar.CalendarLoadEventHandler(this.calendar1_LoadItems);
+            this.calendar1.ItemCreated += new System.Windows.Forms.Calendar.Calendar.CalendarItemCancelEventHandler(this.calendar1_CreateItem);
             // 
             // monthView1
             // 
@@ -77,23 +83,37 @@ namespace test
             this.monthView1.DaySelectedBackgroundColor = System.Drawing.SystemColors.Highlight;
             this.monthView1.DaySelectedColor = System.Drawing.SystemColors.WindowText;
             this.monthView1.DaySelectedTextColor = System.Drawing.SystemColors.HighlightText;
+            this.monthView1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.monthView1.FirstDayOfWeek = System.DayOfWeek.Monday;
             this.monthView1.ItemPadding = new System.Windows.Forms.Padding(2);
-            this.monthView1.Location = new System.Drawing.Point(23, 40);
+            this.monthView1.Location = new System.Drawing.Point(0, 0);
             this.monthView1.MonthTitleColor = System.Drawing.SystemColors.ActiveCaption;
             this.monthView1.MonthTitleColorInactive = System.Drawing.SystemColors.InactiveCaption;
             this.monthView1.MonthTitleTextColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.monthView1.MonthTitleTextColorInactive = System.Drawing.SystemColors.InactiveCaptionText;
             this.monthView1.Name = "monthView1";
-            this.monthView1.Size = new System.Drawing.Size(235, 398);
+            this.monthView1.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Week;
+            this.monthView1.Size = new System.Drawing.Size(235, 617);
             this.monthView1.TabIndex = 1;
             this.monthView1.Text = "monthView1";
             this.monthView1.TodayBorderColor = System.Drawing.Color.Maroon;
+            this.monthView1.SelectionChanged += new System.EventHandler(this.monthView1_SelectionChanged);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(294, 178);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 23);
+            this.comboBox1.TabIndex = 2;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 617);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.monthView1);
             this.Controls.Add(this.calendar1);
             this.Name = "Form1";
@@ -107,6 +127,7 @@ namespace test
 
         private System.Windows.Forms.Calendar.Calendar calendar1;
         private System.Windows.Forms.Calendar.MonthView monthView1;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
