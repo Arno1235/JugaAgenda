@@ -65,6 +65,35 @@ namespace JugaAgenda_v2
             }
         }
 
+        private void fiveMinutesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.FiveMinutes;
+        }
+
+        private void sixMinutesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixMinutes;
+        }
+
+        private void tenMinutesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.TenMinutes;
+        }
+
+        private void fifteenMinutesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.FifteenMinutes;
+        }
+
+        private void thirtyMinutesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.ThirtyMinutes;
+        }
+
+        private void sixtyMinutesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+        }
     }
 
     public static class DateTimeExtensions
