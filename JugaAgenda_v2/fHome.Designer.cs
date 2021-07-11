@@ -55,11 +55,13 @@ namespace JugaAgenda_v2
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.tcSettings = new System.Windows.Forms.TabControl();
             this.tpGoogleCalendar = new System.Windows.Forms.TabPage();
+            this.btTestGoogleConnection = new System.Windows.Forms.Button();
             this.msHome.SuspendLayout();
             this.tcHome.SuspendLayout();
             this.tpCalendar.SuspendLayout();
             this.tpSettings.SuspendLayout();
             this.tcSettings.SuspendLayout();
+            this.tpGoogleCalendar.SuspendLayout();
             this.SuspendLayout();
             // 
             // msHome
@@ -280,6 +282,7 @@ namespace JugaAgenda_v2
             // 
             // tpGoogleCalendar
             // 
+            this.tpGoogleCalendar.Controls.Add(this.btTestGoogleConnection);
             this.tpGoogleCalendar.Location = new System.Drawing.Point(4, 24);
             this.tpGoogleCalendar.Name = "tpGoogleCalendar";
             this.tpGoogleCalendar.Padding = new System.Windows.Forms.Padding(3);
@@ -287,6 +290,15 @@ namespace JugaAgenda_v2
             this.tpGoogleCalendar.TabIndex = 0;
             this.tpGoogleCalendar.Text = "Google Calendar";
             this.tpGoogleCalendar.UseVisualStyleBackColor = true;
+            // 
+            // btTestGoogleConnection
+            // 
+            this.btTestGoogleConnection.Location = new System.Drawing.Point(7, 7);
+            this.btTestGoogleConnection.Name = "btTestGoogleConnection";
+            this.btTestGoogleConnection.Size = new System.Drawing.Size(107, 23);
+            this.btTestGoogleConnection.TabIndex = 0;
+            this.btTestGoogleConnection.Text = "Test Connection";
+            this.btTestGoogleConnection.UseVisualStyleBackColor = true;
             // 
             // fHome
             // 
@@ -304,6 +316,7 @@ namespace JugaAgenda_v2
             this.tpCalendar.ResumeLayout(false);
             this.tpSettings.ResumeLayout(false);
             this.tcSettings.ResumeLayout(false);
+            this.tpGoogleCalendar.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -332,6 +345,7 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.TabPage tpSettings;
         private System.Windows.Forms.TabControl tcSettings;
         private System.Windows.Forms.TabPage tpGoogleCalendar;
+        private System.Windows.Forms.Button btTestGoogleConnection;
     }
 }
 
