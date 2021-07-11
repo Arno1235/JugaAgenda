@@ -299,6 +299,7 @@ namespace JugaAgenda_v2
             this.btTestGoogleConnection.TabIndex = 0;
             this.btTestGoogleConnection.Text = "Test Connection";
             this.btTestGoogleConnection.UseVisualStyleBackColor = true;
+            this.btTestGoogleConnection.Click += new System.EventHandler(this.btTestGoogleConnection_Click);
             // 
             // fHome
             // 
