@@ -987,11 +987,16 @@ namespace System.Windows.Forms.Calendar
                     CalendarDay dayEnd = item.DayEnd;
                     item.ClearBounds();
 
-                    for (int i = dayStart.Index; i <= dayEnd.Index; i++)
+                    //ARNO
+                    if (dayStart != null && dayEnd != null)
                     {
-                        Calendar.Days[i].AddContainedItem(item);
-                        maxItems = Math.Max(maxItems, Calendar.Days[i].ContainedItems.Count);
+                        for (int i = dayStart.Index; i <= dayEnd.Index; i++)
+                        {
+                            Calendar.Days[i].AddContainedItem(item);
+                            maxItems = Math.Max(maxItems, Calendar.Days[i].ContainedItems.Count);
+                        }
                     }
+                    
                 }
 
                 int[,] matix = new int[Calendar.Days.Length, maxItems];
@@ -1001,8 +1006,12 @@ namespace System.Windows.Forms.Calendar
                     CalendarDay dayStart = item.DayStart;
                     CalendarDay dayEnd = item.DayEnd;
 
-                    PlaceInMatrix(ref matix, curIndex + 1, dayStart.Index, dayEnd.Index);
-                    curIndex++;
+                    //ARNO
+                    if (dayStart != null && dayEnd != null)
+                    {
+                        PlaceInMatrix(ref matix, curIndex + 1, dayStart.Index, dayEnd.Index);
+                        curIndex++;
+                    }
                 }
 
 
