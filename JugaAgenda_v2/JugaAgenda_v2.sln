@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JugaAgenda_v2", "JugaAgenda_v2.csproj", "{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58F50B9-D6FB-412F-B0C2-F3D681EF5DCF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40A7B30D-5676-4283-A3DE-A8B3ED338AA9}
+	EndGlobalSection
+EndGlobal
