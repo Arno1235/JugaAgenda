@@ -202,6 +202,9 @@ namespace JugaAgenda_v2
             // 
             // calHome
             // 
+            this.calHome.AllowItemEdit = false;
+            this.calHome.AllowItemResize = false;
+            this.calHome.AllowNew = false;
             this.calHome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.calHome.FirstDayOfWeek = System.DayOfWeek.Monday;
             this.calHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
