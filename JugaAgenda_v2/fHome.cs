@@ -36,32 +36,7 @@ namespace JugaAgenda_v2
             mvHome.MaxSelectionCount = calHome.MaximumViewDays;
 
             calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
-            
-        }
 
-        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Manual;
-        }
-
-        private void dayToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Day;
-        }
-
-        private void workweekToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.WorkWeek;
-        }
-
-        private void weekToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Week;
-        }
-
-        private void monthToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month;
         }
 
         private void mvHome_SelectionChanged(object sender, EventArgs e)
@@ -101,22 +76,67 @@ namespace JugaAgenda_v2
 
                 foreach (var eventItem in googleCalendar.events.Items)
                 {
-                    if (eventItem.Start.DateTime > calHome.ViewStart || eventItem.End.DateTime < calHome.ViewEnd)
+                    if (eventItem.Start.DateTime != null)
                     {
-                        System.Windows.Forms.Calendar.CalendarItem newItem = new System.Windows.Forms.Calendar.CalendarItem(calHome,
-                            (DateTime)eventItem.Start.DateTime,
-                            (DateTime)eventItem.End.DateTime,
-                            eventItem.Summary);
+                        if ((eventItem.Start.DateTime > calHome.ViewStart && eventItem.Start.DateTime < calHome.ViewEnd) ||
+                            (eventItem.End.DateTime < calHome.ViewEnd && eventItem.End.DateTime > calHome.ViewStart))
+                        {
+                            System.Windows.Forms.Calendar.CalendarItem newItem = new System.Windows.Forms.Calendar.CalendarItem(calHome,
+                                (DateTime)eventItem.Start.DateTime,
+                                (DateTime)eventItem.End.DateTime,
+                                eventItem.Summary);
 
-                        calHome.Items.Add(newItem);
+                            calHome.Items.Add(newItem);
+                        }
+                    } else
+                    {
+                        DateTime startDate = Convert.ToDateTime(eventItem.Start.Date);
+                        DateTime endDate = Convert.ToDateTime(eventItem.End.Date);
+                        if ((startDate > calHome.ViewStart && startDate < calHome.ViewEnd) ||
+                            (endDate < calHome.ViewEnd && endDate > calHome.ViewStart))
+                        {
+                            System.Windows.Forms.Calendar.CalendarItem newItem = new System.Windows.Forms.Calendar.CalendarItem(calHome,
+                                startDate,
+                                endDate.AddSeconds(-1),
+                                eventItem.Summary);
+
+                            calHome.Items.Add(newItem);
+                        }
                     }
                 }
+
             } else
             {
                 MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days.");
             }
             
 
+        }
+
+        #region SimpleButtonFunctions
+        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Manual;
+        }
+
+        private void dayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Day;
+        }
+
+        private void workweekToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.WorkWeek;
+        }
+
+        private void weekToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Week;
+        }
+
+        private void monthToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month;
         }
 
         private void fiveMinutesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -153,6 +173,8 @@ namespace JugaAgenda_v2
         {
             googleCalendar.refreshEvents();
         }
+        #endregion
+
     }
 
     public static class DateTimeExtensions
@@ -209,7 +231,7 @@ namespace JugaAgenda_v2
         public void refreshEvents()
         {
             // Define parameters of request.
-            EventsResource.ListRequest request = service.Events.List("72pr005tleiugtoa23urcs1j0s@group.calendar.google.com");
+            EventsResource.ListRequest request = service.Events.List("pvdr3fefd859hoau6aop4jn9p8@group.calendar.google.com");
             request.TimeMin = DateTime.Now;
             request.ShowDeleted = false;
             request.SingleEvents = true;
@@ -221,5 +243,7 @@ namespace JugaAgenda_v2
         }
 
     }
+
+    
 
 }
