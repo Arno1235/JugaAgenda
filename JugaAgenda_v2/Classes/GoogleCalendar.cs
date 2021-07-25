@@ -54,7 +54,7 @@ namespace JugaAgenda_v2
         {
             // Define parameters of request.
             EventsResource.ListRequest request = service.Events.List(calendarID);
-            request.TimeMin = DateTime.Now.AddDays(-14);
+            request.TimeMin = DateTime.Now.AddMonths(-1);
             request.TimeMax = DateTime.Now.AddMonths(perspectiveMonths);
             request.ShowDeleted = false;
             request.SingleEvents = true;
