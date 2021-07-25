@@ -111,6 +111,11 @@ namespace JugaAgenda_v2
             MessageBox.Show(calHome.GetSelectedItems().ToList()[0].Text.ToString());
         }
 
+        private void loadWork()
+        {
+
+        }
+
         #region SimpleButtonFunctions
         private void manualToolStripMenuItem_Click(object sender, EventArgs e)
         {
