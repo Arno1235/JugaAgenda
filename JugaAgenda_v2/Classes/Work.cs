@@ -8,11 +8,20 @@ namespace JugaAgenda_v2
 {
     class Work
     {
+        public enum Status
+        {
+            todo_no_components,
+            todo_yes_components,
+            doing,
+            done
+        }
+
         private string name;
         private decimal duration;
         private string clientName;
         private string phoneNumber;
         private string orderNumber;
+        private Status status;
 
         public Work()
         {
@@ -25,6 +34,7 @@ namespace JugaAgenda_v2
             this.clientName = clientName;
             this.phoneNumber = phoneNumber;
             this.orderNumber = orderNumber;
+            this.status = Status.todo_no_components;
         }
 
         #region getters
@@ -48,6 +58,10 @@ namespace JugaAgenda_v2
         {
             return orderNumber;
         }
+        public Status getStatus()
+        {
+            return status;
+        }
         #endregion
 
         #region setters
@@ -70,6 +84,10 @@ namespace JugaAgenda_v2
         public void setOrderNumber(string orderNumber)
         {
             this.orderNumber = orderNumber;
+        }
+        public void setStatus(Status status)
+        {
+            this.status = status;
         }
         #endregion
 
