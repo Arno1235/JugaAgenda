@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Calendar;
 
 namespace JugaAgenda_v2
 {
@@ -27,7 +28,7 @@ namespace JugaAgenda_v2
             mvHome.SelectionEnd = DateTime.Now.EndOfWeek(DayOfWeek.Sunday);
             mvHome.MaxSelectionCount = calHome.MaximumViewDays;
 
-            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            calHome.TimeScale = CalendarTimeScale.SixtyMinutes;
 
         }
 
@@ -73,7 +74,7 @@ namespace JugaAgenda_v2
                         if ((eventItem.Start.DateTime > calHome.ViewStart && eventItem.Start.DateTime < calHome.ViewEnd) ||
                             (eventItem.End.DateTime < calHome.ViewEnd && eventItem.End.DateTime > calHome.ViewStart))
                         {
-                            System.Windows.Forms.Calendar.CalendarItem newItem = new System.Windows.Forms.Calendar.CalendarItem(calHome,
+                            CalendarItem newItem = new CalendarItem(calHome,
                                 (DateTime)eventItem.Start.DateTime,
                                 (DateTime)eventItem.End.DateTime,
                                 eventItem.Summary);
@@ -87,7 +88,7 @@ namespace JugaAgenda_v2
                         if ((startDate > calHome.ViewStart && startDate < calHome.ViewEnd) ||
                             (endDate < calHome.ViewEnd && endDate > calHome.ViewStart))
                         {
-                            System.Windows.Forms.Calendar.CalendarItem newItem = new System.Windows.Forms.Calendar.CalendarItem(calHome,
+                            CalendarItem newItem = new CalendarItem(calHome,
                                 startDate,
                                 endDate.AddSeconds(-1),
                                 eventItem.Summary);
@@ -103,6 +104,11 @@ namespace JugaAgenda_v2
             }
             
 
+        }
+
+        private void calHome_ItemDoubleClick(object sender, EventArgs e)
+        {
+            MessageBox.Show(calHome.GetSelectedItems().ToList()[0].Text.ToString());
         }
 
         #region SimpleButtonFunctions
@@ -165,6 +171,27 @@ namespace JugaAgenda_v2
         {
             googleCalendar.refreshEvents();
         }
+        private void oneMonthToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            googleCalendar.setPerspectiveMonths(1);
+        }
+        private void twoMonthsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            googleCalendar.setPerspectiveMonths(2);
+        }
+        private void threeMonthsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            googleCalendar.setPerspectiveMonths(3);
+        }
+        private void fourMonthsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            googleCalendar.setPerspectiveMonths(4);
+        }
+        private void sixMonthsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            googleCalendar.setPerspectiveMonths(6);
+        }
+
         #endregion
 
     }
