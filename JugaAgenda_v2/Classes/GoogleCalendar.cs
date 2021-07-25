@@ -20,9 +20,12 @@ namespace JugaAgenda_v2
 
         private Events events;
 
+        private int perspectiveMonths;
+
         public GoogleCalendar()
         {
             UserCredential credential;
+            perspectiveMonths = 3;
 
             using (var stream =
                 new FileStream(jsonPath, FileMode.Open, FileAccess.Read))
@@ -51,10 +54,10 @@ namespace JugaAgenda_v2
         {
             // Define parameters of request.
             EventsResource.ListRequest request = service.Events.List(calendarID);
-            request.TimeMin = DateTime.Now;
+            request.TimeMin = DateTime.Now.AddDays(-14);
+            request.TimeMax = DateTime.Now.AddMonths(perspectiveMonths);
             request.ShowDeleted = false;
             request.SingleEvents = true;
-            request.MaxResults = 10;
             request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
 
             // List events.
@@ -69,7 +72,10 @@ namespace JugaAgenda_v2
         #endregion
 
         #region setters
-        
+        public void setPerspectiveMonths(int perspectiveMonths)
+        {
+            this.perspectiveMonths = perspectiveMonths;
+        }
         #endregion
 
     }
