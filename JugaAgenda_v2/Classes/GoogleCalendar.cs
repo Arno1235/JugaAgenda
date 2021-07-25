@@ -15,10 +15,10 @@ namespace JugaAgenda_v2
         private string[] Scopes = { CalendarService.Scope.CalendarReadonly };
         private string ApplicationName = "JugaAgenda";
         private string jsonPath = "Google Auth Files/client_secret_517386861162-oml2v6ifqe37dbsh4ls2u023pp89c9de.apps.googleusercontent.com.json";
-        private string calendarID = "pvdr3fefd859hoau6aop4jn9p8@group.calendar.google.com";
+        private string calendarWorkID = "pvdr3fefd859hoau6aop4jn9p8@group.calendar.google.com";
+        private string calendarLeaveID = "f0msdqpsli7f1emtmfboq8b8n4@group.calendar.google.com";
+        private string calendarTechnicianID = "5q2ig7mop16pnodn500q0jm0uo@group.calendar.google.com";
         private CalendarService service;
-
-        private Events events;
 
         private int perspectiveMonths;
 
@@ -50,24 +50,39 @@ namespace JugaAgenda_v2
             });
         }
 
-        public void refreshEvents()
+        #region getters
+        public Events getWorkEvents()
         {
-            // Define parameters of request.
-            EventsResource.ListRequest request = service.Events.List(calendarID);
+            EventsResource.ListRequest request = service.Events.List(calendarWorkID);
             request.TimeMin = DateTime.Now.AddMonths(-1);
             request.TimeMax = DateTime.Now.AddMonths(perspectiveMonths);
             request.ShowDeleted = false;
             request.SingleEvents = true;
             request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
 
-            // List events.
-            events = request.Execute();
+            return request.Execute();
         }
-
-        #region getters
-        public Events getEvents()
+        public Events getLeaveEvents()
         {
-            return events;
+            EventsResource.ListRequest request = service.Events.List(calendarLeaveID);
+            request.TimeMin = DateTime.Now.AddMonths(-1);
+            request.TimeMax = DateTime.Now.AddMonths(perspectiveMonths);
+            request.ShowDeleted = false;
+            request.SingleEvents = true;
+            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+            return request.Execute();
+        }
+        public Events getTechnicianEvents()
+        {
+            EventsResource.ListRequest request = service.Events.List(calendarTechnicianID);
+            request.TimeMin = DateTime.Now.AddMonths(-1);
+            request.TimeMax = DateTime.Now.AddMonths(perspectiveMonths);
+            request.ShowDeleted = false;
+            request.SingleEvents = true;
+            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+            return request.Execute();
         }
         #endregion
 
