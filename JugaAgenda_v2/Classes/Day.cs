@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
 
 namespace JugaAgenda_v2.Classes
 {
     class Day
     {
         private DateTime date;
-        private ArrayList workList;
+        private List<Work> workList;
 
         public Day(DateTime date)
         {
             this.date = date;
+            this.workList = new List<Work>();
         }
 
         #region getters
-        public ArrayList getWorkList()
+        public DateTime getDate()
+        {
+            return date;
+        }
+        public List<Work> getWorkList()
         {
             return workList;
         }
