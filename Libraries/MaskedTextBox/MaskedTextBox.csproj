@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DC913FB0-ED16-4B1B-BB35-73E99E3FD853}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Opulos</RootNamespace>
+    <AssemblyName>MaskedTextBoxDemo</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Core\UI\BitmapUtil.cs">
+      <Link>BitmapUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\ClockDropDown.cs">
+      <Link>ClockDropDown.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\Core\UI\IUpDown.cs">
+      <Link>IUpDown.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\MaskedTextBox.cs">
+      <Link>MaskedTextBox.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\Core\UI\MeasureString.cs">
+      <Link>MeasureString.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\RepeatingButtonEx.cs">
+      <Link>RepeatingButtonEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\SnapWindowEx.cs">
+      <Link>SnapWindowEx.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\SpinControl.cs">
+      <Link>SpinControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\Core\UI\TimePicker.cs">
+      <Link>TimePicker.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\Core\UI\Token.cs">
+      <Link>Token.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\TokenEvents.cs">
+      <Link>TokenEvents.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\TokenInputFlags.cs">
+      <Link>TokenInputFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\TokenValuePadRule.cs">
+      <Link>TokenValuePadRule.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\ToolStripDropDownAttacher.cs">
+      <Link>ToolStripDropDownAttacher.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\UI\UpDownSpinner.cs">
+      <Link>UpDownSpinner.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\Core\Utils\MultiKey.cs">
+      <Link>MultiKey.cs</Link>
+    </Compile>
+    <Compile Include="..\Core\Localization\Strings.Designer.cs">
+      <Link>Localization\Strings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Core\Localization\Strings.ja.Designer.cs">
+      <Link>Localization\Strings.ja.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.ja.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MaskedTextBoxTestPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpinControlTestPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="..\Core\Localization\Strings.resx">
+      <Link>Localization\Strings.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Core\Localization\Strings.ja.resx">
+      <Link>Localization\Strings.ja.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.ja.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>set D=c:\Opulos\MaskedTextBox\src\
+set E=c:\Opulos\MaskedTextBox\src\Localization\
+cd c:
+cd \Opulos\Core\UI\
+copy /y BitmapUtil.cs %25D%25
+copy /y ClockDropDown.cs %25D%25
+copy /y IUpDown.cs %25D%25
+copy /y MaskedTextBox.cs %25D%25
+copy /y MeasureString.cs %25D%25
+copy /y C:\Opulos\Core\Utils\MultiKey.cs %25D%25
+copy /y RepeatingButtonEx.cs %25D%25
+copy /y SnapWindowEx.cs %25D%25
+copy /y SpinControl.cs %25D%25
+copy /y TimePicker.cs %25D%25
+copy /y Token.cs %25D%25
+copy /y TokenEvents.cs %25D%25
+copy /y TokenInputFlags.cs %25D%25
+copy /y TokenValuePadRule.cs %25D%25
+copy /y ToolStripDropDownAttacher.cs %25D%25
+copy /y UpDownSpinner.cs %25D%25
+cd \Opulos\Core\Localization\
+copy /y Strings.Designer.cs %25E%25
+copy /y Strings.ja.Designer.cs %25E%25
+copy /y Strings.ja.resx %25E%25
+copy /y Strings.resx %25E%25
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

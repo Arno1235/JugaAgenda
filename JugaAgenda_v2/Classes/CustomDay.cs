@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace JugaAgenda_v2.Classes
 {
-    class Day
+    class CustomDay
     {
         private DateTime date;
         private List<Work> workList;
         private List<Technician> technicianList;
 
-        public Day(DateTime date)
+        public CustomDay(DateTime date)
         {
             this.date = date;
             this.workList = new List<Work>();

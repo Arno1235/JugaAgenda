@@ -10,9 +10,10 @@ using System.Threading;
 
 namespace JugaAgenda_v2
 {
-    class GoogleCalendar
+    public class GoogleCalendar
     {
-        private string[] Scopes = { CalendarService.Scope.CalendarReadonly };
+        //private string[] Scopes = { CalendarService.Scope.CalendarReadonly };
+        private string[] Scopes = { CalendarService.Scope.Calendar };
         private string ApplicationName = "JugaAgenda";
         private string jsonPath = "Google Auth Files/client_secret_517386861162-oml2v6ifqe37dbsh4ls2u023pp89c9de.apps.googleusercontent.com.json";
         private string calendarWorkID = "pvdr3fefd859hoau6aop4jn9p8@group.calendar.google.com";
@@ -34,7 +35,7 @@ namespace JugaAgenda_v2
                 // automatically when the authorization flow completes for the first time.
                 string credPath = "token.json";
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
+                    GoogleClientSecrets.FromStream(stream).Secrets,
                     Scopes,
                     "user",
                     CancellationToken.None,
@@ -50,8 +51,119 @@ namespace JugaAgenda_v2
             });
         }
 
+        public bool testConnection()
+        {
+            
+            try
+            {
+                EventsResource.ListRequest request;
+
+                request = service.Events.List(calendarWorkID);
+                request.Execute();
+
+                request = service.Events.List(calendarLeaveID);
+                request.Execute();
+
+                request = service.Events.List(calendarTechnicianID);
+                request.Execute();
+
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
+
+        public bool addWorkEvent(String title, String description, String startDate, String endDate, String colorID) // Full day event
+        {
+            Event new_event = new Event();
+
+            new_event.Start = new EventDateTime();
+            new_event.Start.Date = startDate;
+            new_event.Start.DateTime = null;
+            new_event.End = new EventDateTime();
+            new_event.End.Date = endDate;
+            new_event.End.DateTime = null;
+            new_event.Summary = title;
+            new_event.Description = description;
+            new_event.ColorId = colorID;
+
+            return this.addWorkEvent(new_event);
+        }
+
+        public bool addWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID)
+        {
+            Event new_event = new Event();
+
+            new_event.Start = new EventDateTime();
+            new_event.Start.DateTime = startDate;
+            new_event.End = new EventDateTime();
+            new_event.End.DateTime = endDate;
+            new_event.Summary = title;
+            new_event.Description = description;
+            new_event.ColorId = colorID;
+
+            return this.addWorkEvent(new_event);
+        }
+
+        public bool addWorkEvent(Event new_event)
+        {
+            try
+            {
+                service.Events.Insert(new_event, calendarWorkID).Execute();
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
+
+        public bool editWorkEvent(String title, String description, String startDate, String endDate, String colorID, String eventID) // Full day event
+        {
+            Event new_event = new Event();
+
+            new_event.Start = new EventDateTime();
+            new_event.Start.Date = startDate;
+            new_event.Start.DateTime = null;
+            new_event.End = new EventDateTime();
+            new_event.End.Date = endDate;
+            new_event.End.DateTime = null;
+            new_event.Summary = title;
+            new_event.Description = description;
+            new_event.ColorId = colorID;
+
+            return this.editWorkEvent(new_event, eventID);
+        }
+
+        public bool editWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, String eventID)
+        {
+            Event new_event = new Event();
+
+            new_event.Start = new EventDateTime();
+            new_event.Start.DateTime = startDate;
+            new_event.End = new EventDateTime();
+            new_event.End.DateTime = endDate;
+            new_event.Summary = title;
+            new_event.Description = description;
+            new_event.ColorId = colorID;
+
+            return this.editWorkEvent(new_event, eventID);
+        }
+
+        public bool editWorkEvent(Event new_event, String eventID)
+        {
+            try
+            {
+                service.Events.Update(new_event, calendarWorkID, eventID).Execute();
+                return true;
+            } catch
+            {
+                return false;
+            }
+        }
+
         #region getters
-        public Events getWorkEvents()
+        public Events getWorkEvents() // TODO: reset timer
         {
             EventsResource.ListRequest request = service.Events.List(calendarWorkID);
             request.TimeMin = DateTime.Now.AddMonths(-1);
@@ -76,8 +188,9 @@ namespace JugaAgenda_v2
         public Events getTechnicianEvents()
         {
             EventsResource.ListRequest request = service.Events.List(calendarTechnicianID);
-            request.TimeMin = DateTime.Now.AddMonths(-1);
-            request.TimeMax = DateTime.Now.AddMonths(perspectiveMonths);
+            // Read technician times from 1/02/2021 to 8/02/2021
+            request.TimeMin = new DateTime(2021, 2, 1);
+            request.TimeMax = new DateTime(2021, 2, 8);
             request.ShowDeleted = false;
             request.SingleEvents = true;
             request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
