@@ -119,8 +119,15 @@ namespace JugaAgenda_v2
             String[] titleArray = title.Split(' ');
             if (titleArray.Length < 3 || titleArray.Length > 4) return false;
             
-            if (!titleArray[0].Substring(titleArray[0].Length-1).Equals("u")) return false;
-            foreach (char c in titleArray[0].Split('u')[0]) if (!"0123456789.,".Contains(c.ToString())) return false;
+            try
+            {
+                if (!titleArray[0].Substring(titleArray[0].Length - 1).Equals("u")) return false;
+                foreach (char c in titleArray[0].Split('u')[0]) if (!"0123456789.,".Contains(c.ToString())) return false;
+            } catch
+            {
+                return false;
+            }
+            
 
             return true;
         }

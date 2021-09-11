@@ -23,6 +23,8 @@ namespace JugaAgenda_v2
         private List<CustomDay> technicianLeaveList;
         private fCalendarEvent calendarEventScreen = null;
 
+        //TODO Search function!
+
         public fHome()
         {
             InitializeComponent();
@@ -152,11 +154,25 @@ namespace JugaAgenda_v2
 
                 if (!new Work().check_title(item.Summary))
                 {
-                    String new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title of this event.", "Wrong event title", item.Summary);
-                    if (!new_title.Equals("") && new_title != null)
+                    while(true)
                     {
-                        item.Summary = new_title;
-                        if (!googleCalendar.editWorkEvent(item, item.Id)) MessageBox.Show("Something went wrong when updating event to calendar.");
+                        String new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title of this event.", "Wrong event title", item.Summary);
+                        if (!new_title.Equals("") && new_title != null)
+                        {
+                            if (!new Work().check_title(new_title))
+                            {
+                                MessageBox.Show("The new title is still incorrect.");
+                                continue;
+                            }
+                            item.Summary = new_title;
+                            if (!googleCalendar.editWorkEvent(item, item.Id)) MessageBox.Show("Something went wrong when updating event to calendar.");
+                            break;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please change the title.");
+                            break;
+                        }
                     }
                 }
             }
