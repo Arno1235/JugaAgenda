@@ -21,7 +21,10 @@ namespace JugaAgenda_v2
             this.mainScreen = mainScreen;
             this.oldWorkEvent = oldWorkEvent;
 
-			InitializeComponent();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fCalendarEvent_Closed);
+
+
+            InitializeComponent();
             loadComponents();
 
             if (oldWorkEvent != null) loadWorkEvent();
@@ -189,7 +192,7 @@ namespace JugaAgenda_v2
                         }
                         else
                         {
-                            MessageBox.Show("Something went wrong when adding new event to calendar.");
+                            MessageBox.Show("Something went wrong when updating event to calendar.");
                         }
                     }
                     else
@@ -200,12 +203,17 @@ namespace JugaAgenda_v2
                         }
                         else
                         {
-                            MessageBox.Show("Something went wrong when adding new event to calendar.");
+                            MessageBox.Show("Something went wrong when updating event to calendar.");
                         }
                     }
                 }
-                
+
             }
+        }
+
+        private void fCalendarEvent_Closed(object sender, EventArgs e)
+        {
+            this.mainScreen.clear_calendar_screen();
         }
     }
 }

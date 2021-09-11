@@ -21,6 +21,7 @@ namespace JugaAgenda_v2
         private List<CustomDay> techniciansWorkWeekList;
         private List<CustomDay> workList;
         private List<CustomDay> technicianLeaveList;
+        private fCalendarEvent calendarEventScreen = null;
 
         public fHome()
         {
@@ -37,8 +38,6 @@ namespace JugaAgenda_v2
 
             loadEverything();
 
-            new fCalendarEvent(this, googleCalendar.getWorkEvents().Items[0]).Show();
-
         }
 
         private void loadEverything()
@@ -46,8 +45,10 @@ namespace JugaAgenda_v2
             testConnection(false);
             loadTechnicians();
             loadTechniciansWorkWeek();
-            loadWork();
-            loadTechnicianLeave();
+            //loadWork();
+            //loadTechnicianLeave();
+
+            checkWorkEvents();
         }
 
         private void loadTechnicians()
@@ -135,7 +136,7 @@ namespace JugaAgenda_v2
             }*/
         }
 
-        private void loadWorkV2()
+        private void checkWorkEvents()
         {
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents().Items)
             {
@@ -151,11 +152,13 @@ namespace JugaAgenda_v2
 
                 if (!new Work().check_title(item.Summary))
                 {
-                    // TODO: let the user change the title
-                    break;
+                    String new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title of this event.", "Wrong event title", item.Summary);
+                    if (!new_title.Equals("") && new_title != null)
+                    {
+                        item.Summary = new_title;
+                        if (!googleCalendar.editWorkEvent(item, item.Id)) MessageBox.Show("Something went wrong when updating event to calendar.");
+                    }
                 }
-
-
             }
         }
 
@@ -258,6 +261,11 @@ namespace JugaAgenda_v2
             MessageBox.Show(calHome.GetSelectedItems().ToList()[0].Text.ToString());
         }
 
+        public void clear_calendar_screen()
+        {
+            calendarEventScreen = null;
+        }
+
         #region SimpleButtonFunctions
         private void manualToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -340,7 +348,11 @@ namespace JugaAgenda_v2
         }
         private void addWorkEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new fCalendarEvent(this).Show();
+            if (calendarEventScreen == null)
+            {
+                calendarEventScreen = new fCalendarEvent(this);
+                calendarEventScreen.Show();
+            }
         }
 
         #endregion
