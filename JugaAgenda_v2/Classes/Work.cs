@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace JugaAgenda_v2
 {
@@ -34,11 +36,12 @@ namespace JugaAgenda_v2
             this.status = status;
         }
 
-        public Work(string[] title, string description, Status status)
+        // FOUT
+        /*public Work(string[] title, string description, Status status)
         {
             for (int i = 0; i < title.Length; i++)
             {
-                if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace('.', ','));
+                if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace(',', '.'));
                 if (i == 1) this.clientName = title[i];
                 if (i == 1) this.phoneNumber = title[i];
                 if (i == 1) this.orderNumber = title[i];
@@ -48,11 +51,12 @@ namespace JugaAgenda_v2
             this.status = status;
         }
 
+        // FOUT
         public Work(string[] title, string description, int colorID)
         {
             for (int i = 0; i < title.Length; i++)
             {
-                if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace('.', ','));
+                if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace(',', '.'));
                 if (i == 1) this.clientName = title[i];
                 if (i == 2) this.phoneNumber = title[i];
                 if (i == 3) this.orderNumber = title[i];
@@ -61,23 +65,20 @@ namespace JugaAgenda_v2
             this.description = description;
 
             this.status = colorID_to_status(colorID);
-        }
+        }*/
 
         public Work(Google.Apis.Calendar.v3.Data.Event item)
         {
-            if (check_title(item.Summary))
+            String[] title = item.Summary.Split(' ');
+            for (int i = 0; i < title.Length; i++)
             {
-                String[] title = item.Summary.Split(' ');
-                for (int i = 0; i < title.Length; i++)
-                {
-                    if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace('.', ','));
-                    if (i == 1) this.clientName = title[i];
-                    if (i == 2) this.phoneNumber = title[i];
-                    if (i == 3) this.orderNumber = title[i];
-                }
-                this.description = item.Description;
-                this.status = colorID_to_status((int) Convert.ToInt64(item.ColorId));
+                if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace(',', '.'));
+                if (i == 1) this.clientName = item.Summary.Remove(item.Summary.Length - title[title.Length - 2].Length - title[title.Length - 1].Length - 2).Remove(0, title[0].Length + 1);
+                if (i == title.Length-2) this.phoneNumber = title[title.Length-2];
+                if (i == title.Length-1) this.orderNumber = title[title.Length-1];
             }
+            this.description = item.Description;
+            this.status = colorID_to_status((int) Convert.ToInt64(item.ColorId));
         }
 
         public Status colorID_to_status(int colorID)
@@ -116,7 +117,11 @@ namespace JugaAgenda_v2
 
         public bool check_title(String title)
         {
-            String[] titleArray = title.Split(' ');
+
+            Regex regex = new Regex("[0-9]+u [a-zA-Z ]+ [0-9]+ B[0-9]+", RegexOptions.IgnoreCase);
+            return regex.IsMatch(title);
+
+            /*String[] titleArray = title.Split(' ');
             if (titleArray.Length < 3 || titleArray.Length > 4) return false;
             
             try
@@ -129,7 +134,7 @@ namespace JugaAgenda_v2
             }
             
 
-            return true;
+            return true;*/
         }
 
         #region getters
@@ -174,6 +179,28 @@ namespace JugaAgenda_v2
                     return 0;
             }
         }
+
+        public Color getColor()
+        {
+            switch (this.status)
+            {
+                case Status.todo_yes_components:
+                    return Color.Yellow;
+                case Status.doing:
+                    return Color.Blue;
+                case Status.done:
+                    return Color.Green;
+                case Status.cancel:
+                    return Color.Gray;
+                default:
+                    return Color.White;
+            }
+        }
+
+        public String getTitle()
+        {
+            return this.getDuration().ToString() + "u " + this.getClientName() + " " + this.getPhoneNumber() + " " + this.getOrderNumber();
+        }
         #endregion
 
         #region setters
@@ -201,7 +228,7 @@ namespace JugaAgenda_v2
         {
             this.status = status;
         }
-        #endregion
+    #endregion
 
     }
 }

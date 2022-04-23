@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Calendar;
+using System.Text.RegularExpressions;
 
 namespace JugaAgenda_v2
 {
@@ -17,10 +18,9 @@ namespace JugaAgenda_v2
     {
 
         public GoogleCalendar googleCalendar;
-        private List<Technician> technicianList;
         private List<CustomDay> techniciansWorkWeekList;
-        private List<CustomDay> workList;
         private List<CustomDay> technicianLeaveList;
+        private List<CustomDay> workList;
         private fCalendarEvent calendarEventScreen = null;
 
         //TODO Search function!
@@ -34,7 +34,9 @@ namespace JugaAgenda_v2
             mvHome.SelectionStart = DateTime.Now.StartOfWeek(DayOfWeek.Monday).Date;
             mvHome.SelectionEnd = DateTime.Now.EndOfWeek(DayOfWeek.Sunday);
             mvHome.MaxSelectionCount = calHome.MaximumViewDays;
-            this.mvHome.SelectionChanged += new System.EventHandler(this.mvHome_SelectionChanged);
+
+            mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
+            
 
             calHome.TimeScale = CalendarTimeScale.SixtyMinutes;
 
@@ -44,59 +46,104 @@ namespace JugaAgenda_v2
 
         private void loadEverything()
         {
-            testConnection(false);
-            loadTechnicians();
-            loadTechniciansWorkWeek();
-            //loadWork();
-            //loadTechnicianLeave();
+            refresh();
 
-            checkWorkEvents();
+            mvHome_SelectionChanged(null, null);
         }
 
-        private void loadTechnicians()
+        private void refresh()
         {
-            technicianList = new List<Technician>();
-            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getTechnicianEvents().Items)
-            {
-                String new_name = item.Summary.Split(' ')[0];
-                bool exists = false;
-                foreach (Technician tech in technicianList)
-                {
-                    if (tech.getName().Equals(new_name)) exists = true;
-                }
-                if (!exists) technicianList.Add(new Technician(new_name));
-            }
+            testConnection();
+            loadTechniciansWorkWeek();
+            loadTechnicianLeave();
+            loadWork();
         }
-        // TODO: check title name + check if tech exists
+
+        // Can be more efficient
         private void loadTechniciansWorkWeek()
         {
-            techniciansWorkWeekList = new List<CustomDay>();
-            Google.Apis.Calendar.v3.Data.Events technicianEvents = googleCalendar.getTechnicianEvents();
-            for (int i = 1; i <= 7; i++)
+            if (techniciansWorkWeekList == null) techniciansWorkWeekList = new List<CustomDay>();
+            techniciansWorkWeekList.Clear();
+
+            for (int i = 1; i <= 7; i++) techniciansWorkWeekList.Add(new CustomDay(new DateTime(2021, 2, i)));
+
+            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getTechnicianEvents().Items)
             {
-                CustomDay new_day = new CustomDay(new DateTime(2021, 2, i));
-                foreach (Google.Apis.Calendar.v3.Data.Event item in technicianEvents.Items)
+                DateTime date = Convert.ToDateTime(item.Start.Date);
+                if (date.Day > 7) continue;
+
+                Regex regex = new Regex("[a-zA-Z ]+ [0-9,.]+u", RegexOptions.IgnoreCase);
+                if (!regex.IsMatch(item.Summary))
                 {
-                    if (DateTime.Compare(Convert.ToDateTime(item.Start.Date), new_day.getDate()) == 0)
-                    {
-                        String tech_name = item.Summary.Split(' ')[0];
-                        foreach (Technician tech in technicianList)
-                        {
-                            if (tech_name.Equals(tech.getName())) new_day.addTechnicianList(new Technician(tech_name, Convert.ToDecimal(item.Summary.Split(' ')[1].Split('u')[0].Replace('.', ','))));
-                        }
-                    }
+                    MessageBox.Show("There seems to be something wrong in the technician schedule.", "Error");
+                    continue;
                 }
-                techniciansWorkWeekList.Add(new_day);
+
+                CustomDay day = techniciansWorkWeekList[date.Day];
+
+                String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
+                decimal hours = Convert.ToDecimal(item.Summary.Split(' ').Last().Split('u')[0].Replace(',', '.'));
+                day.addTechnicianList(new Technician(name, hours));
             }
+
             /*foreach (CustomDay day in techniciansWorkWeekList)
             {
                 foreach (Technician tech in day.getTechnicianList())
                 {
-                    MessageBox.Show(day.getDate().ToString() + tech.getName() + tech.getHours().ToString());
+                    MessageBox.Show(day.getDate().ToString() + " " + tech.getName() + " " + tech.getHours().ToString());
                 }
             }*/
         }
-        // TODO: check title format
+
+        // TODO
+        private void loadTechnicianLeave()
+        {
+            if (technicianLeaveList == null) technicianLeaveList = new List<CustomDay>();
+            technicianLeaveList.Clear();
+
+            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getLeaveEvents().Items)
+            {
+
+                Regex regex = new Regex("[a-zA-Z ]+ verlof", RegexOptions.IgnoreCase);
+                if (!regex.IsMatch(item.Summary))
+                {
+                    MessageBox.Show("There seems to be something wrong in the technician leave schedule.", "Error");
+                    continue;
+                }
+
+                DateTime date = Convert.ToDateTime(item.Start.Date);
+
+                CustomDay day = null;
+                foreach (CustomDay listday in technicianLeaveList)
+                {
+                    if (DateTime.Compare(listday.getDate(), date) == 0)
+                    {
+                        day = listday;
+                        break;
+                    }
+                }
+                if (day == null)
+                {
+                    day = new CustomDay(date);
+
+                    technicianLeaveList.Add(day);
+                }
+
+                day.addTechnicianList(new Technician(item.Summary.Remove(item.Summary.Length-7), 0));
+
+            }
+
+            /*foreach (CustomDay day in technicianLeaveList)
+            {
+                foreach (Technician tech in day.getTechnicianList())
+                {
+                    MessageBox.Show(day.getDate().ToString() + " " + tech.getName() + " " + tech.getHours().ToString());
+                }
+            }*/
+        }
+
+        // No support for non all-day and multiple days events yet
+        // Can be more efficient
         private void loadWork()
         {
             if (workList == null) workList = new List<CustomDay>();
@@ -108,6 +155,7 @@ namespace JugaAgenda_v2
                 if (item.Start.DateTime != null)
                 {
                     date = (DateTime) item.Start.DateTime;
+                    date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
                 } else
                 {
                     date = Convert.ToDateTime(item.Start.Date);
@@ -124,66 +172,89 @@ namespace JugaAgenda_v2
                 if (day == null)
                 {
                     day = new CustomDay(date);
+
+                    foreach (Technician tech in techniciansWorkWeekList[(int) date.DayOfWeek].getTechnicianList())
+                    {
+                        bool tech_has_leave = false;
+                        foreach (CustomDay leave_day in technicianLeaveList)
+                        {
+                            if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
+                            {
+                                foreach (Technician leave_tech in leave_day.getTechnicianList())
+                                {
+                                    if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
+                                }
+                                if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
+                            }
+                        }
+                        
+                        if (!tech_has_leave) day.addTechnicianList(tech);
+                    }
+
                     workList.Add(day);
                 }
-                Work new_work = new Work(item.Summary.Split(' '), item.Description, (int) Convert.ToInt64(item.ColorId));
-                day.addWorkList(new_work);
+                if (checkTitleMessageBox(item))
+                {
+                    Work new_work = new Work(item);
+                    day.addWorkList(new_work);
+                }
             }
             /*foreach (CustomDay day in workList)
             {
+                MessageBox.Show(day.getDate().ToString(), "Date");
                 foreach (Work work in day.getWorkList())
                 {
-                    MessageBox.Show(work.getClientName() + work.getDescription() + work.getDuration().ToString() + work.getOrderNumber() + work.getPhoneNumber() + work.getStatus().ToString());
+                    MessageBox.Show(work.getClientName() + " " + work.getDescription() + " " + work.getDuration().ToString() + " " + work.getOrderNumber() + " " + work.getPhoneNumber() + " " + work.getStatus().ToString());
+                    *//*MessageBox.Show(work.getClientName(), "Client name");
+                    MessageBox.Show(work.getDescription(), "Description");
+                    MessageBox.Show(work.getDuration().ToString(), "Duration");
+                    MessageBox.Show(work.getOrderNumber(), "Order number");
+                    MessageBox.Show(work.getPhoneNumber(), "Phone number");
+                    MessageBox.Show(work.getStatus().ToString(), "Status");*//*
+                }
+                foreach (Technician tech in day.getTechnicianList())
+                {
+                    MessageBox.Show(day.getDate().ToString() + " " + tech.getName() + " " + tech.getHours().ToString());
                 }
             }*/
         }
 
-        private void checkWorkEvents()
+        private bool checkTitleMessageBox(Google.Apis.Calendar.v3.Data.Event item)
         {
-            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents().Items)
+            if (!new Work().check_title(item.Summary))
             {
-                DateTime date;
-                if (item.Start.DateTime != null)
+                while (true)
                 {
-                    date = (DateTime)item.Start.DateTime;
-                }
-                else
-                {
-                    date = Convert.ToDateTime(item.Start.Date);
-                }
-
-                if (!new Work().check_title(item.Summary))
-                {
-                    while(true)
+                    String new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title of this event.", "Wrong event title", item.Summary);
+                    if (!new_title.Equals("") && new_title != null)
                     {
-                        String new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title of this event.", "Wrong event title", item.Summary);
-                        if (!new_title.Equals("") && new_title != null)
+                        if (!new Work().check_title(new_title))
                         {
-                            if (!new Work().check_title(new_title))
-                            {
-                                MessageBox.Show("The new title is still incorrect.");
-                                continue;
-                            }
-                            item.Summary = new_title;
-                            if (!googleCalendar.editWorkEvent(item, item.Id)) MessageBox.Show("Something went wrong when updating event to calendar.");
-                            break;
+                            MessageBox.Show("The new title is still incorrect.");
+                            continue;
                         }
-                        else
+                        item.Summary = new_title;
+                        if (!googleCalendar.editWorkEvent(item, item.Id))
                         {
-                            MessageBox.Show("Please change the title.");
-                            break;
+                            MessageBox.Show("Something went wrong when updating event to calendar.");
+                            return false;
                         }
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please change the title.");
+                        return false;
                     }
                 }
             }
+            else
+            {
+                return true;
+            }
         }
 
-        private void loadTechnicianLeave()
-        {
-
-        }
-
-        private void testConnection(bool print_if_successfull)
+        private void testConnection(bool print_if_successfull=false)
         {
             if (googleCalendar.testConnection())
             {
@@ -196,7 +267,6 @@ namespace JugaAgenda_v2
             }
         }
 
-        // TODO
         private void mvHome_SelectionChanged(object sender, EventArgs e)
         {
             if ((mvHome.SelectionEnd - mvHome.SelectionStart).Days > -1 && (mvHome.SelectionEnd - mvHome.SelectionStart).Days < calHome.MaximumViewDays)
@@ -232,7 +302,30 @@ namespace JugaAgenda_v2
                 }
                 calHome.MaximumViewDays = oldMaximumViewDays;
 
-                foreach (Google.Apis.Calendar.v3.Data.Event eventItem in googleCalendar.getWorkEvents().Items)
+                if (workList != null)
+                {
+                    foreach (CustomDay day in workList)
+                    {
+                        DateTime date = day.getDate();
+                        if (date >= calHome.ViewStart && date < calHome.ViewEnd)
+                        {
+                            foreach (Work work in day.getWorkList())
+                            {
+                                CalendarItem newItem = new CalendarItem(calHome,
+                                    date,
+                                    date.AddDays(1).AddSeconds(-1),
+                                    work.getTitle());
+
+                                newItem.ApplyColor(work.getColor());
+
+                                calHome.Items.Add(newItem);
+                            }
+                        }
+                    }
+                }
+
+
+                /*foreach (Google.Apis.Calendar.v3.Data.Event eventItem in googleCalendar.getWorkEvents().Items)
                 {
                     if (eventItem.Start.DateTime != null)
                     {
@@ -246,7 +339,8 @@ namespace JugaAgenda_v2
 
                             calHome.Items.Add(newItem);
                         }
-                    } else
+                    }
+                    else
                     {
                         DateTime startDate = Convert.ToDateTime(eventItem.Start.Date);
                         DateTime endDate = Convert.ToDateTime(eventItem.End.Date);
@@ -261,7 +355,7 @@ namespace JugaAgenda_v2
                             calHome.Items.Add(newItem);
                         }
                     }
-                }
+                }*/
 
             } else
             {
