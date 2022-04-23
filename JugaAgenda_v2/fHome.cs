@@ -23,7 +23,7 @@ namespace JugaAgenda_v2
         private List<CustomDay> workList;
         private fCalendarEvent calendarEventScreen = null;
 
-        //TODO Search function!
+        //TODO Edit work event, Add work event, Edit Leave, Add Leave, Edit Schedule, Add schedule, Search function
 
         public fHome()
         {
@@ -95,7 +95,6 @@ namespace JugaAgenda_v2
             }*/
         }
 
-        // TODO
         private void loadTechnicianLeave()
         {
             if (technicianLeaveList == null) technicianLeaveList = new List<CustomDay>();
@@ -184,7 +183,7 @@ namespace JugaAgenda_v2
                                 {
                                     if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
                                 }
-                                if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
+                                // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
                             }
                         }
                         
