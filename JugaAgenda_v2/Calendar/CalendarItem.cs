@@ -55,6 +55,18 @@ namespace System.Windows.Forms.Calendar
         private string _text;
         #endregion
 
+        private Google.Apis.Calendar.v3.Data.Event calendarEvent;
+
+        public void setCalendarEvent(Google.Apis.Calendar.v3.Data.Event calendarEvent)
+        {
+            this.calendarEvent = calendarEvent;
+        }
+
+        public Google.Apis.Calendar.v3.Data.Event getCalendarEvent()
+        {
+            return calendarEvent;
+        }
+
         #region Ctor
 
         /// <summary>

@@ -21,6 +21,8 @@ namespace JugaAgenda_v2
         private string phoneNumber;
         private string orderNumber;
         private Status status;
+        private Google.Apis.Calendar.v3.Data.Event calendarEvent;
+
 
         public Work()
         {
@@ -79,6 +81,7 @@ namespace JugaAgenda_v2
             }
             this.description = item.Description;
             this.status = colorID_to_status((int) Convert.ToInt64(item.ColorId));
+            this.calendarEvent = item;
         }
 
         public Status colorID_to_status(int colorID)
@@ -138,6 +141,11 @@ namespace JugaAgenda_v2
         }
 
         #region getters
+
+        public Google.Apis.Calendar.v3.Data.Event getCalendarEvent()
+        {
+            return calendarEvent;
+        }
         public string getDescription()
         {
             return description;
@@ -204,6 +212,11 @@ namespace JugaAgenda_v2
         #endregion
 
         #region setters
+
+        public void setCalendarEvent(Google.Apis.Calendar.v3.Data.Event calendarEvent)
+        {
+            this.calendarEvent = calendarEvent;
+        }
         public void setDescription(string description)
         {
             this.description = description;

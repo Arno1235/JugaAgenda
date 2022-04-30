@@ -36,7 +36,6 @@ namespace JugaAgenda_v2
             mvHome.MaxSelectionCount = calHome.MaximumViewDays;
 
             mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
-            
 
             calHome.TimeScale = CalendarTimeScale.SixtyMinutes;
 
@@ -44,14 +43,14 @@ namespace JugaAgenda_v2
 
         }
 
-        private void loadEverything()
+        public void loadEverything()
         {
             refresh();
 
             mvHome_SelectionChanged(null, null);
         }
 
-        private void refresh()
+        public void refresh()
         {
             testConnection();
             loadTechniciansWorkWeek();
@@ -316,6 +315,7 @@ namespace JugaAgenda_v2
                                     work.getTitle());
 
                                 newItem.ApplyColor(work.getColor());
+                                newItem.setCalendarEvent(work.getCalendarEvent());
 
                                 calHome.Items.Add(newItem);
                             }
@@ -367,7 +367,15 @@ namespace JugaAgenda_v2
         // TODO
         private void calHome_ItemDoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show(calHome.GetSelectedItems().ToList()[0].Text.ToString());
+            MessageBox.Show(calHome.GetSelectedItems().First().Text.ToString());
+            
+
+            if (calendarEventScreen == null)
+            {
+                calendarEventScreen = new fCalendarEvent(this, calHome.GetSelectedItems().First().getCalendarEvent());
+                calendarEventScreen.Show();
+            }
+
         }
 
         public void clear_calendar_screen()
