@@ -30,6 +30,7 @@ namespace JugaAgenda_v2
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btDelete = new System.Windows.Forms.Button();
             this.btSave = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -61,6 +62,7 @@ namespace JugaAgenda_v2
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btDelete);
             this.groupBox1.Controls.Add(this.btSave);
             this.groupBox1.Controls.Add(this.btCancel);
             this.groupBox1.Controls.Add(this.label6);
@@ -84,6 +86,18 @@ namespace JugaAgenda_v2
             this.groupBox1.Size = new System.Drawing.Size(639, 822);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // btDelete
+            // 
+            this.btDelete.ForeColor = System.Drawing.Color.Red;
+            this.btDelete.Location = new System.Drawing.Point(22, 763);
+            this.btDelete.Name = "btDelete";
+            this.btDelete.Size = new System.Drawing.Size(131, 40);
+            this.btDelete.TabIndex = 21;
+            this.btDelete.Text = "DELETE";
+            this.btDelete.UseVisualStyleBackColor = true;
+            this.btDelete.Visible = false;
+            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
             // 
             // btSave
             // 
@@ -373,5 +387,6 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cbMinuteEnd;
         private System.Windows.Forms.ComboBox cbMinuteStart;
+        private System.Windows.Forms.Button btDelete;
     }
 }

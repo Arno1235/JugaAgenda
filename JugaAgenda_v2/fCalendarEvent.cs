@@ -27,7 +27,11 @@ namespace JugaAgenda_v2
             InitializeComponent();
             loadComponents();
 
-            if (oldWorkEvent != null) loadWorkEvent();
+            if (oldWorkEvent != null)
+            {
+                btDelete.Show();
+                loadWorkEvent();
+            }
         }
 
         private void loadComponents()
@@ -215,6 +219,20 @@ namespace JugaAgenda_v2
         private void fCalendarEvent_Closed(object sender, EventArgs e)
         {
             this.mainScreen.clear_calendar_screen();
+        }
+
+        private void btDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult answer = MessageBox.Show("Weet je zeker dat je het agenda item wilt verwijderen?", "Opgelet", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            
+            if (answer == DialogResult.OK)
+            {
+                if (this.mainScreen.deleteWorkItem(oldWorkEvent.Id)) {
+                    this.Close();
+                } else {
+                    MessageBox.Show("Er is iets fout gelopen.");
+                }
+            }
         }
     }
 }

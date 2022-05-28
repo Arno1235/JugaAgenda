@@ -27,7 +27,6 @@ namespace JugaAgenda_v2
         // TODO: Add schedule, Search function, Edit Leave, Add Leave, Edit Schedule
 
         // - Search
-        // - Remove work
         // - Add/Edit/Remove tech leave
         // - Add/Edit/Remove tech schedule
         // - Display tech schedule
@@ -82,7 +81,7 @@ namespace JugaAgenda_v2
         public void syncCalendar()
         {
             // Can be more efficient
-            IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.testSync();
+            IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.sync();
             if (syncList != null)
             {
                 foreach (Google.Apis.Calendar.v3.Data.Event item in syncList)
@@ -97,7 +96,7 @@ namespace JugaAgenda_v2
 
                             if (work.getId() == item.Id)
                             {
-                                if (checkTitleMessageBox(item))
+                                if (item.Summary != null && checkTitleMessageBox(item))
                                 {
                                     work.updateValues(item);
                                 }
@@ -284,6 +283,11 @@ namespace JugaAgenda_v2
             }
         }
 
+        public bool deleteWorkItem(String eventId)
+        {
+            return googleCalendar.deleteWorkEvent(eventId);
+        }
+
         private bool checkTitleMessageBox(Google.Apis.Calendar.v3.Data.Event item)
         {
             if (!new Work().check_title(item.Summary))
@@ -431,7 +435,6 @@ namespace JugaAgenda_v2
 
         }
 
-        // TODO
         private void calHome_ItemDoubleClick(object sender, EventArgs e)
         {
 

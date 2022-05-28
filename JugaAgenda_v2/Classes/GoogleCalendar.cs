@@ -80,96 +80,8 @@ namespace JugaAgenda_v2
             }
         }
 
-        public bool addWorkEvent(String title, String description, String startDate, String endDate, String colorID) // Full day event
-        {
-            Event new_event = new Event();
-
-            new_event.Start = new EventDateTime();
-            new_event.Start.Date = startDate;
-            new_event.Start.DateTime = null;
-            new_event.End = new EventDateTime();
-            new_event.End.Date = endDate;
-            new_event.End.DateTime = null;
-            new_event.Summary = title;
-            new_event.Description = description;
-            new_event.ColorId = colorID;
-
-            return this.addWorkEvent(new_event);
-        }
-
-        public bool addWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID)
-        {
-            Event new_event = new Event();
-
-            new_event.Start = new EventDateTime();
-            new_event.Start.DateTime = startDate;
-            new_event.End = new EventDateTime();
-            new_event.End.DateTime = endDate;
-            new_event.Summary = title;
-            new_event.Description = description;
-            new_event.ColorId = colorID;
-
-            return this.addWorkEvent(new_event);
-        }
-
-        public bool addWorkEvent(Event new_event)
-        {
-            try
-            {
-                service.Events.Insert(new_event, calendarWorkID).Execute();
-                return true;
-            } catch
-            {
-                return false;
-            }
-        }
-
-        public bool editWorkEvent(String title, String description, String startDate, String endDate, String colorID, String eventID) // Full day event
-        {
-            Event new_event = new Event();
-
-            new_event.Start = new EventDateTime();
-            new_event.Start.Date = startDate;
-            new_event.Start.DateTime = null;
-            new_event.End = new EventDateTime();
-            new_event.End.Date = endDate;
-            new_event.End.DateTime = null;
-            new_event.Summary = title;
-            new_event.Description = description;
-            new_event.ColorId = colorID;
-
-            return this.editWorkEvent(new_event, eventID);
-        }
-
-        public bool editWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, String eventID)
-        {
-            Event new_event = new Event();
-
-            new_event.Start = new EventDateTime();
-            new_event.Start.DateTime = startDate;
-            new_event.End = new EventDateTime();
-            new_event.End.DateTime = endDate;
-            new_event.Summary = title;
-            new_event.Description = description;
-            new_event.ColorId = colorID;
-
-            return this.editWorkEvent(new_event, eventID);
-        }
-
-        public bool editWorkEvent(Event new_event, String eventID)
-        {
-            try
-            {
-                service.Events.Update(new_event, calendarWorkID, eventID).Execute();
-                return true;
-            } catch
-            {
-                return false;
-            }
-        }
-
         #region getters
-        public IList<Event> getWorkEvents() // TODO: reset timer
+        public IList<Event> getWorkEvents() // TODO: add multiple pages
         {
             EventsResource.ListRequest request = service.Events.List(calendarWorkID);
             request.TimeMin = DateTime.Now.AddMonths(-1);
@@ -184,7 +96,7 @@ namespace JugaAgenda_v2
             return (List<Event>) events.Items;
         }
 
-        public IList<Event> testSync()
+        public IList<Event> sync()
         {
 
             if (workSyncToken == null) return getWorkEvents();
@@ -253,14 +165,118 @@ namespace JugaAgenda_v2
 
             return request.Execute();
         }
-        #endregion
+            #endregion
 
         #region setters
+
+        public bool addWorkEvent(String title, String description, String startDate, String endDate, String colorID) // Full day event
+        {
+            Event new_event = new Event();
+
+            new_event.Start = new EventDateTime();
+            new_event.Start.Date = startDate;
+            new_event.Start.DateTime = null;
+            new_event.End = new EventDateTime();
+            new_event.End.Date = endDate;
+            new_event.End.DateTime = null;
+            new_event.Summary = title;
+            new_event.Description = description;
+            new_event.ColorId = colorID;
+
+            return this.addWorkEvent(new_event);
+        }
+
+        public bool addWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID)
+        {
+            Event new_event = new Event();
+
+            new_event.Start = new EventDateTime();
+            new_event.Start.DateTime = startDate;
+            new_event.End = new EventDateTime();
+            new_event.End.DateTime = endDate;
+            new_event.Summary = title;
+            new_event.Description = description;
+            new_event.ColorId = colorID;
+
+            return this.addWorkEvent(new_event);
+        }
+
+        public bool addWorkEvent(Event new_event)
+        {
+            try
+            {
+                service.Events.Insert(new_event, calendarWorkID).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool editWorkEvent(String title, String description, String startDate, String endDate, String colorID, String eventID) // Full day event
+        {
+            Event new_event = new Event();
+
+            new_event.Start = new EventDateTime();
+            new_event.Start.Date = startDate;
+            new_event.Start.DateTime = null;
+            new_event.End = new EventDateTime();
+            new_event.End.Date = endDate;
+            new_event.End.DateTime = null;
+            new_event.Summary = title;
+            new_event.Description = description;
+            new_event.ColorId = colorID;
+
+            return this.editWorkEvent(new_event, eventID);
+        }
+
+        public bool editWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, String eventID)
+        {
+            Event new_event = new Event();
+
+            new_event.Start = new EventDateTime();
+            new_event.Start.DateTime = startDate;
+            new_event.End = new EventDateTime();
+            new_event.End.DateTime = endDate;
+            new_event.Summary = title;
+            new_event.Description = description;
+            new_event.ColorId = colorID;
+
+            return this.editWorkEvent(new_event, eventID);
+        }
+
+        public bool editWorkEvent(Event new_event, String eventID)
+        {
+            try
+            {
+                service.Events.Update(new_event, calendarWorkID, eventID).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool deleteWorkEvent(String eventID)
+        {
+            try
+            {
+                service.Events.Delete(calendarWorkID, eventID).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public void setPerspectiveMonths(int perspectiveMonths)
         {
             this.perspectiveMonths = perspectiveMonths;
         }
-        #endregion
+    #endregion
 
     }
 }
