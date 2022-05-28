@@ -41,13 +41,15 @@ namespace JugaAgenda_v2
 
             googleCalendar = new GoogleCalendar();
 
-            mvHome.SelectionStart = DateTime.Now.StartOfWeek(DayOfWeek.Monday).Date;
-            mvHome.SelectionEnd = DateTime.Now.EndOfWeek(DayOfWeek.Sunday);
+            mvHome.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            mvHome.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
             mvHome.MaxSelectionCount = calHome.MaximumViewDays;
 
             mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
 
             calHome.TimeScale = CalendarTimeScale.SixtyMinutes;
+
+            loadStyleComponents();
 
             loadEverything();
 
@@ -58,6 +60,36 @@ namespace JugaAgenda_v2
             refresh();
 
             mvHome_SelectionChanged(null, null);
+        }
+
+        private void loadStyleComponents()
+        {
+
+            cbCalendarSelectionMode.Items.Add("Manueel");
+            cbCalendarSelectionMode.Items.Add("Dag");
+            cbCalendarSelectionMode.Items.Add("Werk Week");
+            cbCalendarSelectionMode.Items.Add("Week");
+            cbCalendarSelectionMode.Items.Add("Maand");
+            cbCalendarSelectionMode.SelectedIndex = 4;
+            cbCalendarSelectionMode.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            cbCalendarTimeScale.Items.Add("5 minuten");
+            cbCalendarTimeScale.Items.Add("6 minuten");
+            cbCalendarTimeScale.Items.Add("10 minuten");
+            cbCalendarTimeScale.Items.Add("15 minuten");
+            cbCalendarTimeScale.Items.Add("30 minuten");
+            cbCalendarTimeScale.Items.Add("60 minuten");
+            cbCalendarTimeScale.SelectedIndex = 5;
+            cbCalendarTimeScale.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            cbCalendarPerspective.Items.Add("1 maand");
+            cbCalendarPerspective.Items.Add("2 maanden");
+            cbCalendarPerspective.Items.Add("3 maanden");
+            cbCalendarPerspective.Items.Add("4 maanden");
+            cbCalendarPerspective.Items.Add("5 maanden");
+            cbCalendarPerspective.SelectedIndex = 0;
+            cbCalendarPerspective.DropDownStyle = ComboBoxStyle.DropDownList;
+
         }
 
         public void refresh()
@@ -452,84 +484,88 @@ namespace JugaAgenda_v2
         }
 
         #region SimpleButtonFunctions
-        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void cbCalendarSelectionMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Manual;
+            switch (cbCalendarSelectionMode.SelectedIndex)
+            {
+                case 0:
+                    mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Manual;
+                    break;
+                case 1:
+                    mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Day;
+                    break;
+                case 2:
+                    mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.WorkWeek;
+                    break;
+                case 3:
+                    mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Week;
+                    break;
+                case 4:
+                    mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month;
+                    break;
+                default:
+                    mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month;
+                    break;
+            }
         }
 
-        private void dayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void cbCalendarTimeScale_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Day;
+            switch (cbCalendarTimeScale.SelectedIndex)
+            {
+                case 0:
+                    calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.FiveMinutes;
+                    break;
+                case 1:
+                    calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixMinutes;
+                    break;
+                case 2:
+                    calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.TenMinutes;
+                    break;
+                case 3:
+                    calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.FifteenMinutes;
+                    break;
+                case 4:
+                    calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.ThirtyMinutes;
+                    break;
+                case 5:
+                    calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+                    break;
+                default:
+                    calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+                    break;
+            }
         }
 
-        private void workweekToolStripMenuItem_Click(object sender, EventArgs e)
+        private void cbCalendarPerspective_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.WorkWeek;
-        }
-
-        private void weekToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Week;
-        }
-
-        private void monthToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month;
-        }
-
-        private void fiveMinutesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.FiveMinutes;
-        }
-
-        private void sixMinutesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixMinutes;
-        }
-
-        private void tenMinutesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.TenMinutes;
-        }
-
-        private void fifteenMinutesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.FifteenMinutes;
-        }
-
-        private void thirtyMinutesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.ThirtyMinutes;
-        }
-
-        private void sixtyMinutesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            switch (cbCalendarPerspective.SelectedIndex)
+            {
+                case 0:
+                    googleCalendar.setPerspectiveMonths(1);
+                    break;
+                case 1:
+                    googleCalendar.setPerspectiveMonths(2);
+                    break;
+                case 2:
+                    googleCalendar.setPerspectiveMonths(3);
+                    break;
+                case 3:
+                    googleCalendar.setPerspectiveMonths(4);
+                    break;
+                case 4:
+                    googleCalendar.setPerspectiveMonths(6);
+                    break;
+                default:
+                    googleCalendar.setPerspectiveMonths(1);
+                    break;
+            }
         }
 
         private void btTestGoogleConnection_Click(object sender, EventArgs e)
         {
             testConnection(true);
-        }
-        private void oneMonthToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            googleCalendar.setPerspectiveMonths(1);
-        }
-        private void twoMonthsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            googleCalendar.setPerspectiveMonths(2);
-        }
-        private void threeMonthsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            googleCalendar.setPerspectiveMonths(3);
-        }
-        private void fourMonthsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            googleCalendar.setPerspectiveMonths(4);
-        }
-        private void sixMonthsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            googleCalendar.setPerspectiveMonths(6);
         }
         private void addWorkEventToolStripMenuItem_Click(object sender, EventArgs e)
         {

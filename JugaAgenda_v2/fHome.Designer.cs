@@ -30,39 +30,43 @@ namespace JugaAgenda_v2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange1 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange2 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange3 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange4 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange5 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange6 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange7 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange8 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange9 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange10 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             this.msHome = new System.Windows.Forms.MenuStrip();
-            this.calendarSelectionModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.workweekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.weekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.monthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.calendarTimeScaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addWorkEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fiveMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sixMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tenMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fifteenMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.thirtyMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sixtyMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.perspectiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oneMonthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.twoMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.threeMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fourMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sixMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addWorkEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workweekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.weekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.monthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tcHome = new System.Windows.Forms.TabControl();
             this.tpCalendar = new System.Windows.Forms.TabPage();
             this.calHome = new System.Windows.Forms.Calendar.Calendar();
             this.mvHome = new System.Windows.Forms.Calendar.MonthView();
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.tcSettings = new System.Windows.Forms.TabControl();
-            this.tpGoogleCalendar = new System.Windows.Forms.TabPage();
+            this.tpCalendarSettings = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbCalendarPerspective = new System.Windows.Forms.ComboBox();
+            this.cbCalendarTimeScale = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cbCalendarSelectionMode = new System.Windows.Forms.ComboBox();
+            this.tpGoogleSettings = new System.Windows.Forms.TabPage();
             this.btTestGoogleConnection = new System.Windows.Forms.Button();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.msHome.SuspendLayout();
@@ -70,16 +74,14 @@ namespace JugaAgenda_v2
             this.tpCalendar.SuspendLayout();
             this.tpSettings.SuspendLayout();
             this.tcSettings.SuspendLayout();
-            this.tpGoogleCalendar.SuspendLayout();
+            this.tpCalendarSettings.SuspendLayout();
+            this.tpGoogleSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // msHome
             // 
             this.msHome.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.msHome.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.calendarSelectionModeToolStripMenuItem,
-            this.calendarTimeScaleToolStripMenuItem,
-            this.perspectiveToolStripMenuItem,
             this.addWorkEventToolStripMenuItem});
             this.msHome.Location = new System.Drawing.Point(0, 0);
             this.msHome.Name = "msHome";
@@ -88,161 +90,92 @@ namespace JugaAgenda_v2
             this.msHome.TabIndex = 0;
             this.msHome.Text = "menuStrip1";
             // 
-            // calendarSelectionModeToolStripMenuItem
+            // addWorkEventToolStripMenuItem
             // 
-            this.calendarSelectionModeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.manualToolStripMenuItem,
-            this.dayToolStripMenuItem,
-            this.workweekToolStripMenuItem,
-            this.weekToolStripMenuItem,
-            this.monthToolStripMenuItem});
-            this.calendarSelectionModeToolStripMenuItem.Name = "calendarSelectionModeToolStripMenuItem";
-            this.calendarSelectionModeToolStripMenuItem.Size = new System.Drawing.Size(263, 34);
-            this.calendarSelectionModeToolStripMenuItem.Text = "Calendar Selection Mode";
-            // 
-            // manualToolStripMenuItem
-            // 
-            this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(232, 40);
-            this.manualToolStripMenuItem.Text = "Manual";
-            this.manualToolStripMenuItem.Click += new System.EventHandler(this.manualToolStripMenuItem_Click);
-            // 
-            // dayToolStripMenuItem
-            // 
-            this.dayToolStripMenuItem.Name = "dayToolStripMenuItem";
-            this.dayToolStripMenuItem.Size = new System.Drawing.Size(232, 40);
-            this.dayToolStripMenuItem.Text = "Day";
-            this.dayToolStripMenuItem.Click += new System.EventHandler(this.dayToolStripMenuItem_Click);
-            // 
-            // workweekToolStripMenuItem
-            // 
-            this.workweekToolStripMenuItem.Name = "workweekToolStripMenuItem";
-            this.workweekToolStripMenuItem.Size = new System.Drawing.Size(232, 40);
-            this.workweekToolStripMenuItem.Text = "Work week";
-            this.workweekToolStripMenuItem.Click += new System.EventHandler(this.workweekToolStripMenuItem_Click);
-            // 
-            // weekToolStripMenuItem
-            // 
-            this.weekToolStripMenuItem.Name = "weekToolStripMenuItem";
-            this.weekToolStripMenuItem.Size = new System.Drawing.Size(232, 40);
-            this.weekToolStripMenuItem.Text = "Week";
-            this.weekToolStripMenuItem.Click += new System.EventHandler(this.weekToolStripMenuItem_Click);
-            // 
-            // monthToolStripMenuItem
-            // 
-            this.monthToolStripMenuItem.Name = "monthToolStripMenuItem";
-            this.monthToolStripMenuItem.Size = new System.Drawing.Size(232, 40);
-            this.monthToolStripMenuItem.Text = "Month";
-            this.monthToolStripMenuItem.Click += new System.EventHandler(this.monthToolStripMenuItem_Click);
-            // 
-            // calendarTimeScaleToolStripMenuItem
-            // 
-            this.calendarTimeScaleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fiveMinutesToolStripMenuItem,
-            this.sixMinutesToolStripMenuItem,
-            this.tenMinutesToolStripMenuItem,
-            this.fifteenMinutesToolStripMenuItem,
-            this.thirtyMinutesToolStripMenuItem,
-            this.sixtyMinutesToolStripMenuItem});
-            this.calendarTimeScaleToolStripMenuItem.Name = "calendarTimeScaleToolStripMenuItem";
-            this.calendarTimeScaleToolStripMenuItem.Size = new System.Drawing.Size(218, 34);
-            this.calendarTimeScaleToolStripMenuItem.Text = "Calendar Time Scale";
+            this.addWorkEventToolStripMenuItem.Name = "addWorkEventToolStripMenuItem";
+            this.addWorkEventToolStripMenuItem.Size = new System.Drawing.Size(131, 34);
+            this.addWorkEventToolStripMenuItem.Text = "Niew Werk";
+            this.addWorkEventToolStripMenuItem.Click += new System.EventHandler(this.addWorkEventToolStripMenuItem_Click);
             // 
             // fiveMinutesToolStripMenuItem
             // 
             this.fiveMinutesToolStripMenuItem.Name = "fiveMinutesToolStripMenuItem";
-            this.fiveMinutesToolStripMenuItem.Size = new System.Drawing.Size(275, 40);
-            this.fiveMinutesToolStripMenuItem.Text = "Five Minutes";
-            this.fiveMinutesToolStripMenuItem.Click += new System.EventHandler(this.fiveMinutesToolStripMenuItem_Click);
+            this.fiveMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // sixMinutesToolStripMenuItem
             // 
             this.sixMinutesToolStripMenuItem.Name = "sixMinutesToolStripMenuItem";
-            this.sixMinutesToolStripMenuItem.Size = new System.Drawing.Size(275, 40);
-            this.sixMinutesToolStripMenuItem.Text = "Six Minutes";
-            this.sixMinutesToolStripMenuItem.Click += new System.EventHandler(this.sixMinutesToolStripMenuItem_Click);
+            this.sixMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // tenMinutesToolStripMenuItem
             // 
             this.tenMinutesToolStripMenuItem.Name = "tenMinutesToolStripMenuItem";
-            this.tenMinutesToolStripMenuItem.Size = new System.Drawing.Size(275, 40);
-            this.tenMinutesToolStripMenuItem.Text = "Ten Minutes";
-            this.tenMinutesToolStripMenuItem.Click += new System.EventHandler(this.tenMinutesToolStripMenuItem_Click);
+            this.tenMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // fifteenMinutesToolStripMenuItem
             // 
             this.fifteenMinutesToolStripMenuItem.Name = "fifteenMinutesToolStripMenuItem";
-            this.fifteenMinutesToolStripMenuItem.Size = new System.Drawing.Size(275, 40);
-            this.fifteenMinutesToolStripMenuItem.Text = "Fifteen Minutes";
-            this.fifteenMinutesToolStripMenuItem.Click += new System.EventHandler(this.fifteenMinutesToolStripMenuItem_Click);
+            this.fifteenMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // thirtyMinutesToolStripMenuItem
             // 
             this.thirtyMinutesToolStripMenuItem.Name = "thirtyMinutesToolStripMenuItem";
-            this.thirtyMinutesToolStripMenuItem.Size = new System.Drawing.Size(275, 40);
-            this.thirtyMinutesToolStripMenuItem.Text = "Thirty Minutes";
-            this.thirtyMinutesToolStripMenuItem.Click += new System.EventHandler(this.thirtyMinutesToolStripMenuItem_Click);
+            this.thirtyMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // sixtyMinutesToolStripMenuItem
             // 
             this.sixtyMinutesToolStripMenuItem.Name = "sixtyMinutesToolStripMenuItem";
-            this.sixtyMinutesToolStripMenuItem.Size = new System.Drawing.Size(275, 40);
-            this.sixtyMinutesToolStripMenuItem.Text = "Sixty Minutes";
-            this.sixtyMinutesToolStripMenuItem.Click += new System.EventHandler(this.sixtyMinutesToolStripMenuItem_Click);
-            // 
-            // perspectiveToolStripMenuItem
-            // 
-            this.perspectiveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.oneMonthToolStripMenuItem,
-            this.twoMonthsToolStripMenuItem,
-            this.threeMonthsToolStripMenuItem,
-            this.fourMonthsToolStripMenuItem,
-            this.sixMonthsToolStripMenuItem});
-            this.perspectiveToolStripMenuItem.Name = "perspectiveToolStripMenuItem";
-            this.perspectiveToolStripMenuItem.Size = new System.Drawing.Size(135, 34);
-            this.perspectiveToolStripMenuItem.Text = "Perspective";
+            this.sixtyMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // oneMonthToolStripMenuItem
             // 
             this.oneMonthToolStripMenuItem.Name = "oneMonthToolStripMenuItem";
-            this.oneMonthToolStripMenuItem.Size = new System.Drawing.Size(259, 40);
-            this.oneMonthToolStripMenuItem.Text = "One month";
-            this.oneMonthToolStripMenuItem.Click += new System.EventHandler(this.oneMonthToolStripMenuItem_Click);
+            this.oneMonthToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // twoMonthsToolStripMenuItem
             // 
             this.twoMonthsToolStripMenuItem.Name = "twoMonthsToolStripMenuItem";
-            this.twoMonthsToolStripMenuItem.Size = new System.Drawing.Size(259, 40);
-            this.twoMonthsToolStripMenuItem.Text = "Two months";
-            this.twoMonthsToolStripMenuItem.Click += new System.EventHandler(this.twoMonthsToolStripMenuItem_Click);
+            this.twoMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // threeMonthsToolStripMenuItem
             // 
             this.threeMonthsToolStripMenuItem.Name = "threeMonthsToolStripMenuItem";
-            this.threeMonthsToolStripMenuItem.Size = new System.Drawing.Size(259, 40);
-            this.threeMonthsToolStripMenuItem.Text = "Three months";
-            this.threeMonthsToolStripMenuItem.Click += new System.EventHandler(this.threeMonthsToolStripMenuItem_Click);
+            this.threeMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // fourMonthsToolStripMenuItem
             // 
             this.fourMonthsToolStripMenuItem.Name = "fourMonthsToolStripMenuItem";
-            this.fourMonthsToolStripMenuItem.Size = new System.Drawing.Size(259, 40);
-            this.fourMonthsToolStripMenuItem.Text = "Four months";
-            this.fourMonthsToolStripMenuItem.Click += new System.EventHandler(this.fourMonthsToolStripMenuItem_Click);
+            this.fourMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // sixMonthsToolStripMenuItem
             // 
             this.sixMonthsToolStripMenuItem.Name = "sixMonthsToolStripMenuItem";
-            this.sixMonthsToolStripMenuItem.Size = new System.Drawing.Size(259, 40);
-            this.sixMonthsToolStripMenuItem.Text = "Six months";
-            this.sixMonthsToolStripMenuItem.Click += new System.EventHandler(this.sixMonthsToolStripMenuItem_Click);
+            this.sixMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
-            // addWorkEventToolStripMenuItem
+            // manualToolStripMenuItem
             // 
-            this.addWorkEventToolStripMenuItem.Name = "addWorkEventToolStripMenuItem";
-            this.addWorkEventToolStripMenuItem.Size = new System.Drawing.Size(180, 34);
-            this.addWorkEventToolStripMenuItem.Text = "Add Work Event";
-            this.addWorkEventToolStripMenuItem.Click += new System.EventHandler(this.addWorkEventToolStripMenuItem_Click);
+            this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // dayToolStripMenuItem
+            // 
+            this.dayToolStripMenuItem.Name = "dayToolStripMenuItem";
+            this.dayToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // workweekToolStripMenuItem
+            // 
+            this.workweekToolStripMenuItem.Name = "workweekToolStripMenuItem";
+            this.workweekToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // weekToolStripMenuItem
+            // 
+            this.weekToolStripMenuItem.Name = "weekToolStripMenuItem";
+            this.weekToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // monthToolStripMenuItem
+            // 
+            this.monthToolStripMenuItem.Name = "monthToolStripMenuItem";
+            this.monthToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // tcHome
             // 
@@ -277,27 +210,27 @@ namespace JugaAgenda_v2
             this.calHome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.calHome.FirstDayOfWeek = System.DayOfWeek.Monday;
             this.calHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            calendarHighlightRange1.DayOfWeek = System.DayOfWeek.Tuesday;
-            calendarHighlightRange1.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange1.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange2.DayOfWeek = System.DayOfWeek.Wednesday;
-            calendarHighlightRange2.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange2.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange3.DayOfWeek = System.DayOfWeek.Thursday;
-            calendarHighlightRange3.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange3.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange4.DayOfWeek = System.DayOfWeek.Friday;
-            calendarHighlightRange4.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange4.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange5.DayOfWeek = System.DayOfWeek.Saturday;
-            calendarHighlightRange5.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange5.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange6.DayOfWeek = System.DayOfWeek.Tuesday;
+            calendarHighlightRange6.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange6.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange7.DayOfWeek = System.DayOfWeek.Wednesday;
+            calendarHighlightRange7.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange7.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange8.DayOfWeek = System.DayOfWeek.Thursday;
+            calendarHighlightRange8.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange8.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange9.DayOfWeek = System.DayOfWeek.Friday;
+            calendarHighlightRange9.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange9.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange10.DayOfWeek = System.DayOfWeek.Saturday;
+            calendarHighlightRange10.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange10.StartTime = System.TimeSpan.Parse("09:00:00");
             this.calHome.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
-        calendarHighlightRange1,
-        calendarHighlightRange2,
-        calendarHighlightRange3,
-        calendarHighlightRange4,
-        calendarHighlightRange5};
+        calendarHighlightRange6,
+        calendarHighlightRange7,
+        calendarHighlightRange8,
+        calendarHighlightRange9,
+        calendarHighlightRange10};
             this.calHome.Location = new System.Drawing.Point(394, 6);
             this.calHome.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.calHome.MaximumFullDays = 7;
@@ -341,12 +274,13 @@ namespace JugaAgenda_v2
             this.tpSettings.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.tpSettings.Size = new System.Drawing.Size(2049, 1149);
             this.tpSettings.TabIndex = 1;
-            this.tpSettings.Text = "Settings";
+            this.tpSettings.Text = "Instellingen";
             this.tpSettings.UseVisualStyleBackColor = true;
             // 
             // tcSettings
             // 
-            this.tcSettings.Controls.Add(this.tpGoogleCalendar);
+            this.tcSettings.Controls.Add(this.tpCalendarSettings);
+            this.tcSettings.Controls.Add(this.tpGoogleSettings);
             this.tcSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcSettings.Location = new System.Drawing.Point(5, 6);
             this.tcSettings.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -355,17 +289,84 @@ namespace JugaAgenda_v2
             this.tcSettings.Size = new System.Drawing.Size(2039, 1137);
             this.tcSettings.TabIndex = 0;
             // 
-            // tpGoogleCalendar
+            // tpCalendarSettings
             // 
-            this.tpGoogleCalendar.Controls.Add(this.btTestGoogleConnection);
-            this.tpGoogleCalendar.Location = new System.Drawing.Point(4, 39);
-            this.tpGoogleCalendar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpGoogleCalendar.Name = "tpGoogleCalendar";
-            this.tpGoogleCalendar.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpGoogleCalendar.Size = new System.Drawing.Size(2031, 1094);
-            this.tpGoogleCalendar.TabIndex = 0;
-            this.tpGoogleCalendar.Text = "Google Calendar";
-            this.tpGoogleCalendar.UseVisualStyleBackColor = true;
+            this.tpCalendarSettings.Controls.Add(this.label3);
+            this.tpCalendarSettings.Controls.Add(this.label2);
+            this.tpCalendarSettings.Controls.Add(this.cbCalendarPerspective);
+            this.tpCalendarSettings.Controls.Add(this.cbCalendarTimeScale);
+            this.tpCalendarSettings.Controls.Add(this.label1);
+            this.tpCalendarSettings.Controls.Add(this.cbCalendarSelectionMode);
+            this.tpCalendarSettings.Location = new System.Drawing.Point(4, 39);
+            this.tpCalendarSettings.Name = "tpCalendarSettings";
+            this.tpCalendarSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpCalendarSettings.Size = new System.Drawing.Size(2031, 1094);
+            this.tpCalendarSettings.TabIndex = 1;
+            this.tpCalendarSettings.Text = "Calendar";
+            this.tpCalendarSettings.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 151);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(205, 30);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Calendar Perspective";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 77);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(200, 30);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Calendar Time Scale";
+            // 
+            // cbCalendarPerspective
+            // 
+            this.cbCalendarPerspective.Location = new System.Drawing.Point(6, 184);
+            this.cbCalendarPerspective.Name = "cbCalendarPerspective";
+            this.cbCalendarPerspective.Size = new System.Drawing.Size(245, 38);
+            this.cbCalendarPerspective.TabIndex = 3;
+            this.cbCalendarPerspective.SelectedIndexChanged += new System.EventHandler(this.cbCalendarPerspective_SelectedIndexChanged);
+            // 
+            // cbCalendarTimeScale
+            // 
+            this.cbCalendarTimeScale.Location = new System.Drawing.Point(6, 110);
+            this.cbCalendarTimeScale.Name = "cbCalendarTimeScale";
+            this.cbCalendarTimeScale.Size = new System.Drawing.Size(245, 38);
+            this.cbCalendarTimeScale.TabIndex = 2;
+            this.cbCalendarTimeScale.SelectedIndexChanged += new System.EventHandler(this.cbCalendarTimeScale_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(245, 30);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Calendar Selection Mode";
+            // 
+            // cbCalendarSelectionMode
+            // 
+            this.cbCalendarSelectionMode.Location = new System.Drawing.Point(6, 36);
+            this.cbCalendarSelectionMode.Name = "cbCalendarSelectionMode";
+            this.cbCalendarSelectionMode.Size = new System.Drawing.Size(245, 38);
+            this.cbCalendarSelectionMode.TabIndex = 0;
+            this.cbCalendarSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbCalendarSelectionMode_SelectedIndexChanged);
+            // 
+            // tpGoogleSettings
+            // 
+            this.tpGoogleSettings.Controls.Add(this.btTestGoogleConnection);
+            this.tpGoogleSettings.Location = new System.Drawing.Point(4, 39);
+            this.tpGoogleSettings.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.tpGoogleSettings.Name = "tpGoogleSettings";
+            this.tpGoogleSettings.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.tpGoogleSettings.Size = new System.Drawing.Size(2031, 1094);
+            this.tpGoogleSettings.TabIndex = 0;
+            this.tpGoogleSettings.Text = "Google";
+            this.tpGoogleSettings.UseVisualStyleBackColor = true;
             // 
             // btTestGoogleConnection
             // 
@@ -402,7 +403,9 @@ namespace JugaAgenda_v2
             this.tpCalendar.ResumeLayout(false);
             this.tpSettings.ResumeLayout(false);
             this.tcSettings.ResumeLayout(false);
-            this.tpGoogleCalendar.ResumeLayout(false);
+            this.tpCalendarSettings.ResumeLayout(false);
+            this.tpCalendarSettings.PerformLayout();
+            this.tpGoogleSettings.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -411,7 +414,6 @@ namespace JugaAgenda_v2
         #endregion
 
         private System.Windows.Forms.MenuStrip msHome;
-        private System.Windows.Forms.ToolStripMenuItem calendarSelectionModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem workweekToolStripMenuItem;
@@ -421,7 +423,6 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.TabPage tpCalendar;
         private System.Windows.Forms.Calendar.Calendar calHome;
         private System.Windows.Forms.Calendar.MonthView mvHome;
-        private System.Windows.Forms.ToolStripMenuItem calendarTimeScaleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fiveMinutesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sixMinutesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tenMinutesToolStripMenuItem;
@@ -430,9 +431,8 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.ToolStripMenuItem sixtyMinutesToolStripMenuItem;
         private System.Windows.Forms.TabPage tpSettings;
         private System.Windows.Forms.TabControl tcSettings;
-        private System.Windows.Forms.TabPage tpGoogleCalendar;
+        private System.Windows.Forms.TabPage tpGoogleSettings;
         private System.Windows.Forms.Button btTestGoogleConnection;
-        private System.Windows.Forms.ToolStripMenuItem perspectiveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem oneMonthToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem twoMonthsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem threeMonthsToolStripMenuItem;
@@ -440,6 +440,13 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.ToolStripMenuItem sixMonthsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addWorkEventToolStripMenuItem;
         private System.Windows.Forms.Timer refreshTimer;
+        private System.Windows.Forms.TabPage tpCalendarSettings;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cbCalendarSelectionMode;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cbCalendarPerspective;
+        private System.Windows.Forms.ComboBox cbCalendarTimeScale;
     }
 }
 
