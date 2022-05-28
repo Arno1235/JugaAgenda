@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Calendar;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace JugaAgenda_v2
 {
@@ -23,7 +24,17 @@ namespace JugaAgenda_v2
         private List<CustomDay> workList;
         private fCalendarEvent calendarEventScreen = null;
 
-        //TODO Edit work event, Add work event, Edit Leave, Add Leave, Edit Schedule, Add schedule, Search function
+        // TODO: Add schedule, Search function, Edit Leave, Add Leave, Edit Schedule
+
+        // - Search
+        // - Remove work
+        // - Add/Edit/Remove tech leave
+        // - Add/Edit/Remove tech schedule
+        // - Display tech schedule
+        // - Warning components not yet available
+        // - Warning when week is to full
+        // - When adding or changing work show when there is place
+        // - Add list of basic work with duration and price
 
         public fHome()
         {
@@ -56,6 +67,56 @@ namespace JugaAgenda_v2
             loadTechniciansWorkWeek();
             loadTechnicianLeave();
             loadWork();
+        }
+
+        private void refreshTimer_Tick(object sender, EventArgs e)
+        {
+            //Stopwatch stopwatch = Stopwatch.StartNew();
+            
+            syncCalendar();
+            
+            //stopwatch.Stop();
+            //Debug.WriteLine(stopwatch.ElapsedMilliseconds);
+        }
+
+        public void syncCalendar()
+        {
+            // Can be more efficient
+            IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.testSync();
+            if (syncList != null)
+            {
+                foreach (Google.Apis.Calendar.v3.Data.Event item in syncList)
+                {
+                    bool found = false;
+                    foreach (CustomDay day in workList)
+                    {
+                        List<Work> dayWorkList = day.getWorkList();
+                        for (int i = dayWorkList.Count - 1; i >= 0; i--)
+                        {
+                            Work work = dayWorkList[i];
+
+                            if (work.getId() == item.Id)
+                            {
+                                if (checkTitleMessageBox(item))
+                                {
+                                    work.updateValues(item);
+                                }
+                                else
+                                {
+                                    day.getWorkList().RemoveAt(i);
+                                }
+                                found = true;
+                                break;
+                            }
+
+                        }
+                        if (found) break;
+                    }
+                    if (!found) addWorkItem(item);
+                }
+                // Can be more efficient
+                mvHome_SelectionChanged(null, null);
+            }
         }
 
         // Can be more efficient
@@ -147,55 +208,9 @@ namespace JugaAgenda_v2
             if (workList == null) workList = new List<CustomDay>();
             workList.Clear();
             
-            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents().Items)
+            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents())
             {
-                DateTime date;
-                if (item.Start.DateTime != null)
-                {
-                    date = (DateTime) item.Start.DateTime;
-                    date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
-                } else
-                {
-                    date = Convert.ToDateTime(item.Start.Date);
-                }
-                CustomDay day = null;
-                foreach (CustomDay listday in workList)
-                {
-                    if (DateTime.Compare(listday.getDate(), date) == 0)
-                    {
-                        day = listday;
-                        break;
-                    }
-                }
-                if (day == null)
-                {
-                    day = new CustomDay(date);
-
-                    foreach (Technician tech in techniciansWorkWeekList[(int) date.DayOfWeek].getTechnicianList())
-                    {
-                        bool tech_has_leave = false;
-                        foreach (CustomDay leave_day in technicianLeaveList)
-                        {
-                            if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
-                            {
-                                foreach (Technician leave_tech in leave_day.getTechnicianList())
-                                {
-                                    if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
-                                }
-                                // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
-                            }
-                        }
-                        
-                        if (!tech_has_leave) day.addTechnicianList(tech);
-                    }
-
-                    workList.Add(day);
-                }
-                if (checkTitleMessageBox(item))
-                {
-                    Work new_work = new Work(item);
-                    day.addWorkList(new_work);
-                }
+                addWorkItem(item);
             }
             /*foreach (CustomDay day in workList)
             {
@@ -215,6 +230,58 @@ namespace JugaAgenda_v2
                     MessageBox.Show(day.getDate().ToString() + " " + tech.getName() + " " + tech.getHours().ToString());
                 }
             }*/
+        }
+
+        private void addWorkItem(Google.Apis.Calendar.v3.Data.Event item)
+        {
+
+            DateTime date;
+            if (item.Start.DateTime != null)
+            {
+                date = (DateTime) item.Start.DateTime;
+                date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
+            } else
+            {
+                date = Convert.ToDateTime(item.Start.Date);
+            }
+            CustomDay day = null;
+            foreach (CustomDay listday in workList)
+            {
+                if (DateTime.Compare(listday.getDate(), date) == 0)
+                {
+                    day = listday;
+                    break;
+                }
+            }
+            if (day == null)
+            {
+                day = new CustomDay(date);
+
+                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeek].getTechnicianList())
+                {
+                    bool tech_has_leave = false;
+                    foreach (CustomDay leave_day in technicianLeaveList)
+                    {
+                        if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
+                        {
+                            foreach (Technician leave_tech in leave_day.getTechnicianList())
+                            {
+                                if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
+                            }
+                            // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
+                        }
+                    }
+
+                    if (!tech_has_leave) day.addTechnicianList(tech);
+                }
+
+                workList.Add(day);
+            }
+            if (checkTitleMessageBox(item))
+            {
+                Work new_work = new Work(item);
+                day.addWorkList(new_work);
+            }
         }
 
         private bool checkTitleMessageBox(Google.Apis.Calendar.v3.Data.Event item)
@@ -241,7 +308,7 @@ namespace JugaAgenda_v2
                     }
                     else
                     {
-                        MessageBox.Show("Please change the title.");
+                        //MessageBox.Show("Please change the title.");
                         return false;
                     }
                 }
@@ -367,8 +434,6 @@ namespace JugaAgenda_v2
         // TODO
         private void calHome_ItemDoubleClick(object sender, EventArgs e)
         {
-            MessageBox.Show(calHome.GetSelectedItems().First().Text.ToString());
-            
 
             if (calendarEventScreen == null)
             {
@@ -472,8 +537,8 @@ namespace JugaAgenda_v2
             }
         }
 
-        #endregion
 
+        #endregion
 
     }
 

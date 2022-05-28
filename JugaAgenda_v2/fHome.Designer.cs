@@ -29,6 +29,7 @@ namespace JugaAgenda_v2
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange1 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange2 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange3 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
@@ -63,6 +64,7 @@ namespace JugaAgenda_v2
             this.tcSettings = new System.Windows.Forms.TabControl();
             this.tpGoogleCalendar = new System.Windows.Forms.TabPage();
             this.btTestGoogleConnection = new System.Windows.Forms.Button();
+            this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.msHome.SuspendLayout();
             this.tcHome.SuspendLayout();
             this.tpCalendar.SuspendLayout();
@@ -337,7 +339,7 @@ namespace JugaAgenda_v2
             this.tpSettings.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpSettings.Size = new System.Drawing.Size(2049, 1143);
+            this.tpSettings.Size = new System.Drawing.Size(2049, 1149);
             this.tpSettings.TabIndex = 1;
             this.tpSettings.Text = "Settings";
             this.tpSettings.UseVisualStyleBackColor = true;
@@ -350,7 +352,7 @@ namespace JugaAgenda_v2
             this.tcSettings.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.tcSettings.Name = "tcSettings";
             this.tcSettings.SelectedIndex = 0;
-            this.tcSettings.Size = new System.Drawing.Size(2039, 1131);
+            this.tcSettings.Size = new System.Drawing.Size(2039, 1137);
             this.tcSettings.TabIndex = 0;
             // 
             // tpGoogleCalendar
@@ -360,7 +362,7 @@ namespace JugaAgenda_v2
             this.tpGoogleCalendar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.tpGoogleCalendar.Name = "tpGoogleCalendar";
             this.tpGoogleCalendar.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpGoogleCalendar.Size = new System.Drawing.Size(2031, 1088);
+            this.tpGoogleCalendar.Size = new System.Drawing.Size(2031, 1094);
             this.tpGoogleCalendar.TabIndex = 0;
             this.tpGoogleCalendar.Text = "Google Calendar";
             this.tpGoogleCalendar.UseVisualStyleBackColor = true;
@@ -375,6 +377,12 @@ namespace JugaAgenda_v2
             this.btTestGoogleConnection.Text = "Test Connection";
             this.btTestGoogleConnection.UseVisualStyleBackColor = true;
             this.btTestGoogleConnection.Click += new System.EventHandler(this.btTestGoogleConnection_Click);
+            // 
+            // refreshTimer
+            // 
+            this.refreshTimer.Enabled = true;
+            this.refreshTimer.Interval = 1000;
+            this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
             // 
             // fHome
             // 
@@ -431,6 +439,7 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.ToolStripMenuItem fourMonthsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sixMonthsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addWorkEventToolStripMenuItem;
+        private System.Windows.Forms.Timer refreshTimer;
     }
 }
 

@@ -8,13 +8,16 @@ namespace JugaAgenda_v2
     {
         public enum Status
         {
-            todo_no_components,
-            todo_yes_components, // 5 = yellow
-            doing, // 9 = blue
-            done, // 2 = green
-            cancel // 8 = gray
+            wachten_op_onderdelen, // null = white
+            onderdelen_op_voorraad, // 5 = yellow
+            bezig, // 9 = blue
+            klaar, // 2 = green
+            geannuleerd, // 8 = gray
+            niet_komen_opdagen, // 3 = purple
+            onderdelen_niet_op_tijd, // 6 = orange
         }
 
+        private string id;
         private string description;
         private decimal duration;
         private string clientName;
@@ -23,13 +26,17 @@ namespace JugaAgenda_v2
         private Status status;
         private Google.Apis.Calendar.v3.Data.Event calendarEvent;
 
+        // Example: 2.5u Arno Van Eetvelde +32 490 11 17 78 B2020/123
+        private String[] titleRegexParts = {"[0-9.,]+u", "[a-zA-Z ]+", "[+]?[0-9 ]+", "B[0-9/]+"};
+
 
         public Work()
         {
 
         }
-        public Work(decimal duration, string clientName, string phoneNumber, string orderNumber, string description, Status status)
+        public Work(string id, decimal duration, string clientName, string phoneNumber, string orderNumber, string description, Status status)
         {
+            this.id = id;
             this.description = description;
             this.duration = duration;
             this.clientName = clientName;
@@ -71,16 +78,35 @@ namespace JugaAgenda_v2
 
         public Work(Google.Apis.Calendar.v3.Data.Event item)
         {
-            String[] title = item.Summary.Split(' ');
-            for (int i = 0; i < title.Length; i++)
+            updateValues(item);
+        }
+
+        public void updateValues(Google.Apis.Calendar.v3.Data.Event item)
+        {
+            String tempTitle = item.Summary;
+            for (int i = 0; i < titleRegexParts.Length - 1; i ++)
             {
-                if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace(',', '.'));
-                if (i == 1) this.clientName = item.Summary.Remove(item.Summary.Length - title[title.Length - 2].Length - title[title.Length - 1].Length - 2).Remove(0, title[0].Length + 1);
-                if (i == title.Length-2) this.phoneNumber = title[title.Length-2];
-                if (i == title.Length-1) this.orderNumber = title[title.Length-1];
+                String regexPattern = "";
+                for (int j = i + 1; j < titleRegexParts.Length; j ++)
+                {
+                    regexPattern += " " + titleRegexParts[j];
+                }
+
+                String titlePart = Regex.Split(tempTitle, regexPattern, RegexOptions.IgnoreCase)[0];
+
+                if (i == 0) this.duration = Convert.ToDecimal(titlePart.Replace(',', '.').Replace("u", String.Empty));
+                if (i == 1) this.clientName = titlePart;
+                if (i == 2) this.phoneNumber = titlePart;
+
+                tempTitle = tempTitle.Remove(0, titlePart.Length);
+
             }
+
+            this.orderNumber = tempTitle;
+
+            this.id = item.Id;
             this.description = item.Description;
-            this.status = colorID_to_status((int) Convert.ToInt64(item.ColorId));
+            this.status = colorID_to_status((int)Convert.ToInt64(item.ColorId));
             this.calendarEvent = item;
         }
 
@@ -89,15 +115,19 @@ namespace JugaAgenda_v2
             switch (colorID)
             {
                 case 5:
-                    return Status.todo_yes_components;
+                    return Status.onderdelen_op_voorraad;
                 case 9:
-                    return Status.doing;
+                    return Status.bezig;
                 case 2:
-                    return Status.done;
+                    return Status.klaar;
                 case 8:
-                    return Status.cancel;
+                    return Status.geannuleerd;
+                case 3:
+                    return Status.niet_komen_opdagen;
+                case 6:
+                    return Status.onderdelen_niet_op_tijd;
                 default:
-                    return Status.todo_no_components;
+                    return Status.wachten_op_onderdelen;
             }
         }
 
@@ -105,14 +135,18 @@ namespace JugaAgenda_v2
         {
             switch (status)
             {
-                case Status.todo_yes_components:
+                case Status.onderdelen_op_voorraad:
                     return 5;
-                case Status.doing:
+                case Status.bezig:
                     return 9;
-                case Status.done:
+                case Status.klaar:
                     return 2;
-                case Status.cancel:
+                case Status.geannuleerd:
                     return 8;
+                case Status.niet_komen_opdagen:
+                    return 3;
+                case Status.onderdelen_niet_op_tijd:
+                    return 6;
                 default:
                     return 0;
             }
@@ -120,8 +154,15 @@ namespace JugaAgenda_v2
 
         public bool check_title(String title)
         {
+            String regexPattern = "";
 
-            Regex regex = new Regex("[0-9]+u [a-zA-Z ]+ [0-9]+ B[0-9]+", RegexOptions.IgnoreCase);
+            foreach(String regexPart in titleRegexParts)
+            {
+                regexPattern += regexPart + " ";
+            }
+            regexPattern = regexPattern.Remove(regexPattern.Length - 1);
+
+            Regex regex = new Regex(regexPattern, RegexOptions.IgnoreCase);
             return regex.IsMatch(title);
 
             /*String[] titleArray = title.Split(' ');
@@ -145,6 +186,10 @@ namespace JugaAgenda_v2
         public Google.Apis.Calendar.v3.Data.Event getCalendarEvent()
         {
             return calendarEvent;
+        }
+        public string getId()
+        {
+            return id;
         }
         public string getDescription()
         {
@@ -173,33 +218,25 @@ namespace JugaAgenda_v2
 
         public int getColorID()
         {
-            switch (this.status)
-            {
-                case Status.todo_yes_components:
-                    return 5;
-                case Status.doing:
-                    return 9;
-                case Status.done:
-                    return 2;
-                case Status.cancel:
-                    return 8;
-                default:
-                    return 0;
-            }
+            return this.status_to_colorID(status);
         }
 
         public Color getColor()
         {
             switch (this.status)
             {
-                case Status.todo_yes_components:
+                case Status.onderdelen_op_voorraad:
                     return Color.Yellow;
-                case Status.doing:
+                case Status.bezig:
                     return Color.Blue;
-                case Status.done:
+                case Status.klaar:
                     return Color.Green;
-                case Status.cancel:
+                case Status.geannuleerd:
                     return Color.Gray;
+                case Status.niet_komen_opdagen:
+                    return Color.Purple;
+                case Status.onderdelen_niet_op_tijd:
+                    return Color.Orange;
                 default:
                     return Color.White;
             }
@@ -216,6 +253,10 @@ namespace JugaAgenda_v2
         public void setCalendarEvent(Google.Apis.Calendar.v3.Data.Event calendarEvent)
         {
             this.calendarEvent = calendarEvent;
+        }
+        public void setId(string id)
+        {
+            this.id = id;
         }
         public void setDescription(string description)
         {

@@ -7,6 +7,7 @@ using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using System.IO;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace JugaAgenda_v2
 {
@@ -16,9 +17,14 @@ namespace JugaAgenda_v2
         private string[] Scopes = { CalendarService.Scope.Calendar };
         private string ApplicationName = "JugaAgenda";
         private string jsonPath = "Google Auth Files/client_secret_517386861162-oml2v6ifqe37dbsh4ls2u023pp89c9de.apps.googleusercontent.com.json";
+        
         private string calendarWorkID = "pvdr3fefd859hoau6aop4jn9p8@group.calendar.google.com";
         private string calendarLeaveID = "f0msdqpsli7f1emtmfboq8b8n4@group.calendar.google.com";
         private string calendarTechnicianID = "5q2ig7mop16pnodn500q0jm0uo@group.calendar.google.com";
+
+        private string workSyncToken = null;
+        private int syncTokenErrorCode = -2146233088;
+
         private CalendarService service;
 
         private int perspectiveMonths;
@@ -163,17 +169,67 @@ namespace JugaAgenda_v2
         }
 
         #region getters
-        public Events getWorkEvents() // TODO: reset timer
+        public IList<Event> getWorkEvents() // TODO: reset timer
         {
             EventsResource.ListRequest request = service.Events.List(calendarWorkID);
             request.TimeMin = DateTime.Now.AddMonths(-1);
             request.TimeMax = DateTime.Now.AddMonths(perspectiveMonths);
             request.ShowDeleted = false;
             request.SingleEvents = true;
-            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+            // request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime; // Doesn't work with synctoken
 
-            return request.Execute();
+            Events events = request.Execute();
+            workSyncToken = events.NextSyncToken;
+
+            return (List<Event>) events.Items;
         }
+
+        public IList<Event> testSync()
+        {
+
+            if (workSyncToken == null) return getWorkEvents();
+
+            EventsResource.ListRequest request = service.Events.List(calendarWorkID);
+            request.SyncToken = workSyncToken;
+
+            // Retrieve the events, one page at a time.
+            String pageToken = null;
+            Events events = null;
+            IList<Event> eventsList = null;
+
+            do
+            {
+
+                request.PageToken = pageToken;
+
+                try
+                {
+                    events = request.Execute();
+                    workSyncToken = events.NextSyncToken;
+                }
+                catch (Exception e)
+                {
+                    if (e.HResult == syncTokenErrorCode)
+                    {
+                        return getWorkEvents();
+                    }
+                }
+
+                IList<Event> items = events.Items;
+
+                if (items.Count < 1) return null;
+
+                // Can be more efficient
+                if (eventsList == null) eventsList = new List<Event>();
+                foreach (Event item in items) eventsList.Add(item);
+
+            } while (pageToken != null);
+
+            return eventsList;
+
+        }
+
+
         public Events getLeaveEvents()
         {
             EventsResource.ListRequest request = service.Events.List(calendarLeaveID);

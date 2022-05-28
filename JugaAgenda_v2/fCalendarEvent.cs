@@ -58,6 +58,7 @@ namespace JugaAgenda_v2
 
         private void loadWorkEvent()
         {
+
             if (oldWorkEvent.Start.DateTime != null)
             {
                 cbFullDays.Checked = false;
@@ -82,18 +83,14 @@ namespace JugaAgenda_v2
                 cbMinuteEnd.Enabled = false;
             }
 
-            cbStatus.SelectedItem = new Work().colorID_to_status(Convert.ToInt32(oldWorkEvent.ColorId));
+            Work work = new Work(oldWorkEvent);
 
-            String[] title = oldWorkEvent.Summary.Split(' ');
-            for (int i = 0; i < title.Length; i++)
-            {
-                if (i == 0) nuHours.Value = Convert.ToDecimal(title[i].Split('u')[0].Replace(',', '.'));
-                if (i == 1) tbClientName.Text = title[i];
-                if (i == 2) tbPhoneNumber.Text = title[i];
-                if (i == 3) tbOrderNumber.Text = title[i];
-            }
-
-            rtbDescription.Text = oldWorkEvent.Description;
+            cbStatus.SelectedItem = work.getStatus();
+            nuHours.Value = work.getDuration();
+            tbClientName.Text = work.getClientName();
+            tbPhoneNumber.Text = work.getPhoneNumber();
+            tbOrderNumber.Text = work.getOrderNumber();
+            rtbDescription.Text = work.getDescription();
 
         }
 
@@ -156,14 +153,14 @@ namespace JugaAgenda_v2
             {
                 if (this.oldWorkEvent == null)
                 {
-                    String title = nuHours.Value.ToString() + "u " + tbClientName.Text.ToString().Replace(' ', '_') + " " + tbPhoneNumber.Text.ToString().Replace(' ', '_');
-                    if (tbOrderNumber.Text.Length > 0) title += " " + tbOrderNumber.Text.ToString().Replace(' ', '_');
+                    String title = nuHours.Value.ToString() + "u " + tbClientName.Text.ToString() + " " + tbPhoneNumber.Text.ToString();
+                    if (tbOrderNumber.Text.Length > 0) title += " " + tbOrderNumber.Text.ToString();
 
                     if (cbFullDays.Checked)
                     {
                         if (mainScreen.googleCalendar.addWorkEvent(title, rtbDescription.Text.ToString(), dtpStart.Value.ToString("yyyy-MM-dd"), dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"), new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString()))
                         {
-                            mainScreen.loadEverything();
+                            mainScreen.syncCalendar();
                             this.Close();
                         } else
                         {
@@ -173,7 +170,7 @@ namespace JugaAgenda_v2
                     {
                         if (mainScreen.googleCalendar.addWorkEvent(title, rtbDescription.Text.ToString(), dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)), dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)), new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString()))
                         {
-                            mainScreen.loadEverything();
+                            mainScreen.syncCalendar();
                             this.Close();
                         }
                         else
@@ -183,14 +180,14 @@ namespace JugaAgenda_v2
                     }
                 } else
                 {
-                    String title = nuHours.Value.ToString() + "u " + tbClientName.Text.ToString().Replace(' ', '_') + " " + tbPhoneNumber.Text.ToString().Replace(' ', '_');
-                    if (tbOrderNumber.Text.Length > 0) title += " " + tbOrderNumber.Text.ToString().Replace(' ', '_');
+                    String title = nuHours.Value.ToString() + "u " + tbClientName.Text.ToString() + " " + tbPhoneNumber.Text.ToString();
+                    if (tbOrderNumber.Text.Length > 0) title += " " + tbOrderNumber.Text.ToString();
 
                     if (cbFullDays.Checked)
                     {
                         if (mainScreen.googleCalendar.editWorkEvent(title, rtbDescription.Text.ToString(), dtpStart.Value.ToString("yyyy-MM-dd"), dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"), new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(), oldWorkEvent.Id))
                         {
-                            mainScreen.loadEverything();
+                            mainScreen.syncCalendar();
                             this.Close();
                         }
                         else
@@ -202,7 +199,7 @@ namespace JugaAgenda_v2
                     {
                         if (mainScreen.googleCalendar.editWorkEvent(title, rtbDescription.Text.ToString(), dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)), dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)), new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(), oldWorkEvent.Id))
                         {
-                            mainScreen.loadEverything();
+                            mainScreen.syncCalendar();
                             this.Close();
                         }
                         else
