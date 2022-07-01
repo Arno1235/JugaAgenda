@@ -23,20 +23,21 @@ namespace JugaAgenda_v2
         private List<CustomDay> technicianLeaveList;
         private List<CustomDay> workList;
         private fCalendarEvent calendarEventScreen = null;
+        private fSearch searchScreen = null;
 
         // TODO: Add schedule, Search function, Edit Leave, Add Leave, Edit Schedule
 
-        // - Search
         // - Add/Edit/Remove tech leave
         // - Add/Edit/Remove tech schedule
         // - Display tech schedule
         // - Warning components not yet available
-        // - Warning when week is to full
+        // - Warning when week is too full
         // - When adding or changing work show when there is place
         // - Add list of basic work with duration and price
 
         public fHome()
         {
+
             InitializeComponent();
 
             googleCalendar = new GoogleCalendar();
@@ -483,6 +484,79 @@ namespace JugaAgenda_v2
             calendarEventScreen = null;
         }
 
+        public void clear_search_screen()
+        {
+            searchScreen = null;
+        }
+
+        public List<Work> searchWork(String clientName, String phoneNumber, String orderNumber, String description, Boolean OR = true)
+        {
+            List<Work> results = new List<Work>();
+
+            foreach (CustomDay day in workList)
+            {
+                foreach (Work work in day.getWorkList())
+                {
+                    if (OR)
+                    {
+                        if (
+                            (clientName != null && clientName != "" && work.getClientName() != null && work.getClientName().Contains(clientName, StringComparison.OrdinalIgnoreCase)) ||
+                            (phoneNumber != null && phoneNumber != "" && work.getPhoneNumber() != null && work.getPhoneNumber().Contains(phoneNumber, StringComparison.OrdinalIgnoreCase)) ||
+                            (orderNumber != null && orderNumber != "" && work.getOrderNumber() != null && work.getOrderNumber().Contains(orderNumber, StringComparison.OrdinalIgnoreCase)) ||
+                            (description != null && description != "" && work.getDescription() != null && work.getDescription().Contains(description, StringComparison.OrdinalIgnoreCase))
+                            )
+                        {
+                            results.Add(work);
+                        }
+                    } else
+                    {
+                        if (
+                            (clientName == null || clientName == "" || work.getClientName() == null || work.getClientName().Contains(clientName, StringComparison.OrdinalIgnoreCase)) &&
+                            (phoneNumber == null || phoneNumber == "" || work.getPhoneNumber() == null || work.getPhoneNumber().Contains(phoneNumber, StringComparison.OrdinalIgnoreCase)) &&
+                            (orderNumber == null || orderNumber == "" || work.getOrderNumber() == null || work.getOrderNumber().Contains(orderNumber, StringComparison.OrdinalIgnoreCase)) &&
+                            (description == null || description == "" || work.getDescription() == null || work.getDescription().Contains(description, StringComparison.OrdinalIgnoreCase)) &&
+                            !(
+                            (clientName == null || clientName == "" || work.getClientName() == null) &&
+                            (phoneNumber == null || phoneNumber == "" || work.getPhoneNumber() == null) &&
+                            (orderNumber == null || orderNumber == "" || work.getOrderNumber() == null) &&
+                            (description == null || description == "" || work.getDescription() == null)
+                            )
+                            )
+                        {
+                            results.Add(work);
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        // Kan efficienter
+        public Google.Apis.Calendar.v3.Data.Event getGoogleEventById(String id)
+        {
+
+            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents())
+            {
+                if (item.Id.Equals(id)) return item;
+            }
+            return null;
+        }
+
+        public Boolean getCalendarScreenAlreadyOpen()
+        {
+            return this.calendarEventScreen != null;
+        }
+
+        public void openCalendarScreen(Google.Apis.Calendar.v3.Data.Event item)
+        {
+            if (calendarEventScreen == null)
+            {
+                calendarEventScreen = new fCalendarEvent(this, item);
+                calendarEventScreen.Show();
+            }
+        }
+
         #region SimpleButtonFunctions
 
         private void cbCalendarSelectionMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -576,8 +650,22 @@ namespace JugaAgenda_v2
             }
         }
 
+        private void searchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (searchScreen == null)
+            {
+                searchScreen = new fSearch(this);
+                searchScreen.Show();
+            }
+        }
+
 
         #endregion
+
+        private void fHome_Load(object sender, EventArgs e)
+        {
+            
+        }
 
     }
 
@@ -593,6 +681,14 @@ namespace JugaAgenda_v2
         {
             int diff = (7 - (dt.DayOfWeek - endOfWeek)) % 7;
             return dt.AddDays(diff).Date;
+        }
+    }
+
+    public static class StringExtensions
+    {
+        public static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source?.IndexOf(toCheck, comp) >= 0;
         }
     }
 

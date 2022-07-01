@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace JugaAgenda_v2
 {
-    class Work
+    public class Work
     {
         public enum Status
         {
@@ -179,6 +179,11 @@ namespace JugaAgenda_v2
             
 
             return true;*/
+        }
+
+        public override string ToString()
+        {
+            return getTitle();
         }
 
         #region getters
