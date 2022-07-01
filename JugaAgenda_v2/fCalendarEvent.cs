@@ -15,6 +15,7 @@ namespace JugaAgenda_v2
         private DateTime prevDate;
         private fHome mainScreen;
         private Google.Apis.Calendar.v3.Data.Event oldWorkEvent;
+        private fAvailability availabilityScreen;
 
         public fCalendarEvent(fHome mainScreen, Google.Apis.Calendar.v3.Data.Event oldWorkEvent = null)
         {
@@ -22,7 +23,6 @@ namespace JugaAgenda_v2
             this.oldWorkEvent = oldWorkEvent;
 
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fCalendarEvent_Closed);
-
 
             InitializeComponent();
             loadComponents();
@@ -233,6 +233,20 @@ namespace JugaAgenda_v2
                     MessageBox.Show("Er is iets fout gelopen.");
                 }
             }
+        }
+
+        private void btAvailability_Click(object sender, EventArgs e)
+        {
+            if (availabilityScreen == null)
+            {
+                availabilityScreen = new fAvailability(mainScreen, this, nuHours.Value);
+                availabilityScreen.Show();
+            }
+        }
+
+        public void clearAvailabilityScreen()
+        {
+            availabilityScreen = null;
         }
     }
 }

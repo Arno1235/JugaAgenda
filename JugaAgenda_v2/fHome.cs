@@ -27,12 +27,12 @@ namespace JugaAgenda_v2
 
         // TODO: Add schedule, Search function, Edit Leave, Add Leave, Edit Schedule
 
+        // - When adding or changing work show when there is place
         // - Add/Edit/Remove tech leave
         // - Add/Edit/Remove tech schedule
         // - Display tech schedule
-        // - Warning components not yet available
+        // - Warning components not yet available (jurgen)
         // - Warning when week is too full
-        // - When adding or changing work show when there is place
         // - Add list of basic work with duration and price
 
         public fHome()
@@ -526,6 +526,21 @@ namespace JugaAgenda_v2
                             results.Add(work);
                         }
                     }
+                }
+            }
+
+            return results;
+        }
+
+        public List<DateTime> checkAvailability(decimal duration)
+        {
+            List<DateTime> results = new List<DateTime>();
+
+            foreach (CustomDay day in workList)
+            {
+                foreach (Work work in day.getWorkList())
+                {
+
                 }
             }
 

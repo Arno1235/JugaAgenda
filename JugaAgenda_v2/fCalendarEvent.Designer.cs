@@ -55,6 +55,7 @@ namespace JugaAgenda_v2
             this.tbClientName = new System.Windows.Forms.TextBox();
             this.rtbDescription = new System.Windows.Forms.RichTextBox();
             this.cbStatus = new System.Windows.Forms.ComboBox();
+            this.btAvailability = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuHours)).BeginInit();
@@ -62,6 +63,7 @@ namespace JugaAgenda_v2
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btAvailability);
             this.groupBox1.Controls.Add(this.btDelete);
             this.groupBox1.Controls.Add(this.btSave);
             this.groupBox1.Controls.Add(this.btCancel);
@@ -342,6 +344,16 @@ namespace JugaAgenda_v2
             this.cbStatus.Size = new System.Drawing.Size(335, 38);
             this.cbStatus.TabIndex = 5;
             // 
+            // btAvailability
+            // 
+            this.btAvailability.Location = new System.Drawing.Point(475, 336);
+            this.btAvailability.Name = "btAvailability";
+            this.btAvailability.Size = new System.Drawing.Size(131, 40);
+            this.btAvailability.TabIndex = 22;
+            this.btAvailability.Text = "Availability";
+            this.btAvailability.UseVisualStyleBackColor = true;
+            this.btAvailability.Click += new System.EventHandler(this.btAvailability_Click);
+            // 
             // fCalendarEvent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
@@ -388,5 +400,6 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.ComboBox cbMinuteEnd;
         private System.Windows.Forms.ComboBox cbMinuteStart;
         private System.Windows.Forms.Button btDelete;
+        private System.Windows.Forms.Button btAvailability;
     }
 }
