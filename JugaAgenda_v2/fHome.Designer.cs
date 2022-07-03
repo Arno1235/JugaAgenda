@@ -406,7 +406,6 @@ namespace JugaAgenda_v2
             this.Name = "fHome";
             this.Text = "Juga Agenda v2";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.fHome_Load);
             this.msHome.ResumeLayout(false);
             this.msHome.PerformLayout();
             this.tcHome.ResumeLayout(false);

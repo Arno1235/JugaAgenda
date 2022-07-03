@@ -1,16 +1,10 @@
 ﻿using JugaAgenda_v2.Classes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Calendar;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace JugaAgenda_v2
 {
@@ -25,13 +19,17 @@ namespace JugaAgenda_v2
         private fCalendarEvent calendarEventScreen = null;
         private fSearch searchScreen = null;
 
-        // TODO: Add schedule, Search function, Edit Leave, Add Leave, Edit Schedule
+        #region TODO
 
         // - Show events in view that are not in selected range
         // - When adding or changing work show when there is place
         // - Add/Edit/Remove/Show tech leave
         // - Add/Edit/Remove/Show tech schedule
         // - Add list of basic work with duration and price
+
+        #endregion
+
+        #region InitializationFunctions
 
         public fHome()
         {
@@ -91,6 +89,10 @@ namespace JugaAgenda_v2
 
         }
 
+        #endregion
+
+        #region CalendarSynchronizationFunctions
+
         public void refresh()
         {
             testConnection();
@@ -101,12 +103,9 @@ namespace JugaAgenda_v2
 
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
-            //Stopwatch stopwatch = Stopwatch.StartNew();
             
             syncCalendar();
-            
-            //stopwatch.Stop();
-            //Debug.WriteLine(stopwatch.ElapsedMilliseconds);
+
         }
 
         public void syncCalendar()
@@ -148,6 +147,10 @@ namespace JugaAgenda_v2
                 mvHome_SelectionChanged(null, null);
             }
         }
+
+        #endregion
+
+        #region LoadCalendarFunctions
 
         // Can be more efficient
         private void loadTechniciansWorkWeek()
@@ -262,111 +265,11 @@ namespace JugaAgenda_v2
             }*/
         }
 
-        private void addWorkItem(Google.Apis.Calendar.v3.Data.Event item)
-        {
+        #endregion
 
-            DateTime date;
-            if (item.Start.DateTime != null)
-            {
-                date = (DateTime) item.Start.DateTime;
-                date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
-            } else
-            {
-                date = Convert.ToDateTime(item.Start.Date);
-            }
-            CustomDay day = null;
-            foreach (CustomDay listday in workList)
-            {
-                if (DateTime.Compare(listday.getDate(), date) == 0)
-                {
-                    day = listday;
-                    break;
-                }
-            }
-            if (day == null)
-            {
-                day = new CustomDay(date);
+        #region ExtraPrimaryFunctions
 
-                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeek].getTechnicianList())
-                {
-                    bool tech_has_leave = false;
-                    foreach (CustomDay leave_day in technicianLeaveList)
-                    {
-                        if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
-                        {
-                            foreach (Technician leave_tech in leave_day.getTechnicianList())
-                            {
-                                if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
-                            }
-                            // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
-                        }
-                    }
-
-                    if (!tech_has_leave) day.addTechnicianList(tech);
-                }
-
-                workList.Add(day);
-            }
-            if (checkTitleMessageBox(item))
-            {
-                Work new_work = new Work(item);
-                day.addWorkList(new_work);
-            }
-        }
-
-        public bool deleteWorkItem(String eventId)
-        {
-            return googleCalendar.deleteWorkEvent(eventId);
-        }
-
-        private bool checkTitleMessageBox(Google.Apis.Calendar.v3.Data.Event item)
-        {
-            if (!new Work().check_title(item.Summary))
-            {
-                while (true)
-                {
-                    String new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title of this event.", "Wrong event title", item.Summary);
-                    if (!new_title.Equals("") && new_title != null)
-                    {
-                        if (!new Work().check_title(new_title))
-                        {
-                            MessageBox.Show("The new title is still incorrect.");
-                            continue;
-                        }
-                        item.Summary = new_title;
-                        if (!googleCalendar.editWorkEvent(item, item.Id))
-                        {
-                            MessageBox.Show("Something went wrong when updating event to calendar.");
-                            return false;
-                        }
-                        return true;
-                    }
-                    else
-                    {
-                        //MessageBox.Show("Please change the title.");
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private void testConnection(bool print_if_successfull=false)
-        {
-            if (googleCalendar.testConnection())
-            {
-                if (print_if_successfull) MessageBox.Show("Google Calendar Connection Succesfull");
-            }
-            else
-            {
-                MessageBox.Show("Google Calendar Connection Error");
-                this.Close();
-            }
-        }
-
+        // TODO
         private void mvHome_SelectionChanged(object sender, EventArgs e)
         {
             if ((mvHome.SelectionEnd - mvHome.SelectionStart).Days > -1 && (mvHome.SelectionEnd - mvHome.SelectionStart).Days < calHome.MaximumViewDays)
@@ -377,7 +280,8 @@ namespace JugaAgenda_v2
                 if (mvHome.SelectionEnd > calHome.ViewEnd)
                 {
                     end = mvHome.SelectionEnd;
-                } else
+                }
+                else
                 {
                     end = calHome.ViewEnd;
                 }
@@ -458,33 +362,70 @@ namespace JugaAgenda_v2
                     }
                 }*/
 
-            } else
+            }
+            else
             {
                 MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days.");
             }
-            
+
 
         }
 
-        private void calHome_ItemDoubleClick(object sender, EventArgs e)
+        private void addWorkItem(Google.Apis.Calendar.v3.Data.Event item)
         {
 
-            if (calendarEventScreen == null)
+            DateTime date;
+            if (item.Start.DateTime != null)
             {
-                calendarEventScreen = new fCalendarEvent(this, calHome.GetSelectedItems().First().getCalendarEvent());
-                calendarEventScreen.Show();
+                date = (DateTime) item.Start.DateTime;
+                date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
+            } else
+            {
+                date = Convert.ToDateTime(item.Start.Date);
             }
+            CustomDay day = null;
+            foreach (CustomDay listday in workList)
+            {
+                if (DateTime.Compare(listday.getDate(), date) == 0)
+                {
+                    day = listday;
+                    break;
+                }
+            }
+            if (day == null)
+            {
+                day = new CustomDay(date);
 
+                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeek].getTechnicianList())
+                {
+                    bool tech_has_leave = false;
+                    foreach (CustomDay leave_day in technicianLeaveList)
+                    {
+                        if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
+                        {
+                            foreach (Technician leave_tech in leave_day.getTechnicianList())
+                            {
+                                if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
+                            }
+                            // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
+                        }
+                    }
+
+                    if (!tech_has_leave) day.addTechnicianList(tech);
+                }
+
+                workList.Add(day);
+            }
+            if (checkTitleMessageBox(item))
+            {
+                Work new_work = new Work(item);
+                day.addWorkList(new_work);
+            }
         }
 
-        public void clear_calendar_screen()
+        public bool deleteWorkItem(String eventId)
         {
-            calendarEventScreen = null;
-        }
-
-        public void clear_search_screen()
-        {
-            searchScreen = null;
+            return googleCalendar.deleteWorkEvent(eventId);
         }
 
         public List<Work> searchWork(String clientName, String phoneNumber, String orderNumber, String description, Boolean OR = true)
@@ -506,7 +447,8 @@ namespace JugaAgenda_v2
                         {
                             results.Add(work);
                         }
-                    } else
+                    }
+                    else
                     {
                         if (
                             (clientName == null || clientName == "" || work.getClientName() == null || work.getClientName().Contains(clientName, StringComparison.OrdinalIgnoreCase)) &&
@@ -530,6 +472,7 @@ namespace JugaAgenda_v2
             return results;
         }
 
+        // TODO
         public List<DateTime> checkAvailability(decimal duration)
         {
             List<DateTime> results = new List<DateTime>();
@@ -545,7 +488,59 @@ namespace JugaAgenda_v2
             return results;
         }
 
-        // Kan efficienter
+        #endregion
+
+        #region ExtraSecondaryFunctions
+
+        private bool checkTitleMessageBox(Google.Apis.Calendar.v3.Data.Event item)
+        {
+            if (!new Work().check_title(item.Summary))
+            {
+                while (true)
+                {
+                    String new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title of this event.", "Wrong event title", item.Summary);
+                    if (!new_title.Equals("") && new_title != null)
+                    {
+                        if (!new Work().check_title(new_title))
+                        {
+                            MessageBox.Show("The new title is still incorrect.");
+                            continue;
+                        }
+                        item.Summary = new_title;
+                        if (!googleCalendar.editWorkEvent(item, item.Id))
+                        {
+                            MessageBox.Show("Something went wrong when updating event to calendar.");
+                            return false;
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Please change the title.");
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private void testConnection(bool print_if_successfull = false)
+        {
+            if (googleCalendar.testConnection())
+            {
+                if (print_if_successfull) MessageBox.Show("Google Calendar Connection Succesfull");
+            }
+            else
+            {
+                MessageBox.Show("Google Calendar Connection Error");
+                this.Close();
+            }
+        }
+
+        // Can be more efficient
         public Google.Apis.Calendar.v3.Data.Event getGoogleEventById(String id)
         {
 
@@ -554,6 +549,20 @@ namespace JugaAgenda_v2
                 if (item.Id.Equals(id)) return item;
             }
             return null;
+        }
+
+        #endregion
+
+        #region SecondaryScreensFunctions
+
+        public void clear_calendar_screen()
+        {
+            calendarEventScreen = null;
+        }
+
+        public void clear_search_screen()
+        {
+            searchScreen = null;
         }
 
         public Boolean getCalendarScreenAlreadyOpen()
@@ -569,6 +578,17 @@ namespace JugaAgenda_v2
                 calendarEventScreen.Show();
             }
         }
+
+        private void openSearchScreen()
+        {
+            if (searchScreen == null)
+            {
+                searchScreen = new fSearch(this);
+                searchScreen.Show();
+            }
+        }
+
+        #endregion
 
         #region SimpleButtonFunctions
 
@@ -654,31 +674,29 @@ namespace JugaAgenda_v2
         {
             testConnection(true);
         }
+
         private void addWorkEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (calendarEventScreen == null)
-            {
-                calendarEventScreen = new fCalendarEvent(this);
-                calendarEventScreen.Show();
-            }
+            openCalendarScreen(null);
         }
 
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (searchScreen == null)
-            {
-                searchScreen = new fSearch(this);
-                searchScreen.Show();
-            }
+            openSearchScreen();
         }
 
+        private void calHome_ItemDoubleClick(object sender, EventArgs e)
+        {
+
+            if (calendarEventScreen == null)
+            {
+                calendarEventScreen = new fCalendarEvent(this, calHome.GetSelectedItems().First().getCalendarEvent());
+                calendarEventScreen.Show();
+            }
+
+        }
 
         #endregion
-
-        private void fHome_Load(object sender, EventArgs e)
-        {
-            
-        }
 
     }
 
