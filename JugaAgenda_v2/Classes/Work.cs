@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Drawing;
+using JugaAgenda_v2.Classes;
+using System.Collections.Generic;
 
 namespace JugaAgenda_v2
 {
@@ -24,17 +26,17 @@ namespace JugaAgenda_v2
         private string phoneNumber;
         private string orderNumber;
         private Status status;
+        private List<Technician> technicianList = new List<Technician>();
         private Google.Apis.Calendar.v3.Data.Event calendarEvent;
 
         // Example: 2.5u Arno Van Eetvelde +32 490 11 17 78 B2020/123
         private String[] titleRegexParts = {"[0-9.,]+u", "[a-zA-Z ]+", "[+]?[0-9 ]+", "B[0-9/]+"};
 
-
         public Work()
         {
 
         }
-        public Work(string id, decimal duration, string clientName, string phoneNumber, string orderNumber, string description, Status status)
+        /* public Work(string id, decimal duration, string clientName, string phoneNumber, string orderNumber, string description, Status status)
         {
             this.id = id;
             this.description = description;
@@ -43,113 +45,11 @@ namespace JugaAgenda_v2
             this.phoneNumber = phoneNumber;
             this.orderNumber = orderNumber;
             this.status = status;
-        }
-
-        // FOUT
-        /*public Work(string[] title, string description, Status status)
-        {
-            for (int i = 0; i < title.Length; i++)
-            {
-                if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace(',', '.'));
-                if (i == 1) this.clientName = title[i];
-                if (i == 1) this.phoneNumber = title[i];
-                if (i == 1) this.orderNumber = title[i];
-            }
-
-            this.description = description;
-            this.status = status;
-        }
-
-        // FOUT
-        public Work(string[] title, string description, int colorID)
-        {
-            for (int i = 0; i < title.Length; i++)
-            {
-                if (i == 0) this.duration = Convert.ToDecimal(title[i].Split('u')[0].Replace(',', '.'));
-                if (i == 1) this.clientName = title[i];
-                if (i == 2) this.phoneNumber = title[i];
-                if (i == 3) this.orderNumber = title[i];
-            }
-
-            this.description = description;
-
-            this.status = colorID_to_status(colorID);
         }*/
 
         public Work(Google.Apis.Calendar.v3.Data.Event item)
         {
             updateValues(item);
-        }
-
-        public void updateValues(Google.Apis.Calendar.v3.Data.Event item)
-        {
-            String tempTitle = item.Summary;
-            for (int i = 0; i < titleRegexParts.Length - 1; i ++)
-            {
-                String regexPattern = "";
-                for (int j = i + 1; j < titleRegexParts.Length; j ++)
-                {
-                    regexPattern += " " + titleRegexParts[j];
-                }
-
-                String titlePart = Regex.Split(tempTitle, regexPattern, RegexOptions.IgnoreCase)[0];
-
-                if (i == 0) this.duration = Convert.ToDecimal(titlePart.Replace(',', '.').Replace("u", String.Empty));
-                if (i == 1) this.clientName = titlePart;
-                if (i == 2) this.phoneNumber = titlePart;
-
-                tempTitle = tempTitle.Remove(0, titlePart.Length);
-
-            }
-
-            this.orderNumber = tempTitle;
-
-            this.id = item.Id;
-            this.description = item.Description;
-            this.status = colorID_to_status((int)Convert.ToInt64(item.ColorId));
-            this.calendarEvent = item;
-        }
-
-        public Status colorID_to_status(int colorID)
-        {
-            switch (colorID)
-            {
-                case 5:
-                    return Status.onderdelen_op_voorraad;
-                case 9:
-                    return Status.bezig;
-                case 2:
-                    return Status.klaar;
-                case 8:
-                    return Status.geannuleerd;
-                case 3:
-                    return Status.niet_komen_opdagen;
-                case 6:
-                    return Status.onderdelen_niet_op_tijd;
-                default:
-                    return Status.wachten_op_onderdelen;
-            }
-        }
-
-        public int status_to_colorID(Status status)
-        {
-            switch (status)
-            {
-                case Status.onderdelen_op_voorraad:
-                    return 5;
-                case Status.bezig:
-                    return 9;
-                case Status.klaar:
-                    return 2;
-                case Status.geannuleerd:
-                    return 8;
-                case Status.niet_komen_opdagen:
-                    return 3;
-                case Status.onderdelen_niet_op_tijd:
-                    return 6;
-                default:
-                    return 0;
-            }
         }
 
         public bool check_title(String title)
@@ -179,11 +79,6 @@ namespace JugaAgenda_v2
             
 
             return true;*/
-        }
-
-        public override string ToString()
-        {
-            return getTitle();
         }
 
         #region getters
@@ -251,6 +146,54 @@ namespace JugaAgenda_v2
         {
             return this.getDuration().ToString() + "u " + this.getClientName() + " " + this.getPhoneNumber() + " " + this.getOrderNumber();
         }
+
+        public Status colorID_to_status(int colorID)
+        {
+            switch (colorID)
+            {
+                case 5:
+                    return Status.onderdelen_op_voorraad;
+                case 9:
+                    return Status.bezig;
+                case 2:
+                    return Status.klaar;
+                case 8:
+                    return Status.geannuleerd;
+                case 3:
+                    return Status.niet_komen_opdagen;
+                case 6:
+                    return Status.onderdelen_niet_op_tijd;
+                default:
+                    return Status.wachten_op_onderdelen;
+            }
+        }
+
+        public int status_to_colorID(Status status)
+        {
+            switch (status)
+            {
+                case Status.onderdelen_op_voorraad:
+                    return 5;
+                case Status.bezig:
+                    return 9;
+                case Status.klaar:
+                    return 2;
+                case Status.geannuleerd:
+                    return 8;
+                case Status.niet_komen_opdagen:
+                    return 3;
+                case Status.onderdelen_niet_op_tijd:
+                    return 6;
+                default:
+                    return 0;
+            }
+        }
+
+        public List<Technician> getTechnicianList()
+        {
+            return technicianList;
+        }
+
         #endregion
 
         #region setters
@@ -287,7 +230,53 @@ namespace JugaAgenda_v2
         {
             this.status = status;
         }
-    #endregion
+
+        public void updateValues(Google.Apis.Calendar.v3.Data.Event item)
+        {
+            String tempTitle = item.Summary;
+            for (int i = 0; i < titleRegexParts.Length - 1; i++)
+            {
+                String regexPattern = "";
+                for (int j = i + 1; j < titleRegexParts.Length; j++)
+                {
+                    regexPattern += " " + titleRegexParts[j];
+                }
+
+                String titlePart = Regex.Split(tempTitle, regexPattern, RegexOptions.IgnoreCase)[0];
+
+                if (i == 0) this.duration = Convert.ToDecimal(titlePart.Replace(',', '.').Replace("u", String.Empty));
+                if (i == 1) this.clientName = titlePart;
+                if (i == 2) this.phoneNumber = titlePart;
+
+                tempTitle = tempTitle.Remove(0, titlePart.Length);
+
+            }
+
+            this.orderNumber = tempTitle;
+
+            this.id = item.Id;
+            this.description = item.Description;
+            this.status = colorID_to_status((int)Convert.ToInt64(item.ColorId));
+            this.calendarEvent = item;
+
+            if (item.Attendees != null)
+            {
+                foreach (Google.Apis.Calendar.v3.Data.EventAttendee attendee in item.Attendees)
+                {
+                    String email = attendee.Email;
+
+                    technicianList.Add(new Technician(email.Split('-')[0].Replace('_', ' ').CapitalizeAll(), Convert.ToDecimal(email.Split('-')[1].Split('@')[0])));
+                }
+            }
+            
+        }
+
+        #endregion
+        
+        public override string ToString()
+        {
+            return getTitle();
+        }
 
     }
 }

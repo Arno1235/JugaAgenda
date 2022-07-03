@@ -8,6 +8,7 @@ using Google.Apis.Util.Store;
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
+using JugaAgenda_v2.Classes;
 
 namespace JugaAgenda_v2
 {
@@ -169,7 +170,7 @@ namespace JugaAgenda_v2
 
         #region setters
 
-        public bool addWorkEvent(String title, String description, String startDate, String endDate, String colorID) // Full day event
+        public bool addWorkEvent(String title, String description, String startDate, String endDate, String colorID, IList<Technician> technicians) // Full day event
         {
             Event new_event = new Event();
 
@@ -183,10 +184,21 @@ namespace JugaAgenda_v2
             new_event.Description = description;
             new_event.ColorId = colorID;
 
+            IList<EventAttendee> attendees = new List<EventAttendee>();
+            
+            foreach (Technician technician in technicians)
+            {
+                EventAttendee attendee = new EventAttendee();
+                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
+                attendees.Add(attendee);
+            }
+
+            new_event.Attendees = attendees;
+
             return this.addWorkEvent(new_event);
         }
 
-        public bool addWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID)
+        public bool addWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, IList<Technician> technicians)
         {
             Event new_event = new Event();
 
@@ -197,6 +209,17 @@ namespace JugaAgenda_v2
             new_event.Summary = title;
             new_event.Description = description;
             new_event.ColorId = colorID;
+
+            IList<EventAttendee> attendees = new List<EventAttendee>();
+
+            foreach (Technician technician in technicians)
+            {
+                EventAttendee attendee = new EventAttendee();
+                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
+                attendees.Add(attendee);
+            }
+
+            new_event.Attendees = attendees;
 
             return this.addWorkEvent(new_event);
         }
@@ -214,7 +237,7 @@ namespace JugaAgenda_v2
             }
         }
 
-        public bool editWorkEvent(String title, String description, String startDate, String endDate, String colorID, String eventID) // Full day event
+        public bool editWorkEvent(String title, String description, String startDate, String endDate, String colorID, String eventID, IList<Technician> technicians) // Full day event
         {
             Event new_event = new Event();
 
@@ -228,10 +251,21 @@ namespace JugaAgenda_v2
             new_event.Description = description;
             new_event.ColorId = colorID;
 
+            IList<EventAttendee> attendees = new List<EventAttendee>();
+
+            foreach (Technician technician in technicians)
+            {
+                EventAttendee attendee = new EventAttendee();
+                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
+                attendees.Add(attendee);
+            }
+
+            new_event.Attendees = attendees;
+
             return this.editWorkEvent(new_event, eventID);
         }
 
-        public bool editWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, String eventID)
+        public bool editWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, String eventID, IList<Technician> technicians)
         {
             Event new_event = new Event();
 
@@ -242,6 +276,17 @@ namespace JugaAgenda_v2
             new_event.Summary = title;
             new_event.Description = description;
             new_event.ColorId = colorID;
+
+            IList<EventAttendee> attendees = new List<EventAttendee>();
+
+            foreach (Technician technician in technicians)
+            {
+                EventAttendee attendee = new EventAttendee();
+                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
+                attendees.Add(attendee);
+            }
+
+            new_event.Attendees = attendees;
 
             return this.editWorkEvent(new_event, eventID);
         }

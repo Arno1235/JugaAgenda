@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JugaAgenda_v2.Classes
 {
-    class Technician
+    public class Technician
     {
         private String name;
         private decimal hours;
@@ -42,5 +42,19 @@ namespace JugaAgenda_v2.Classes
             this.hours = hours;
         }
         #endregion
+
+        public override bool Equals(Object obj)
+        {
+            if (this.GetType() != obj.GetType()) return false;
+
+            Technician other = (Technician)obj;
+            return this.getName().Equals(other.getName()) && this.getHours().Equals(other.getHours());
+        }
+
+        public override string ToString()
+        {
+            if (this.getHours() == null || this.getHours() == 0) return this.getName();
+            return this.getName() + " - " + this.getHours().ToString() + "h";
+        }
     }
 }

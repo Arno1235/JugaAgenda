@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JugaAgenda_v2.Classes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -58,6 +59,13 @@ namespace JugaAgenda_v2
             foreach (Work.Status status in Enum.GetValues(typeof(Work.Status))) cbStatus.Items.Add(status);
             cbStatus.SelectedIndex = 0;
 
+            foreach (Technician technician in mainScreen.getTechnicianList())
+            {
+                cbTechnician.Items.Add(technician);
+            }
+            nuTechHours.Value = 0;
+            nuTechHours.Maximum = 0;
+
         }
 
         private void loadWorkEvent()
@@ -95,6 +103,14 @@ namespace JugaAgenda_v2
             tbPhoneNumber.Text = work.getPhoneNumber();
             tbOrderNumber.Text = work.getOrderNumber();
             rtbDescription.Text = work.getDescription();
+
+            foreach (Technician technician in work.getTechnicianList())
+            {
+                lbTechnicians.Items.Add(technician);
+                cbTechnician.Items.Remove(new Technician(technician.getName()));
+            }
+
+            updateNUTechHours();
 
         }
 
@@ -162,7 +178,12 @@ namespace JugaAgenda_v2
 
                     if (cbFullDays.Checked)
                     {
-                        if (mainScreen.googleCalendar.addWorkEvent(title, rtbDescription.Text.ToString(), dtpStart.Value.ToString("yyyy-MM-dd"), dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"), new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString()))
+                        if (mainScreen.googleCalendar.addWorkEvent(title,
+                            rtbDescription.Text.ToString(),
+                            dtpStart.Value.ToString("yyyy-MM-dd"),
+                            dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"),
+                            new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
+                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList()))
                         {
                             mainScreen.syncCalendar();
                             this.Close();
@@ -172,7 +193,12 @@ namespace JugaAgenda_v2
                         }
                     } else
                     {
-                        if (mainScreen.googleCalendar.addWorkEvent(title, rtbDescription.Text.ToString(), dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)), dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)), new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString()))
+                        if (mainScreen.googleCalendar.addWorkEvent(title,
+                            rtbDescription.Text.ToString(),
+                            dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)),
+                            dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)),
+                            new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
+                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList()))
                         {
                             mainScreen.syncCalendar();
                             this.Close();
@@ -189,7 +215,13 @@ namespace JugaAgenda_v2
 
                     if (cbFullDays.Checked)
                     {
-                        if (mainScreen.googleCalendar.editWorkEvent(title, rtbDescription.Text.ToString(), dtpStart.Value.ToString("yyyy-MM-dd"), dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"), new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(), oldWorkEvent.Id))
+                        if (mainScreen.googleCalendar.editWorkEvent(title,
+                            rtbDescription.Text.ToString(),
+                            dtpStart.Value.ToString("yyyy-MM-dd"),
+                            dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"),
+                            new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
+                            oldWorkEvent.Id,
+                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList()))
                         {
                             mainScreen.syncCalendar();
                             this.Close();
@@ -201,7 +233,13 @@ namespace JugaAgenda_v2
                     }
                     else
                     {
-                        if (mainScreen.googleCalendar.editWorkEvent(title, rtbDescription.Text.ToString(), dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)), dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)), new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(), oldWorkEvent.Id))
+                        if (mainScreen.googleCalendar.editWorkEvent(title,
+                            rtbDescription.Text.ToString(),
+                            dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)),
+                            dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)),
+                            new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
+                            oldWorkEvent.Id,
+                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList()))
                         {
                             mainScreen.syncCalendar();
                             this.Close();
@@ -248,5 +286,42 @@ namespace JugaAgenda_v2
         {
             availabilityScreen = null;
         }
+
+        private void btAdd_Click(object sender, EventArgs e)
+        {
+            if (cbTechnician.SelectedIndex == -1) return;
+            if (nuTechHours.Value <= 0) return;
+
+            lbTechnicians.Items.Add(new Technician(((Technician)cbTechnician.SelectedItem).getName(), nuTechHours.Value));
+            cbTechnician.Items.Remove(cbTechnician.SelectedItem);
+
+            updateNUTechHours();
+        }
+
+        private void nuHours_ValueChanged(object sender, EventArgs e)
+        {
+            updateNUTechHours();
+        }
+
+        private void updateNUTechHours()
+        {
+
+            nuTechHours.Maximum = nuHours.Value;
+            nuTechHours.Value = nuHours.Value;
+
+            foreach (Technician technician in lbTechnicians.Items)
+            {
+                nuTechHours.Value = Math.Max(nuTechHours.Value - technician.getHours(), 0);
+                nuTechHours.Maximum = Math.Max(nuTechHours.Maximum - technician.getHours(), 0);
+            }
+        }
+
+        private void lbTechnicians_DoubleClick(object sender, EventArgs e)
+        {
+            cbTechnician.Items.Add(new Technician(((Technician)lbTechnicians.SelectedItem).getName()));
+            lbTechnicians.Items.Remove(lbTechnicians.SelectedItem);
+            updateNUTechHours();
+        }
+
     }
 }

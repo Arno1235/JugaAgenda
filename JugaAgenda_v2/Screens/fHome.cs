@@ -16,6 +16,7 @@ namespace JugaAgenda_v2
         private List<CustomDay> techniciansWorkWeekList;
         private List<CustomDay> technicianLeaveList;
         private List<CustomDay> workList;
+        private List<Technician> technicianList;
         private fCalendarEvent calendarEventScreen = null;
         private fSearch searchScreen = null;
 
@@ -25,6 +26,7 @@ namespace JugaAgenda_v2
         // - Add/Edit/Remove/Show tech leave
         // - Add/Edit/Remove/Show tech schedule
         // - Add list of basic work with duration and price
+        // - Translate
 
         #endregion
 
@@ -157,6 +159,9 @@ namespace JugaAgenda_v2
             if (techniciansWorkWeekList == null) techniciansWorkWeekList = new List<CustomDay>();
             techniciansWorkWeekList.Clear();
 
+            if (technicianList == null) technicianList = new List<Technician>();
+            technicianList.Clear();
+
             for (int i = 1; i <= 7; i++) techniciansWorkWeekList.Add(new CustomDay(new DateTime(2021, 2, i)));
 
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getTechnicianEvents().Items)
@@ -176,6 +181,10 @@ namespace JugaAgenda_v2
                 String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
                 decimal hours = Convert.ToDecimal(item.Summary.Split(' ').Last().Split('u')[0].Replace(',', '.'));
                 day.addTechnicianList(new Technician(name, hours));
+
+                Technician technician = new Technician(name);
+                if (!technicianList.Contains(technician)) technicianList.Add(technician);
+
             }
 
             /*foreach (CustomDay day in techniciansWorkWeekList)
@@ -605,7 +614,7 @@ namespace JugaAgenda_v2
         }
 
         #endregion
-
+        
         #region SimpleButtonFunctions
 
         private void cbCalendarSelectionMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -714,6 +723,15 @@ namespace JugaAgenda_v2
 
         #endregion
 
+        #region Getters
+
+        public List<Technician> getTechnicianList()
+        {
+            return technicianList;
+        }
+
+        #endregion
+
     }
 
     public static class DateTimeExtensions
@@ -737,6 +755,24 @@ namespace JugaAgenda_v2
         {
             return source?.IndexOf(toCheck, comp) >= 0;
         }
+
+        public static string CapitalizeFirst(this string input)
+        {
+            return char.ToUpper(input[0]) + input[1..];
+        }
+
+        public static string CapitalizeAll(this string input)
+        {
+            var words = input.Split(' ');
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                words[i] = CapitalizeFirst(words[i]);
+            }
+
+            return string.Join(' ', words);
+        }
+
     }
 
 }
