@@ -21,7 +21,6 @@ namespace JugaAgenda_v2
 
         #region TODO
 
-        // - Show events in view that are not in selected range
         // - When adding or changing work show when there is place
         // - Add/Edit/Remove/Show tech leave
         // - Add/Edit/Remove/Show tech schedule
@@ -267,9 +266,9 @@ namespace JugaAgenda_v2
 
         #endregion
 
+        // TODO
         #region ExtraPrimaryFunctions
 
-        // TODO
         private void mvHome_SelectionChanged(object sender, EventArgs e)
         {
             if ((mvHome.SelectionEnd - mvHome.SelectionStart).Days > -1 && (mvHome.SelectionEnd - mvHome.SelectionStart).Days < calHome.MaximumViewDays)
@@ -296,13 +295,29 @@ namespace JugaAgenda_v2
                 calHome.MaximumViewDays = (int)Math.Ceiling((double)(end - start).Days / 7) * 7 + 7;
                 if (mvHome.SelectionStart <= calHome.ViewEnd)
                 {
-                    calHome.ViewStart = mvHome.SelectionStart;
-                    calHome.ViewEnd = mvHome.SelectionEnd;
+                    if (mvHome.SelectionMode == System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month)
+                    {
+                        calHome.ViewStart = mvHome.SelectionStart.StartOfWeek(DayOfWeek.Monday);
+                        calHome.ViewEnd = mvHome.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
+                    } else
+                    {
+                        calHome.ViewStart = mvHome.SelectionStart;
+                        calHome.ViewEnd = mvHome.SelectionEnd;
+                    }
+
                 }
                 else
                 {
-                    calHome.ViewEnd = mvHome.SelectionEnd;
-                    calHome.ViewStart = mvHome.SelectionStart;
+                    if (mvHome.SelectionMode == System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month)
+                    {
+                        calHome.ViewEnd = mvHome.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
+                        calHome.ViewStart = mvHome.SelectionStart.StartOfWeek(DayOfWeek.Monday);
+                    }
+                    else
+                    {
+                        calHome.ViewEnd = mvHome.SelectionEnd;
+                        calHome.ViewStart = mvHome.SelectionStart;
+                    }
                 }
                 calHome.MaximumViewDays = oldMaximumViewDays;
 
@@ -311,6 +326,7 @@ namespace JugaAgenda_v2
                     foreach (CustomDay day in workList)
                     {
                         DateTime date = day.getDate();
+
                         if (date >= calHome.ViewStart && date < calHome.ViewEnd)
                         {
                             foreach (Work work in day.getWorkList())
