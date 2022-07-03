@@ -27,6 +27,7 @@ namespace JugaAgenda_v2
 
         // TODO: Add schedule, Search function, Edit Leave, Add Leave, Edit Schedule
 
+        // - Show events in view that are not in selected range
         // - When adding or changing work show when there is place
         // - Add/Edit/Remove tech leave
         // - Add/Edit/Remove tech schedule
@@ -34,6 +35,7 @@ namespace JugaAgenda_v2
         // - Warning components not yet available (jurgen)
         // - Warning when week is too full
         // - Add list of basic work with duration and price
+        // - Camper binnendoen
 
         public fHome()
         {
