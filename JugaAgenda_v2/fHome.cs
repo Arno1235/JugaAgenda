@@ -29,13 +29,9 @@ namespace JugaAgenda_v2
 
         // - Show events in view that are not in selected range
         // - When adding or changing work show when there is place
-        // - Add/Edit/Remove tech leave
-        // - Add/Edit/Remove tech schedule
-        // - Display tech schedule
-        // - Warning components not yet available (jurgen)
-        // - Warning when week is too full
+        // - Add/Edit/Remove/Show tech leave
+        // - Add/Edit/Remove/Show tech schedule
         // - Add list of basic work with duration and price
-        // - Camper binnendoen
 
         public fHome()
         {
