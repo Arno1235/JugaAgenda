@@ -26,6 +26,7 @@ namespace JugaAgenda_v2
         private string phoneNumber;
         private string orderNumber;
         private Status status;
+        private decimal hours_done;
         private List<Technician> technicianList = new List<Technician>();
         private Google.Apis.Calendar.v3.Data.Event calendarEvent;
 
@@ -189,6 +190,11 @@ namespace JugaAgenda_v2
             }
         }
 
+        public decimal getHoursDone()
+        {
+            return hours_done;
+        }
+
         public List<Technician> getTechnicianList()
         {
             return technicianList;
@@ -243,15 +249,21 @@ namespace JugaAgenda_v2
                 }
 
                 String titlePart = Regex.Split(tempTitle, regexPattern, RegexOptions.IgnoreCase)[0];
+                int length = titlePart.Length;
+
+                if (titlePart[0].Equals(' ')) titlePart = titlePart.Substring(1);
+                if (titlePart[titlePart.Length-1].Equals(' ')) titlePart = titlePart.Substring(0, titlePart.Length-1);
 
                 if (i == 0) this.duration = Convert.ToDecimal(titlePart.Replace(',', '.').Replace("u", String.Empty));
                 if (i == 1) this.clientName = titlePart;
                 if (i == 2) this.phoneNumber = titlePart;
 
-                tempTitle = tempTitle.Remove(0, titlePart.Length);
+                tempTitle = tempTitle.Remove(0, length);
 
             }
 
+            if (tempTitle[0].Equals(' ')) tempTitle = tempTitle.Substring(1);
+            if (tempTitle[tempTitle.Length - 1].Equals(' ')) tempTitle = tempTitle.Substring(0, tempTitle.Length - 1);
             this.orderNumber = tempTitle;
 
             this.id = item.Id;
@@ -259,16 +271,28 @@ namespace JugaAgenda_v2
             this.status = colorID_to_status((int)Convert.ToInt64(item.ColorId));
             this.calendarEvent = item;
 
+            if (item.ExtendedProperties != null && item.ExtendedProperties.Shared != null)
+                this.hours_done = Convert.ToDecimal(item.ExtendedProperties.Shared["hours_done"]);
+
             if (item.Attendees != null)
             {
                 foreach (Google.Apis.Calendar.v3.Data.EventAttendee attendee in item.Attendees)
                 {
                     String email = attendee.Email;
+                    try
+                    {
 
-                    technicianList.Add(new Technician(email.Split('-')[0].Replace('_', ' ').CapitalizeAll(), Convert.ToDecimal(email.Split('-')[1].Split('@')[0])));
+                        technicianList.Add(new Technician(email.Split('-')[0].Replace('_', ' ').CapitalizeAll(), Convert.ToDecimal(email.Split('-')[1].Split('@')[0])));
+                    }
+                    catch
+                    {
+                        
+                    }
+
                 }
+
             }
-            
+
         }
 
         #endregion

@@ -65,6 +65,7 @@ namespace JugaAgenda_v2
             }
             nuTechHours.Value = 0;
             nuTechHours.Maximum = 0;
+            nuHoursDone.Maximum = 0;
 
         }
 
@@ -103,6 +104,8 @@ namespace JugaAgenda_v2
             tbPhoneNumber.Text = work.getPhoneNumber();
             tbOrderNumber.Text = work.getOrderNumber();
             rtbDescription.Text = work.getDescription();
+            nuHoursDone.Maximum = nuHours.Value;
+            nuHoursDone.Value = work.getHoursDone();
 
             foreach (Technician technician in work.getTechnicianList())
             {
@@ -111,7 +114,6 @@ namespace JugaAgenda_v2
             }
 
             updateNUTechHours();
-
         }
 
         private void cbFullDays_CheckedChanged(object sender, EventArgs e)
@@ -221,7 +223,8 @@ namespace JugaAgenda_v2
                             dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"),
                             new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
                             oldWorkEvent.Id,
-                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList()))
+                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
+                            nuHoursDone.Value.ToString()))
                         {
                             mainScreen.syncCalendar();
                             this.Close();
@@ -239,7 +242,8 @@ namespace JugaAgenda_v2
                             dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)),
                             new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
                             oldWorkEvent.Id,
-                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList()))
+                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
+                            nuHoursDone.Value.ToString()))
                         {
                             mainScreen.syncCalendar();
                             this.Close();
@@ -306,6 +310,8 @@ namespace JugaAgenda_v2
         private void updateNUTechHours()
         {
 
+            nuHoursDone.Maximum = nuHours.Value;
+            
             nuTechHours.Maximum = nuHours.Value;
             nuTechHours.Value = nuHours.Value;
 

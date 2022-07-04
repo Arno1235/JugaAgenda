@@ -237,7 +237,7 @@ namespace JugaAgenda_v2
             }
         }
 
-        public bool editWorkEvent(String title, String description, String startDate, String endDate, String colorID, String eventID, IList<Technician> technicians) // Full day event
+        public bool editWorkEvent(String title, String description, String startDate, String endDate, String colorID, String eventID, IList<Technician> technicians, String hours_done) // Full day event
         {
             Event new_event = new Event();
 
@@ -250,6 +250,10 @@ namespace JugaAgenda_v2
             new_event.Summary = title;
             new_event.Description = description;
             new_event.ColorId = colorID;
+
+            new_event.ExtendedProperties = new Event.ExtendedPropertiesData();
+            new_event.ExtendedProperties.Shared = new Dictionary<String, String>();
+            new_event.ExtendedProperties.Shared["hours_done"] = hours_done;
 
             IList<EventAttendee> attendees = new List<EventAttendee>();
 
@@ -265,7 +269,7 @@ namespace JugaAgenda_v2
             return this.editWorkEvent(new_event, eventID);
         }
 
-        public bool editWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, String eventID, IList<Technician> technicians)
+        public bool editWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, String eventID, IList<Technician> technicians, String hours_done)
         {
             Event new_event = new Event();
 
@@ -276,6 +280,10 @@ namespace JugaAgenda_v2
             new_event.Summary = title;
             new_event.Description = description;
             new_event.ColorId = colorID;
+
+            new_event.ExtendedProperties = new Event.ExtendedPropertiesData();
+            new_event.ExtendedProperties.Shared = new Dictionary<String, String>();
+            new_event.ExtendedProperties.Shared["hours_done"] = hours_done;
 
             IList<EventAttendee> attendees = new List<EventAttendee>();
 

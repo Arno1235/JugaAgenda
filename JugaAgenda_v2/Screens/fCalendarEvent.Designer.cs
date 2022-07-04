@@ -63,12 +63,15 @@ namespace JugaAgenda_v2
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.cbHourStart = new System.Windows.Forms.ComboBox();
             this.cbHourEnd = new System.Windows.Forms.ComboBox();
+            this.nuHoursDone = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuTechHours)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuHours)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nuHoursDone)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -157,6 +160,8 @@ namespace JugaAgenda_v2
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.nuHoursDone);
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.cbStatus);
             this.groupBox3.Controls.Add(this.btAvailability);
             this.groupBox3.Controls.Add(this.nuHours);
@@ -443,6 +448,30 @@ namespace JugaAgenda_v2
             this.cbHourEnd.Size = new System.Drawing.Size(88, 38);
             this.cbHourEnd.TabIndex = 4;
             // 
+            // nuHoursDone
+            // 
+            this.nuHoursDone.DecimalPlaces = 1;
+            this.nuHoursDone.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.nuHoursDone.Location = new System.Drawing.Point(501, 86);
+            this.nuHoursDone.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.nuHoursDone.Name = "nuHoursDone";
+            this.nuHoursDone.Size = new System.Drawing.Size(81, 35);
+            this.nuHoursDone.TabIndex = 23;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(370, 88);
+            this.label10.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(121, 30);
+            this.label10.TabIndex = 24;
+            this.label10.Text = "Hours done";
+            // 
             // fCalendarEvent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
@@ -461,6 +490,7 @@ namespace JugaAgenda_v2
             ((System.ComponentModel.ISupportInitialize)(this.nuHours)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nuHoursDone)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -501,5 +531,7 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ListBox lbTechnicians;
         private System.Windows.Forms.Button btAdd;
+        private System.Windows.Forms.NumericUpDown nuHoursDone;
+        private System.Windows.Forms.Label label10;
     }
 }
