@@ -23,7 +23,6 @@ namespace JugaAgenda_v2
 
         #region TODO
 
-        // - When adding or changing work show when there is place
         // - Add/Edit/Remove/Show tech leave
         // - Add/Edit/Remove/Show tech schedule
         // - Add list of basic work with duration and price
@@ -371,7 +370,6 @@ namespace JugaAgenda_v2
 
         #endregion
 
-        // TODO
         #region ExtraPrimaryFunctions
 
         private void mvHome_SelectionChanged(object sender, EventArgs e)
@@ -541,7 +539,6 @@ namespace JugaAgenda_v2
             return results;
         }
 
-        // TODO
         public List<DateTime> checkAvailability(decimal duration)
         {
             List<DateTime> results = new List<DateTime>();
