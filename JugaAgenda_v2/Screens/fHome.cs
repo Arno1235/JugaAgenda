@@ -16,6 +16,7 @@ namespace JugaAgenda_v2
         private List<CustomDay> techniciansWorkWeekList;
         private List<CustomDay> technicianLeaveList;
         private List<CustomDay> workList;
+        private List<Tuple<DateTime, String, decimal>> openWorkHoursList;
         private List<Technician> technicianList;
         private fCalendarEvent calendarEventScreen = null;
         private fSearch searchScreen = null;
@@ -46,6 +47,10 @@ namespace JugaAgenda_v2
             mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
 
             calHome.TimeScale = CalendarTimeScale.SixtyMinutes;
+
+            DateTime now = DateTime.Now;
+            newDayTimer.Interval = 1000 - now.Millisecond + (59 - now.Second)*1000 + (59 - now.Minute)*1000*60 + (23 - now.Hour)*1000*60*60 + 1*60*1000;
+            newDayTimer.Enabled = true;
 
             loadStyleComponents();
 
@@ -109,9 +114,9 @@ namespace JugaAgenda_v2
 
         }
 
+        // Can be more efficient
         public void syncCalendar()
         {
-            // Can be more efficient
             IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.sync();
             if (syncList != null)
             {
@@ -127,9 +132,34 @@ namespace JugaAgenda_v2
 
                             if (work.getId() == item.Id)
                             {
+
+                                IEnumerable<Tuple<DateTime, String, decimal>> openWorkHoursToDelete = openWorkHoursList.Where(x => x.Item2.Equals(item.Id));
+                                if (openWorkHoursToDelete.Count() > 1)
+                                {
+                                    foreach (Tuple<DateTime, String, decimal> tuple in openWorkHoursToDelete)
+                                    {
+                                        openWorkHoursList.Remove(tuple);
+                                    }
+                                }
+                                else if (openWorkHoursToDelete.Count() == 1)
+                                {
+                                    openWorkHoursList.Remove(openWorkHoursToDelete.First());
+                                }
+
                                 if (item.Summary != null && checkTitleMessageBox(item))
                                 {
                                     work.updateValues(item);
+
+                                    if (day.getDate() < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
+                                        work.getStatus() != Work.Status.klaar &&
+                                        work.getStatus() != Work.Status.geannuleerd &&
+                                        work.getStatus() != Work.Status.niet_komen_opdagen &&
+                                        work.getStatus() != Work.Status.onderdelen_niet_op_tijd &&
+                                        work.getDuration() - work.getHoursDone() > 0)
+                                    {
+                                        openWorkHoursList.Add(new Tuple<DateTime, string, decimal>(day.getDate(), work.getId(), work.getDuration() - work.getHoursDone()));
+                                    }
+
                                 }
                                 else
                                 {
@@ -176,7 +206,7 @@ namespace JugaAgenda_v2
                     continue;
                 }
 
-                CustomDay day = techniciansWorkWeekList[date.Day];
+                CustomDay day = techniciansWorkWeekList[date.Day-1];
 
                 String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
                 decimal hours = Convert.ToDecimal(item.Summary.Split(' ').Last().Split('u')[0].Replace(',', '.'));
@@ -191,7 +221,7 @@ namespace JugaAgenda_v2
             {
                 foreach (Technician tech in day.getTechnicianList())
                 {
-                    MessageBox.Show(day.getDate().ToString() + " " + tech.getName() + " " + tech.getHours().ToString());
+                    MessageBox.Show(day.getDate().customToString() + " " + tech.getName() + " " + tech.getHours().ToString());
                 }
             }*/
         }
@@ -243,12 +273,14 @@ namespace JugaAgenda_v2
         }
 
         // No support for non all-day and multiple days events yet
-        // Can be more efficient
         private void loadWork()
         {
             if (workList == null) workList = new List<CustomDay>();
             workList.Clear();
-            
+
+            if (openWorkHoursList == null) openWorkHoursList = new List<Tuple<DateTime, String, decimal>>();
+            openWorkHoursList.Clear();
+
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents())
             {
                 addWorkItem(item);
@@ -271,6 +303,70 @@ namespace JugaAgenda_v2
                     MessageBox.Show(day.getDate().ToString() + " " + tech.getName() + " " + tech.getHours().ToString());
                 }
             }*/
+        }
+
+        // Work.Status.onderdelen_niet_op_tijd ook voor availability?
+        // Can be more efficient
+        private void addWorkItem(Google.Apis.Calendar.v3.Data.Event item)
+        {
+
+            DateTime date;
+            if (item.Start.DateTime != null)
+            {
+                date = (DateTime)item.Start.DateTime;
+                date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
+            }
+            else
+            {
+                date = Convert.ToDateTime(item.Start.Date);
+            }
+
+            CustomDay day = null;
+            foreach (CustomDay listday in workList)
+            {
+                if (DateTime.Compare(listday.getDate(), date) == 0)
+                {
+                    day = listday;
+                    break;
+                }
+            }
+            if (day == null)
+            {
+                day = new CustomDay(date);
+
+                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeek].getTechnicianList())
+                {
+                    bool tech_has_leave = false;
+                    foreach (CustomDay leave_day in technicianLeaveList)
+                    {
+                        if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
+                        {
+                            foreach (Technician leave_tech in leave_day.getTechnicianList())
+                            {
+                                if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
+                            }
+                            // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
+                        }
+                    }
+
+                    if (!tech_has_leave) day.addTechnicianList(tech);
+                }
+
+                workList.Add(day);
+            }
+
+            if (checkTitleMessageBox(item))
+            {
+                Work new_work = new Work(item);
+                day.addWorkList(new_work);
+                if (date < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
+                    new_work.getStatus() != Work.Status.klaar &&
+                    new_work.getStatus() != Work.Status.geannuleerd &&
+                    new_work.getStatus() != Work.Status.niet_komen_opdagen &&
+                    new_work.getStatus() != Work.Status.onderdelen_niet_op_tijd &&
+                    new_work.getDuration() - new_work.getHoursDone() > 0)
+                        openWorkHoursList.Add(new Tuple<DateTime, string, decimal>(date, new_work.getId(), new_work.getDuration() - new_work.getHoursDone()));
+            }
         }
 
         #endregion
@@ -396,58 +492,6 @@ namespace JugaAgenda_v2
 
         }
 
-        private void addWorkItem(Google.Apis.Calendar.v3.Data.Event item)
-        {
-
-            DateTime date;
-            if (item.Start.DateTime != null)
-            {
-                date = (DateTime) item.Start.DateTime;
-                date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
-            } else
-            {
-                date = Convert.ToDateTime(item.Start.Date);
-            }
-            CustomDay day = null;
-            foreach (CustomDay listday in workList)
-            {
-                if (DateTime.Compare(listday.getDate(), date) == 0)
-                {
-                    day = listday;
-                    break;
-                }
-            }
-            if (day == null)
-            {
-                day = new CustomDay(date);
-
-                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeek].getTechnicianList())
-                {
-                    bool tech_has_leave = false;
-                    foreach (CustomDay leave_day in technicianLeaveList)
-                    {
-                        if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
-                        {
-                            foreach (Technician leave_tech in leave_day.getTechnicianList())
-                            {
-                                if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
-                            }
-                            // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
-                        }
-                    }
-
-                    if (!tech_has_leave) day.addTechnicianList(tech);
-                }
-
-                workList.Add(day);
-            }
-            if (checkTitleMessageBox(item))
-            {
-                Work new_work = new Work(item);
-                day.addWorkList(new_work);
-            }
-        }
-
         public bool deleteWorkItem(String eventId)
         {
             return googleCalendar.deleteWorkEvent(eventId);
@@ -502,15 +546,74 @@ namespace JugaAgenda_v2
         {
             List<DateTime> results = new List<DateTime>();
 
-            foreach (CustomDay day in workList)
-            {
-                foreach (Work work in day.getWorkList())
-                {
+            DateTime date = DateTime.Today.StartOfWeek(DayOfWeek.Monday);
+            decimal hoursTally = 0;
 
+            openWorkHoursList.Sort((x, y) => y.Item1.CompareTo(x.Item1));
+            foreach (Tuple<DateTime, String, decimal> item in openWorkHoursList)
+            {
+                if (item.Item1 >= date)
+                {
+                    break;
                 }
+                hoursTally -= item.Item3;
+            }
+
+            while(results.Count < 3)
+            {
+                hoursTally += techHoursAvailable(date);
+                hoursTally -= workHoursOnDay(date);
+
+                if (hoursTally >= duration) results.Add(date);
+
+                date = date.AddDays(1);
             }
 
             return results;
+        }
+
+        private decimal techHoursAvailable(DateTime date)
+        {
+            decimal hoursTally = 0;
+
+            IEnumerable<CustomDay> workDays = techniciansWorkWeekList.Where(x => x.getDate().DayOfWeek.Equals(date.DayOfWeek));
+            if (workDays.Count() > 0)
+            {
+                List<Technician> techs = workDays.First().getTechnicianList();
+                foreach (Technician tech in techs)
+                {
+                    hoursTally += tech.getHours();
+                }
+            }
+
+            IEnumerable<CustomDay> leaveDays = technicianLeaveList.Where(x => x.getDate().Equals(date));
+            if (leaveDays.Count() > 0)
+            {
+                List<Technician> techLeaves = leaveDays.First().getTechnicianList();
+                foreach (Technician tech in techLeaves)
+                {
+                    hoursTally -= tech.getHours();
+                }
+            }
+
+            return hoursTally;
+        }
+
+        private decimal workHoursOnDay(DateTime date)
+        {
+            decimal hoursTally = 0;
+
+            IEnumerable<CustomDay> days = workList.Where(x => x.getDate().Equals(date));
+            if (days.Count() > 0)
+            {
+                List<Work> workHours = days.First().getWorkList();
+                foreach (Work work in workHours)
+                {
+                    hoursTally += work.getDuration() - work.getHoursDone();
+                }
+            }
+            
+            return hoursTally;
         }
 
         #endregion
@@ -576,6 +679,11 @@ namespace JugaAgenda_v2
             return null;
         }
 
+        private void newDayTimer_Tick(object sender, EventArgs e)
+        {
+            loadEverything();
+        }
+
         #endregion
 
         #region SecondaryScreensFunctions
@@ -614,7 +722,7 @@ namespace JugaAgenda_v2
         }
 
         #endregion
-        
+
         #region SimpleButtonFunctions
 
         private void cbCalendarSelectionMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -747,6 +855,12 @@ namespace JugaAgenda_v2
             int diff = (7 - (dt.DayOfWeek - endOfWeek)) % 7;
             return dt.AddDays(diff).Date;
         }
+
+        public static String customToString(this DateTime dt)
+        {
+            return dt.DayOfWeek.ToString() + " " + dt.Day.ToString() + " " + dt.ToString("MMMM");
+        }
+
     }
 
     public static class StringExtensions

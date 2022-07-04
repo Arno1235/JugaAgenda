@@ -67,6 +67,7 @@
             this.lbAvailableResults.Name = "lbAvailableResults";
             this.lbAvailableResults.Size = new System.Drawing.Size(461, 604);
             this.lbAvailableResults.TabIndex = 20;
+            this.lbAvailableResults.DoubleClick += new System.EventHandler(this.lbAvailableResults_DoubleClick);
             // 
             // fAvailability
             // 

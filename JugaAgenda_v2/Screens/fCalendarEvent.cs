@@ -260,6 +260,12 @@ namespace JugaAgenda_v2
 
         private void fCalendarEvent_Closed(object sender, EventArgs e)
         {
+            if (availabilityScreen != null)
+            {
+                availabilityScreen.Close();
+                availabilityScreen = null;
+            }
+
             this.mainScreen.clear_calendar_screen();
         }
 
@@ -327,6 +333,17 @@ namespace JugaAgenda_v2
             cbTechnician.Items.Add(new Technician(((Technician)lbTechnicians.SelectedItem).getName()));
             lbTechnicians.Items.Remove(lbTechnicians.SelectedItem);
             updateNUTechHours();
+        }
+
+        public void setHours(decimal hours)
+        {
+            nuHours.Value = hours;
+        }
+
+        public void setDates(DateTime date)
+        {
+            dtpStart.Value = date;
+            dtpEnd.Value = date;
         }
 
     }

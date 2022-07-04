@@ -70,6 +70,7 @@ namespace JugaAgenda_v2
             this.tpGoogleSettings = new System.Windows.Forms.TabPage();
             this.btTestGoogleConnection = new System.Windows.Forms.Button();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
+            this.newDayTimer = new System.Windows.Forms.Timer(this.components);
             this.msHome.SuspendLayout();
             this.tcHome.SuspendLayout();
             this.tpCalendar.SuspendLayout();
@@ -394,6 +395,10 @@ namespace JugaAgenda_v2
             this.refreshTimer.Interval = 1000;
             this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
             // 
+            // newDayTimer
+            // 
+            this.newDayTimer.Tick += new System.EventHandler(this.newDayTimer_Tick);
+            // 
             // fHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
@@ -457,6 +462,7 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.ComboBox cbCalendarPerspective;
         private System.Windows.Forms.ComboBox cbCalendarTimeScale;
         private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
+        private System.Windows.Forms.Timer newDayTimer;
     }
 }
 

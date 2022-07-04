@@ -14,18 +14,18 @@ namespace JugaAgenda_v2
     {
         private fHome mainScreen;
         private fCalendarEvent calendarScreen;
-        private decimal hours;
+        private List<DateTime> dates;
         public fAvailability(fHome mainScreen, fCalendarEvent calendarScreen, decimal hours = 0)
         {
-            this.mainScreen = mainScreen;
-            this.calendarScreen = calendarScreen;
-            this.hours = hours;
-
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fAvailability_Closed);
-
             InitializeComponent();
 
-            nuHours.Value = hours;
+            dates = new List<DateTime>();
+
+            this.mainScreen = mainScreen;
+            this.calendarScreen = calendarScreen;
+            this.nuHours.Value = hours;
+
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fAvailability_Closed);
         }
 
         private void fAvailability_Closed(object sender, EventArgs e)
@@ -44,7 +44,18 @@ namespace JugaAgenda_v2
 
             foreach (DateTime date in mainScreen.checkAvailability(hours))
             {
-                lbAvailableResults.Items.Add(date.ToString());
+                lbAvailableResults.Items.Add(date.customToString());
+                dates.Add(date);
+            }
+        }
+        
+        private void lbAvailableResults_DoubleClick(object sender, EventArgs e)
+        {
+            if (calendarScreen != null)
+            {
+                calendarScreen.setHours(nuHours.Value);
+                calendarScreen.setDates(dates[lbAvailableResults.SelectedIndex]);
+                this.Close();
             }
         }
     }
