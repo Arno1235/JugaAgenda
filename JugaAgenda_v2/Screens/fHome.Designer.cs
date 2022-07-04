@@ -38,6 +38,7 @@ namespace JugaAgenda_v2
             this.msHome = new System.Windows.Forms.MenuStrip();
             this.addWorkEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.planningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fiveMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sixMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tenMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,7 +86,8 @@ namespace JugaAgenda_v2
             this.msHome.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.msHome.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addWorkEventToolStripMenuItem,
-            this.searchToolStripMenuItem});
+            this.searchToolStripMenuItem,
+            this.planningToolStripMenuItem});
             this.msHome.Location = new System.Drawing.Point(0, 0);
             this.msHome.Name = "msHome";
             this.msHome.Padding = new System.Windows.Forms.Padding(10, 4, 0, 4);
@@ -106,6 +108,13 @@ namespace JugaAgenda_v2
             this.searchToolStripMenuItem.Size = new System.Drawing.Size(99, 34);
             this.searchToolStripMenuItem.Text = "Zoeken";
             this.searchToolStripMenuItem.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
+            // 
+            // planningToolStripMenuItem
+            // 
+            this.planningToolStripMenuItem.Name = "planningToolStripMenuItem";
+            this.planningToolStripMenuItem.Size = new System.Drawing.Size(112, 34);
+            this.planningToolStripMenuItem.Text = "Planning";
+            this.planningToolStripMenuItem.Click += new System.EventHandler(this.planningToolStripMenuItem_Click);
             // 
             // fiveMinutesToolStripMenuItem
             // 
@@ -463,6 +472,7 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.ComboBox cbCalendarTimeScale;
         private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
         private System.Windows.Forms.Timer newDayTimer;
+        private System.Windows.Forms.ToolStripMenuItem planningToolStripMenuItem;
     }
 }
 

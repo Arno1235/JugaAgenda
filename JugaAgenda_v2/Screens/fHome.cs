@@ -1,4 +1,5 @@
 ﻿using JugaAgenda_v2.Classes;
+using JugaAgenda_v2.Screens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -837,6 +838,10 @@ namespace JugaAgenda_v2
 
         #endregion
 
+        private void planningToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new fPlanning().Show();
+        }
     }
 
     public static class DateTimeExtensions
