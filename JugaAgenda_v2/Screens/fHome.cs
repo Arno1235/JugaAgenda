@@ -25,6 +25,9 @@ namespace JugaAgenda_v2
 
         #region TODO
 
+        // - Change how technicians are saved in the calendar
+        // - Jurgen screen 2
+        // - Jurgen screen 3
         // - Add/Edit/Remove/Show tech leave
         // - Add/Edit/Remove/Show tech schedule
         // - Add list of basic work with duration and price
