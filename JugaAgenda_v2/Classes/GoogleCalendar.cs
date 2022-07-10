@@ -312,6 +312,11 @@ namespace JugaAgenda_v2
             }
         }
 
+        public bool editWorkEvent(Event new_event)
+        {
+            return this.editWorkEvent(new_event, new_event.Id);
+        }
+
         public bool deleteWorkEvent(String eventID)
         {
             try

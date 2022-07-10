@@ -21,6 +21,7 @@ namespace JugaAgenda_v2
         private List<Technician> technicianList;
         private fCalendarEvent calendarEventScreen = null;
         private fSearch searchScreen = null;
+        private fPlanning planningScreen = null;
 
         #region TODO
 
@@ -151,11 +152,7 @@ namespace JugaAgenda_v2
                                     work.updateValues(item);
 
                                     if (day.getDate() < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
-                                        work.getStatus() != Work.Status.klaar &&
-                                        work.getStatus() != Work.Status.geannuleerd &&
-                                        work.getStatus() != Work.Status.niet_komen_opdagen &&
-                                        work.getStatus() != Work.Status.onderdelen_niet_op_tijd &&
-                                        work.getDuration() - work.getHoursDone() > 0)
+                                        work.isWorkOpen())
                                     {
                                         openWorkHoursList.Add(new Tuple<DateTime, string, decimal>(day.getDate(), work.getId(), work.getDuration() - work.getHoursDone()));
                                     }
@@ -360,17 +357,14 @@ namespace JugaAgenda_v2
                 Work new_work = new Work(item);
                 day.addWorkList(new_work);
                 if (date < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
-                    new_work.getStatus() != Work.Status.klaar &&
-                    new_work.getStatus() != Work.Status.geannuleerd &&
-                    new_work.getStatus() != Work.Status.niet_komen_opdagen &&
-                    new_work.getStatus() != Work.Status.onderdelen_niet_op_tijd &&
-                    new_work.getDuration() - new_work.getHoursDone() > 0)
+                    new_work.isWorkOpen())
                         openWorkHoursList.Add(new Tuple<DateTime, string, decimal>(date, new_work.getId(), new_work.getDuration() - new_work.getHoursDone()));
             }
         }
 
         #endregion
 
+        // TODO
         #region ExtraPrimaryFunctions
 
         private void mvHome_SelectionChanged(object sender, EventArgs e)
@@ -597,6 +591,7 @@ namespace JugaAgenda_v2
             return hoursTally;
         }
 
+        // TODO: check if work isn't already done
         private decimal workHoursOnDay(DateTime date)
         {
             decimal hoursTally = 0;
@@ -612,6 +607,30 @@ namespace JugaAgenda_v2
             }
             
             return hoursTally;
+        }
+
+        public List<Work> getWorkWithNoAvailableComponents(DateTime start, DateTime end)
+        {
+            List<Work> results = new List<Work>();
+
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+                IEnumerable<CustomDay> workDays = workList.Where(x => x.getDate().Year.Equals(date.Year) && x.getDate().Month.Equals(date.Month) && x.getDate().Day.Equals(date.Day));
+
+                if (workDays.Count() > 0)
+                {
+                    List<Work> works = workDays.First().getWorkList();
+                    foreach (Work work in works)
+                    {
+                        if (!work.isWorkReady())
+                        {
+                            results.Add(work);
+                        }
+                    }
+                }
+            }
+
+            return results;
         }
 
         #endregion
@@ -840,7 +859,16 @@ namespace JugaAgenda_v2
 
         private void planningToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new fPlanning().Show();
+            if (planningScreen == null)
+            {
+                planningScreen = new fPlanning(this);
+                planningScreen.Show();
+            }
+        }
+
+        public void clearPlanningScreen()
+        {
+            planningScreen = null;
         }
     }
 

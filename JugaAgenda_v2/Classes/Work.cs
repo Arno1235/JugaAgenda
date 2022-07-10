@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using JugaAgenda_v2.Classes;
 using System.Collections.Generic;
+using Google.Apis.Calendar.v3.Data;
 
 namespace JugaAgenda_v2
 {
@@ -37,16 +38,6 @@ namespace JugaAgenda_v2
         {
 
         }
-        /* public Work(string id, decimal duration, string clientName, string phoneNumber, string orderNumber, string description, Status status)
-        {
-            this.id = id;
-            this.description = description;
-            this.duration = duration;
-            this.clientName = clientName;
-            this.phoneNumber = phoneNumber;
-            this.orderNumber = orderNumber;
-            this.status = status;
-        }*/
 
         public Work(Google.Apis.Calendar.v3.Data.Event item)
         {
@@ -80,6 +71,29 @@ namespace JugaAgenda_v2
             
 
             return true;*/
+        }
+
+        public void updateCalendarEvent()
+        {
+            this.calendarEvent.Id = this.getId();
+            this.calendarEvent.Description = this.getDescription();
+            this.calendarEvent.Summary = this.getTitle();
+            this.calendarEvent.ColorId = this.getColorID().ToString();
+
+            this.calendarEvent.ExtendedProperties = new Event.ExtendedPropertiesData();
+            this.calendarEvent.ExtendedProperties.Shared = new Dictionary<String, String>();
+            this.calendarEvent.ExtendedProperties.Shared["hours_done"] = this.getHoursDone().ToString();
+
+            IList<EventAttendee> attendees = new List<EventAttendee>();
+
+            foreach (Technician technician in this.getTechnicianList())
+            {
+                EventAttendee attendee = new EventAttendee();
+                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
+                attendees.Add(attendee);
+            }
+
+            this.calendarEvent.Attendees = attendees;
         }
 
         #region getters
@@ -198,6 +212,23 @@ namespace JugaAgenda_v2
         public List<Technician> getTechnicianList()
         {
             return technicianList;
+        }
+
+        public Boolean isWorkOpen()
+        {
+            return
+                this.getStatus() != Work.Status.klaar &&
+                this.getStatus() != Work.Status.geannuleerd &&
+                this.getStatus() != Work.Status.niet_komen_opdagen &&
+                this.getStatus() != Work.Status.onderdelen_niet_op_tijd &&
+                this.getDuration() - this.getHoursDone() > 0;
+        }
+
+        public Boolean isWorkReady()
+        {
+            return
+                this.getStatus() != Work.Status.wachten_op_onderdelen &&
+                this.getStatus() != Work.Status.onderdelen_niet_op_tijd;
         }
 
         #endregion
