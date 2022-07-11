@@ -35,9 +35,15 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lbWorkNotFinished = new System.Windows.Forms.ListBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.dtpWeekPlanning = new System.Windows.Forms.DateTimePicker();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nuWeeks)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -96,6 +102,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -119,13 +126,54 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.lbWorkNotFinished);
             this.tabPage2.Location = new System.Drawing.Point(4, 39);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(1319, 1046);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Werk nog niet klaar";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // lbWorkNotFinished
+            // 
+            this.lbWorkNotFinished.FormattingEnabled = true;
+            this.lbWorkNotFinished.ItemHeight = 30;
+            this.lbWorkNotFinished.Location = new System.Drawing.Point(8, 6);
+            this.lbWorkNotFinished.Name = "lbWorkNotFinished";
+            this.lbWorkNotFinished.Size = new System.Drawing.Size(695, 1024);
+            this.lbWorkNotFinished.TabIndex = 0;
+            this.lbWorkNotFinished.DoubleClick += new System.EventHandler(this.lbWorkNotFinished_DoubleClick);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.dtpWeekPlanning);
+            this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 39);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1319, 1046);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Werk Planning";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dtpWeekPlanning
+            // 
+            this.dtpWeekPlanning.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpWeekPlanning.Location = new System.Drawing.Point(29, 75);
+            this.dtpWeekPlanning.Name = "dtpWeekPlanning";
+            this.dtpWeekPlanning.Size = new System.Drawing.Size(237, 35);
+            this.dtpWeekPlanning.TabIndex = 1;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(109, 157);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(131, 40);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // fPlanning
             // 
@@ -134,11 +182,13 @@
             this.ClientSize = new System.Drawing.Size(1327, 1089);
             this.Controls.Add(this.tabControl1);
             this.Name = "fPlanning";
-            this.Text = "fPlanning";
+            this.Text = "Planning";
             ((System.ComponentModel.ISupportInitialize)(this.nuWeeks)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -152,5 +202,9 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ListBox lbWorkNotFinished;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DateTimePicker dtpWeekPlanning;
     }
 }

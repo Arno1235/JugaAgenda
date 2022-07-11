@@ -639,6 +639,24 @@ namespace JugaAgenda_v2
             return results;
         }
 
+        public List<Work> getWorkNotFinished()
+        {
+            List<Work> results = new List<Work>();
+
+            foreach (Tuple<DateTime, String, decimal> work in openWorkHoursList)
+            {
+                IEnumerable<CustomDay> workDayList = workList.Where(x => x.getDate().Equals(work.Item1));
+                if (workDayList.Count() > 0)
+                {
+                    IEnumerable<Work> works = workDayList.First().getWorkList().Where(x => x.getId().Equals(work.Item2));
+                    if (works.Count() > 0)
+                        results.Add(works.First());
+                }
+            }
+
+            return results;
+        }
+
         #endregion
 
         // TODO
@@ -728,11 +746,11 @@ namespace JugaAgenda_v2
             return this.calendarEventScreen != null;
         }
 
-        public void openCalendarScreen(Google.Apis.Calendar.v3.Data.Event item)
+        public void openCalendarScreen(Google.Apis.Calendar.v3.Data.Event item, fPlanning planningScreen = null)
         {
             if (calendarEventScreen == null)
             {
-                calendarEventScreen = new fCalendarEvent(this, item);
+                calendarEventScreen = new fCalendarEvent(this, item, planningScreen);
                 calendarEventScreen.Show();
             }
         }

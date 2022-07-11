@@ -1,4 +1,5 @@
 ﻿using JugaAgenda_v2.Classes;
+using JugaAgenda_v2.Screens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,11 +18,13 @@ namespace JugaAgenda_v2
         private fHome mainScreen;
         private Google.Apis.Calendar.v3.Data.Event oldWorkEvent;
         private fAvailability availabilityScreen;
+        private fPlanning planningScreen;
 
-        public fCalendarEvent(fHome mainScreen, Google.Apis.Calendar.v3.Data.Event oldWorkEvent = null)
+        public fCalendarEvent(fHome mainScreen, Google.Apis.Calendar.v3.Data.Event oldWorkEvent = null, fPlanning planningScreen = null)
         {
             this.mainScreen = mainScreen;
             this.oldWorkEvent = oldWorkEvent;
+            this.planningScreen = planningScreen;
 
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fCalendarEvent_Closed);
 
@@ -310,6 +313,12 @@ namespace JugaAgenda_v2
             {
                 availabilityScreen.Close();
                 availabilityScreen = null;
+            }
+
+            if (planningScreen != null)
+            {
+                planningScreen.loadComponents();
+                planningScreen.loadWork();
             }
 
             this.mainScreen.clear_calendar_screen();
