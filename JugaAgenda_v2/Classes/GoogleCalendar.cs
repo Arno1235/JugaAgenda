@@ -142,7 +142,6 @@ namespace JugaAgenda_v2
 
         }
 
-
         public Events getLeaveEvents()
         {
             EventsResource.ListRequest request = service.Events.List(calendarLeaveID);
@@ -170,60 +169,6 @@ namespace JugaAgenda_v2
 
         #region setters
 
-        public bool addWorkEvent(String title, String description, String startDate, String endDate, String colorID, IList<Technician> technicians) // Full day event
-        {
-            Event new_event = new Event();
-
-            new_event.Start = new EventDateTime();
-            new_event.Start.Date = startDate;
-            new_event.Start.DateTime = null;
-            new_event.End = new EventDateTime();
-            new_event.End.Date = endDate;
-            new_event.End.DateTime = null;
-            new_event.Summary = title;
-            new_event.Description = description;
-            new_event.ColorId = colorID;
-
-            IList<EventAttendee> attendees = new List<EventAttendee>();
-            
-            foreach (Technician technician in technicians)
-            {
-                EventAttendee attendee = new EventAttendee();
-                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
-                attendees.Add(attendee);
-            }
-
-            new_event.Attendees = attendees;
-
-            return this.addWorkEvent(new_event);
-        }
-
-        public bool addWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, IList<Technician> technicians)
-        {
-            Event new_event = new Event();
-
-            new_event.Start = new EventDateTime();
-            new_event.Start.DateTime = startDate;
-            new_event.End = new EventDateTime();
-            new_event.End.DateTime = endDate;
-            new_event.Summary = title;
-            new_event.Description = description;
-            new_event.ColorId = colorID;
-
-            IList<EventAttendee> attendees = new List<EventAttendee>();
-
-            foreach (Technician technician in technicians)
-            {
-                EventAttendee attendee = new EventAttendee();
-                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
-                attendees.Add(attendee);
-            }
-
-            new_event.Attendees = attendees;
-
-            return this.addWorkEvent(new_event);
-        }
-
         public bool addWorkEvent(Event new_event)
         {
             try
@@ -237,84 +182,17 @@ namespace JugaAgenda_v2
             }
         }
 
-        public bool editWorkEvent(String title, String description, String startDate, String endDate, String colorID, String eventID, IList<Technician> technicians, String hours_done) // Full day event
-        {
-            Event new_event = new Event();
-
-            new_event.Start = new EventDateTime();
-            new_event.Start.Date = startDate;
-            new_event.Start.DateTime = null;
-            new_event.End = new EventDateTime();
-            new_event.End.Date = endDate;
-            new_event.End.DateTime = null;
-            new_event.Summary = title;
-            new_event.Description = description;
-            new_event.ColorId = colorID;
-
-            new_event.ExtendedProperties = new Event.ExtendedPropertiesData();
-            new_event.ExtendedProperties.Shared = new Dictionary<String, String>();
-            new_event.ExtendedProperties.Shared["hours_done"] = hours_done;
-
-            IList<EventAttendee> attendees = new List<EventAttendee>();
-
-            foreach (Technician technician in technicians)
-            {
-                EventAttendee attendee = new EventAttendee();
-                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
-                attendees.Add(attendee);
-            }
-
-            new_event.Attendees = attendees;
-
-            return this.editWorkEvent(new_event, eventID);
-        }
-
-        public bool editWorkEvent(String title, String description, DateTime startDate, DateTime endDate, String colorID, String eventID, IList<Technician> technicians, String hours_done)
-        {
-            Event new_event = new Event();
-
-            new_event.Start = new EventDateTime();
-            new_event.Start.DateTime = startDate;
-            new_event.End = new EventDateTime();
-            new_event.End.DateTime = endDate;
-            new_event.Summary = title;
-            new_event.Description = description;
-            new_event.ColorId = colorID;
-
-            new_event.ExtendedProperties = new Event.ExtendedPropertiesData();
-            new_event.ExtendedProperties.Shared = new Dictionary<String, String>();
-            new_event.ExtendedProperties.Shared["hours_done"] = hours_done;
-
-            IList<EventAttendee> attendees = new List<EventAttendee>();
-
-            foreach (Technician technician in technicians)
-            {
-                EventAttendee attendee = new EventAttendee();
-                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
-                attendees.Add(attendee);
-            }
-
-            new_event.Attendees = attendees;
-
-            return this.editWorkEvent(new_event, eventID);
-        }
-
-        public bool editWorkEvent(Event new_event, String eventID)
+        public bool editWorkEvent(Event new_event)
         {
             try
             {
-                service.Events.Update(new_event, calendarWorkID, eventID).Execute();
+                service.Events.Update(new_event, calendarWorkID, new_event.Id).Execute();
                 return true;
             }
             catch
             {
                 return false;
             }
-        }
-
-        public bool editWorkEvent(Event new_event)
-        {
-            return this.editWorkEvent(new_event, new_event.Id);
         }
 
         public bool deleteWorkEvent(String eventID)

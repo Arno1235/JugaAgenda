@@ -4,6 +4,8 @@ using System.Drawing;
 using JugaAgenda_v2.Classes;
 using System.Collections.Generic;
 using Google.Apis.Calendar.v3.Data;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace JugaAgenda_v2
 {
@@ -20,12 +22,12 @@ namespace JugaAgenda_v2
             onderdelen_niet_op_tijd, // 6 = orange
         }
 
-        private string id;
-        private string description;
+        private String id;
+        private String description;
         private decimal duration;
-        private string clientName;
-        private string phoneNumber;
-        private string orderNumber;
+        private String clientName;
+        private String phoneNumber;
+        private String orderNumber;
         private Status status;
         private decimal hours_done;
         private List<Technician> technicianList = new List<Technician>();
@@ -34,14 +36,129 @@ namespace JugaAgenda_v2
         // Example: 2.5u Arno Van Eetvelde +32 490 11 17 78 B2020/123
         private String[] titleRegexParts = {"[0-9.,]+u", "[a-zA-Z ]+", "[+]?[0-9 ]+", "B[0-9/]+"};
 
-        public Work()
-        {
-
-        }
+        public Work() {}
 
         public Work(Google.Apis.Calendar.v3.Data.Event item)
         {
             updateValues(item);
+            if (!checkValues())
+                calendarEvent = null;
+        }
+
+        public Work( // Full day
+            String id,
+            String description,
+            decimal duration,
+            String clientName,
+            String phoneNumber,
+            String orderNumber,
+            Status status,
+            decimal hours_done,
+            IList<Technician> technicianList,
+            String startDate,
+            String endDate)
+        {
+            this.id = id;
+            this.description = description;
+            this.duration = duration;
+            this.clientName = clientName;
+            this.phoneNumber = phoneNumber;
+            this.orderNumber = orderNumber;
+            this.status = status;
+            this.hours_done = hours_done;
+            this.technicianList = technicianList as List<Technician>;
+
+            if (checkValues())
+                this.createFullDayCalendarEvent(startDate, endDate);
+        }
+
+        public Work(
+            String id,
+            String description,
+            decimal duration,
+            String clientName,
+            String phoneNumber,
+            String orderNumber,
+            Status status,
+            decimal hours_done,
+            IList<Technician> technicianList,
+            DateTime startDate,
+            DateTime endDate)
+        {
+            this.id = id;
+            this.description = description;
+            this.duration = duration;
+            this.clientName = clientName;
+            this.phoneNumber = phoneNumber;
+            this.orderNumber = orderNumber;
+            this.status = status;
+            this.hours_done = hours_done;
+            this.technicianList = technicianList as List<Technician>;
+
+            if (checkValues())
+                this.createCalendarEvent(startDate, endDate);
+        }
+
+        public void createFullDayCalendarEvent(String startDate, String endDate)
+        {
+            this.calendarEvent = new Event();
+
+            this.calendarEvent.Start = new EventDateTime();
+            this.calendarEvent.Start.Date = startDate;
+            this.calendarEvent.Start.DateTime = null;
+            this.calendarEvent.End = new EventDateTime();
+            this.calendarEvent.End.Date = endDate;
+            this.calendarEvent.End.DateTime = null;
+
+            updateCalendarEvent();
+        }
+
+        public void createCalendarEvent(DateTime startDate, DateTime endDate)
+        {
+            this.calendarEvent = new Event();
+
+            this.calendarEvent.Start = new EventDateTime();
+            this.calendarEvent.Start.DateTime = startDate;
+            this.calendarEvent.End = new EventDateTime();
+            this.calendarEvent.End.DateTime = endDate;
+
+            updateCalendarEvent();
+        }
+
+        public Boolean checkValues()
+        {
+            Regex regex;
+
+            regex = new Regex("^" + titleRegexParts[0] + "$", RegexOptions.IgnoreCase);
+            if (!regex.IsMatch(getDuration().ToString() + "u"))
+            {
+                MessageBox.Show("Duration is incorrect.");
+                return false;
+            }
+
+            regex = new Regex("^" + titleRegexParts[1] + "$", RegexOptions.IgnoreCase);
+            if (!regex.IsMatch(getClientName()))
+            {
+                MessageBox.Show("Client name is incorrect.");
+                return false;
+            }
+
+            regex = new Regex("^" + titleRegexParts[2] + "$", RegexOptions.IgnoreCase);
+            if (!regex.IsMatch(getPhoneNumber()))
+            {
+                MessageBox.Show("Phone number is incorrect.");
+                return false;
+            }
+
+            regex = new Regex("^" + titleRegexParts[3] + "$", RegexOptions.IgnoreCase);
+            if (!regex.IsMatch(getOrderNumber()))
+            {
+                MessageBox.Show("Order number is incorrect.");
+                return false;
+            }
+
+            return true;
+
         }
 
         public bool check_title(String title)
@@ -54,23 +171,8 @@ namespace JugaAgenda_v2
             }
             regexPattern = regexPattern.Remove(regexPattern.Length - 1);
 
-            Regex regex = new Regex(regexPattern, RegexOptions.IgnoreCase);
+            Regex regex = new Regex("^" + regexPattern + "$", RegexOptions.IgnoreCase);
             return regex.IsMatch(title);
-
-            /*String[] titleArray = title.Split(' ');
-            if (titleArray.Length < 3 || titleArray.Length > 4) return false;
-            
-            try
-            {
-                if (!titleArray[0].Substring(titleArray[0].Length - 1).Equals("u")) return false;
-                foreach (char c in titleArray[0].Split('u')[0]) if (!"0123456789.,".Contains(c.ToString())) return false;
-            } catch
-            {
-                return false;
-            }
-            
-
-            return true;*/
         }
 
         public void updateCalendarEvent()
@@ -82,18 +184,15 @@ namespace JugaAgenda_v2
 
             this.calendarEvent.ExtendedProperties = new Event.ExtendedPropertiesData();
             this.calendarEvent.ExtendedProperties.Shared = new Dictionary<String, String>();
+
+            foreach (KeyValuePair<String, String> property in this.calendarEvent.ExtendedProperties.Shared)
+                this.calendarEvent.ExtendedProperties.Shared[property.Key] = null;
+
             this.calendarEvent.ExtendedProperties.Shared["hours_done"] = this.getHoursDone().ToString();
 
-            IList<EventAttendee> attendees = new List<EventAttendee>();
+            foreach (Technician tech in this.getTechnicianList())
+                this.calendarEvent.ExtendedProperties.Shared["tech-" + tech.getName()] = tech.getHours().ToString();
 
-            foreach (Technician technician in this.getTechnicianList())
-            {
-                EventAttendee attendee = new EventAttendee();
-                attendee.Email = technician.getName().Replace(' ', '_') + "-" + technician.getHours().ToString() + "@juga.be";
-                attendees.Add(attendee);
-            }
-
-            this.calendarEvent.Attendees = attendees;
         }
 
         #region getters
@@ -303,23 +402,16 @@ namespace JugaAgenda_v2
             this.calendarEvent = item;
 
             if (item.ExtendedProperties != null && item.ExtendedProperties.Shared != null)
-                this.hours_done = Convert.ToDecimal(item.ExtendedProperties.Shared["hours_done"]);
-
-            if (item.Attendees != null)
             {
-                foreach (Google.Apis.Calendar.v3.Data.EventAttendee attendee in item.Attendees)
+                IDictionary<String, String> properties = item.ExtendedProperties.Shared;
+
+                if (properties["hours_done"] != null)
+                    this.hours_done = Convert.ToDecimal(properties["hours_done"]);
+
+                foreach (KeyValuePair<String, String> property in properties)
                 {
-                    String email = attendee.Email;
-                    try
-                    {
-
-                        technicianList.Add(new Technician(email.Split('-')[0].Replace('_', ' ').CapitalizeAll(), Convert.ToDecimal(email.Split('-')[1].Split('@')[0])));
-                    }
-                    catch
-                    {
-                        
-                    }
-
+                    if (property.Key.Substring(0, 4).Equals("tech"))
+                        technicianList.Add(new Technician(property.Key.Substring(5), Convert.ToDecimal(property.Value)));
                 }
 
             }

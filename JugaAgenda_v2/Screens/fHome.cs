@@ -25,13 +25,15 @@ namespace JugaAgenda_v2
 
         #region TODO
 
-        // - Change how technicians are saved in the calendar
         // - Jurgen screen 2
         // - Jurgen screen 3
+        // - Add extra support in calendar screen
+        // - Check how to properly connect to google calendar
         // - Add/Edit/Remove/Show tech leave
         // - Add/Edit/Remove/Show tech schedule
         // - Add list of basic work with duration and price
         // - Translate
+        // - Go through the todo's
 
         #endregion
 
@@ -370,6 +372,7 @@ namespace JugaAgenda_v2
         // TODO
         #region ExtraPrimaryFunctions
 
+        // TODO: Multiple days and not full days events
         private void mvHome_SelectionChanged(object sender, EventArgs e)
         {
             if ((mvHome.SelectionEnd - mvHome.SelectionStart).Days > -1 && (mvHome.SelectionEnd - mvHome.SelectionStart).Days < calHome.MaximumViewDays)
@@ -638,8 +641,10 @@ namespace JugaAgenda_v2
 
         #endregion
 
+        // TODO
         #region ExtraSecondaryFunctions
 
+        // TODO: Change this to be completely implemented in work class
         private bool checkTitleMessageBox(Google.Apis.Calendar.v3.Data.Event item)
         {
             if (!new Work().check_title(item.Summary))
@@ -655,7 +660,7 @@ namespace JugaAgenda_v2
                             continue;
                         }
                         item.Summary = new_title;
-                        if (!googleCalendar.editWorkEvent(item, item.Id))
+                        if (!googleCalendar.editWorkEvent(item))
                         {
                             MessageBox.Show("Something went wrong when updating event to calendar.");
                             return false;

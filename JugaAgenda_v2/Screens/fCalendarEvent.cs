@@ -133,6 +133,7 @@ namespace JugaAgenda_v2
             }
         }
 
+        // TODO: put this in the work class?
         private bool checkValues()
         {
             if (DateTime.Compare(dtpStart.Value.Date, dtpEnd.Value.Date) > 0)
@@ -143,16 +144,6 @@ namespace JugaAgenda_v2
             if (!cbFullDays.Checked && DateTime.Compare(dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)), dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem))) >= 0)
             {
                 MessageBox.Show("Times are incorrect.");
-                return false;
-            }
-            if (tbClientName.Text.Length <= 0)
-            {
-                MessageBox.Show("Client name is incorrect.");
-                return false;
-            }
-            if (tbPhoneNumber.Text.Length <= 0)
-            {
-                MessageBox.Show("Phone number is incorrect.");
                 return false;
             }
             return true;
@@ -175,84 +166,139 @@ namespace JugaAgenda_v2
             {
                 if (this.oldWorkEvent == null)
                 {
-                    String title = nuHours.Value.ToString() + "u " + tbClientName.Text.ToString() + " " + tbPhoneNumber.Text.ToString();
-                    if (tbOrderNumber.Text.Length > 0) title += " " + tbOrderNumber.Text.ToString();
 
                     if (cbFullDays.Checked)
                     {
-                        if (mainScreen.googleCalendar.addWorkEvent(title,
-                            rtbDescription.Text.ToString(),
-                            dtpStart.Value.ToString("yyyy-MM-dd"),
-                            dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"),
-                            new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
-                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList()))
-                        {
-                            mainScreen.syncCalendar();
-                            this.Close();
-                        } else
-                        {
-                            MessageBox.Show("Something went wrong when adding new event to calendar.");
-                        }
-                    } else
-                    {
-                        if (mainScreen.googleCalendar.addWorkEvent(title,
-                            rtbDescription.Text.ToString(),
-                            dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)),
-                            dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)),
-                            new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
-                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList()))
-                        {
-                            mainScreen.syncCalendar();
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Something went wrong when adding new event to calendar.");
-                        }
-                    }
-                } else
-                {
-                    String title = nuHours.Value.ToString() + "u " + tbClientName.Text.ToString() + " " + tbPhoneNumber.Text.ToString();
-                    if (tbOrderNumber.Text.Length > 0) title += " " + tbOrderNumber.Text.ToString();
 
-                    if (cbFullDays.Checked)
-                    {
-                        if (mainScreen.googleCalendar.editWorkEvent(title,
+                        Work new_work = new Work(
+                            null,
                             rtbDescription.Text.ToString(),
-                            dtpStart.Value.ToString("yyyy-MM-dd"),
-                            dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd"),
-                            new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
-                            oldWorkEvent.Id,
+                            Convert.ToDecimal(nuHours.Value.ToString()),
+                            tbClientName.Text.ToString(),
+                            tbPhoneNumber.Text.ToString(),
+                            tbOrderNumber.Text.ToString(),
+                            (Work.Status)cbStatus.SelectedItem,
+                            Convert.ToDecimal(nuHoursDone.Value.ToString()),
                             (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
-                            nuHoursDone.Value.ToString()))
+                            dtpStart.Value.ToString("yyyy-MM-dd"),
+                            dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd")
+                            );
+
+                        if (new_work.getCalendarEvent() != null)
                         {
-                            mainScreen.syncCalendar();
-                            this.Close();
+
+                            if (mainScreen.googleCalendar.addWorkEvent(new_work.getCalendarEvent()))
+                            {
+                                mainScreen.syncCalendar();
+                                this.Close();
+                            } else
+                            {
+                                MessageBox.Show("Something went wrong when adding new event to calendar.");
+                            }
                         }
-                        else
-                        {
-                            MessageBox.Show("Something went wrong when updating event to calendar.");
-                        }
+
                     }
                     else
                     {
-                        if (mainScreen.googleCalendar.editWorkEvent(title,
+
+                        Work new_work = new Work(
+                            null,
                             rtbDescription.Text.ToString(),
-                            dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)),
-                            dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem)),
-                            new Work().status_to_colorID((Work.Status)cbStatus.SelectedItem).ToString(),
-                            oldWorkEvent.Id,
+                            Convert.ToDecimal(nuHours.Value.ToString()),
+                            tbClientName.Text.ToString(),
+                            tbPhoneNumber.Text.ToString(),
+                            tbOrderNumber.Text.ToString(),
+                            (Work.Status)cbStatus.SelectedItem,
+                            Convert.ToDecimal(nuHoursDone.Value.ToString()),
                             (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
-                            nuHoursDone.Value.ToString()))
+                            dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)),
+                            dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem))
+                            );
+
+                        if (new_work.getCalendarEvent() != null)
                         {
-                            mainScreen.syncCalendar();
-                            this.Close();
+
+                            if (mainScreen.googleCalendar.addWorkEvent(new_work.getCalendarEvent()))
+                            {
+                                mainScreen.syncCalendar();
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Something went wrong when adding new event to calendar.");
+                            }
                         }
-                        else
-                        {
-                            MessageBox.Show("Something went wrong when updating event to calendar.");
-                        }
+
                     }
+
+                } else
+                {
+
+                    if (cbFullDays.Checked)
+                    {
+
+                        Work new_work = new Work(
+                            oldWorkEvent.Id,
+                            rtbDescription.Text.ToString(),
+                            Convert.ToDecimal(nuHours.Value.ToString()),
+                            tbClientName.Text.ToString(),
+                            tbPhoneNumber.Text.ToString(),
+                            tbOrderNumber.Text.ToString(),
+                            (Work.Status)cbStatus.SelectedItem,
+                            Convert.ToDecimal(nuHoursDone.Value.ToString()),
+                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
+                            dtpStart.Value.ToString("yyyy-MM-dd"),
+                            dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd")
+                            );
+
+                        if (new_work.getCalendarEvent() != null)
+                        {
+
+                            if (mainScreen.googleCalendar.editWorkEvent(new_work.getCalendarEvent()))
+                            {
+                                mainScreen.syncCalendar();
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Something went wrong when adding new event to calendar.");
+                            }
+                        }
+
+                    }
+                    else
+                    {
+
+                        Work new_work = new Work(
+                            oldWorkEvent.Id,
+                            rtbDescription.Text.ToString(),
+                            Convert.ToDecimal(nuHours.Value.ToString()),
+                            tbClientName.Text.ToString(),
+                            tbPhoneNumber.Text.ToString(),
+                            tbOrderNumber.Text.ToString(),
+                            (Work.Status)cbStatus.SelectedItem,
+                            Convert.ToDecimal(nuHoursDone.Value.ToString()),
+                            (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
+                            dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)),
+                            dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem))
+                            );
+
+                        if (new_work.getCalendarEvent() != null)
+                        {
+
+                            if (mainScreen.googleCalendar.editWorkEvent(new_work.getCalendarEvent()))
+                            {
+                                mainScreen.syncCalendar();
+                                this.Close();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Something went wrong when adding new event to calendar.");
+                            }
+                        }
+
+                    }
+
                 }
 
             }
@@ -271,9 +317,9 @@ namespace JugaAgenda_v2
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            DialogResult answer = MessageBox.Show("Weet je zeker dat je het agenda item wilt verwijderen?", "Opgelet", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            DialogResult answer = MessageBox.Show("Weet je zeker dat je het agenda item wilt verwijderen?", "Opgelet", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             
-            if (answer == DialogResult.OK)
+            if (answer == DialogResult.Yes)
             {
                 if (this.mainScreen.deleteWorkItem(oldWorkEvent.Id)) {
                     this.Close();
