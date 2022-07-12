@@ -6,6 +6,7 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using JugaAgenda_v2.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,6 +37,9 @@ namespace JugaAgenda_v2.Screens
 
             loadComponents();
             loadWork();
+
+            dtpWeekPlanningStart.Value = DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(7);
+            dtpWeekPlanningEnd.Value = dtpWeekPlanningStart.Value.AddDays(6);
         }
 
         private void fAvailability_Closed(object sender, EventArgs e)
@@ -105,7 +109,7 @@ namespace JugaAgenda_v2.Screens
             loadComponents();
         }
 
-        private void createPlanningOverview(DateTime date)
+        private void createPlanningOverview(DateTime startDate, DateTime endDate)
         {
             String filename = "planning.pdf";
 
@@ -117,36 +121,121 @@ namespace JugaAgenda_v2.Screens
             Document document = new Document(pdf, PageSize.A4.Rotate());
             document.SetMargins(20, 20, 20, 20);
 
-            document.Add(new Paragraph("Planning - " + date.customToString()));
+            Paragraph title = 
+                new Paragraph("Planning - Van " + startDate.customToString() + " tot en met " + endDate.customToString())
+                .SetFontSize(24)
+                .SetBold();
 
-            List list = new List().SetSymbolIndent(12).SetListSymbol("\u2022");
-            
-            list.Add(new ListItem("Never gonna give you up"))
-                .Add(new ListItem("Never gonna let you down"))
-                .Add(new ListItem("Never gonna run around and desert you"))
-                .Add(new ListItem("Never gonna make you cry"))
-                .Add(new ListItem("Never gonna say goodbye"))
-                .Add(new ListItem("Never gonna tell a lie and hurt you"));
+            Paragraph subTitle =
+                new Paragraph("Gemaakt op " + DateTime.Now.customToString())
+                .SetFontSize(12);
 
-            document.Add(list);
+            document
+                .Add(title)
+                .Add(subTitle);
 
-            List list2 = new List().SetMarginLeft(10).SetSymbolIndent(24).SetListSymbol("\u2022").SetBold();
 
-            list2.Add(new ListItem("Never gonna give you up"))
-                .Add(new ListItem("Never gonna let you down"))
-                .Add(new ListItem("Never gonna run around and desert you"))
-                .Add(new ListItem("Never gonna make you cry"))
-                .Add(new ListItem("Never gonna say goodbye"))
-                .Add(new ListItem("Never gonna tell a lie and hurt you"));
 
-            document.Add(list2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // TODO generate list
+            List<Tuple<DateTime, Technician, Work, decimal>> techs = new List<Tuple<DateTime, Technician, Work, decimal>>();
+
+            foreach (CustomDay day in mainScreen.getWorkBetweenDates(startDate, endDate))
+            {
+                // TODO generate list
+                List<Tuple<Work, decimal, List<Technician>>> works = new List<Tuple<Work, decimal, List<Technician>>>();
+                foreach (Work work in day.getWorkList())
+                {
+                    if (work.getTechnicianList().Count <= 0)
+                    {
+
+                    }
+                }
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*List listTitle =
+                    new List()
+                    .SetSymbolIndent(12)
+                    .SetListSymbol("\u2022")
+                    .SetFontSize(12)
+                    .SetBold()
+                    .Add(new ListItem(day.getDate().customToString()));
+
+            List list =
+                new List()
+                .SetSymbolIndent(12)
+                .SetListSymbol("\u2022")
+                .SetFontSize(12)
+                .SetMarginLeft(32);
+
+
+
+            document
+                .Add(listTitle)
+                .Add(list);*/
+
 
             document.Close();
+
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private List<List<int>> permutation(List<int> a, int k = 0, List<List<int>> results = null)
         {
-            createPlanningOverview(dtpWeekPlanning.Value);
+            if (results == null) results = new List<List<int>>();
+            if (k.Equals(a.Count())) results.Add(new List<int>(a));
+            else
+            {
+                for(int i = k; i < a.Count(); i++)
+                {
+                    (a[k], a[i]) = (a[i], a[k]);
+                    results = permutation(a, k + 1, results);
+                    (a[k], a[i]) = (a[i], a[k]);
+                }
+            }
+            return results;
+        }
+
+        private void btGeneratePDF_Click(object sender, EventArgs e)
+        {
+            List<int> a = new List<int>();
+            a.Add(1);
+            a.Add(2);
+            a.Add(3);
+            //permutation(a);
+            foreach(List<int> lists in permutation(a)) MessageBox.Show(lists[0].ToString() + lists[1].ToString() + lists[2].ToString());
+            //createPlanningOverview(dtpWeekPlanningStart.Value, dtpWeekPlanningEnd.Value);
         }
 
     }

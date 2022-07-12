@@ -37,8 +37,11 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.lbWorkNotFinished = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.dtpWeekPlanning = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
+            this.dtpWeekPlanningStart = new System.Windows.Forms.DateTimePicker();
+            this.btGeneratePDF = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dtpWeekPlanningEnd = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.nuWeeks)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -147,8 +150,11 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.dtpWeekPlanning);
-            this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.dtpWeekPlanningEnd);
+            this.tabPage3.Controls.Add(this.label2);
+            this.tabPage3.Controls.Add(this.dtpWeekPlanningStart);
+            this.tabPage3.Controls.Add(this.btGeneratePDF);
             this.tabPage3.Location = new System.Drawing.Point(4, 39);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -157,23 +163,49 @@
             this.tabPage3.Text = "Werk Planning";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // dtpWeekPlanning
+            // dtpWeekPlanningStart
             // 
-            this.dtpWeekPlanning.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpWeekPlanning.Location = new System.Drawing.Point(29, 75);
-            this.dtpWeekPlanning.Name = "dtpWeekPlanning";
-            this.dtpWeekPlanning.Size = new System.Drawing.Size(237, 35);
-            this.dtpWeekPlanning.TabIndex = 1;
+            this.dtpWeekPlanningStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpWeekPlanningStart.Location = new System.Drawing.Point(69, 6);
+            this.dtpWeekPlanningStart.Name = "dtpWeekPlanningStart";
+            this.dtpWeekPlanningStart.Size = new System.Drawing.Size(182, 35);
+            this.dtpWeekPlanningStart.TabIndex = 1;
             // 
-            // button1
+            // btGeneratePDF
             // 
-            this.button1.Location = new System.Drawing.Point(109, 157);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(131, 40);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btGeneratePDF.Location = new System.Drawing.Point(517, 5);
+            this.btGeneratePDF.Name = "btGeneratePDF";
+            this.btGeneratePDF.Size = new System.Drawing.Size(131, 40);
+            this.btGeneratePDF.TabIndex = 0;
+            this.btGeneratePDF.Text = "Genereer PDF";
+            this.btGeneratePDF.UseVisualStyleBackColor = true;
+            this.btGeneratePDF.Click += new System.EventHandler(this.btGeneratePDF_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 30);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Start";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(257, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(66, 30);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Finish";
+            // 
+            // dtpWeekPlanningEnd
+            // 
+            this.dtpWeekPlanningEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpWeekPlanningEnd.Location = new System.Drawing.Point(329, 6);
+            this.dtpWeekPlanningEnd.Name = "dtpWeekPlanningEnd";
+            this.dtpWeekPlanningEnd.Size = new System.Drawing.Size(182, 35);
+            this.dtpWeekPlanningEnd.TabIndex = 3;
             // 
             // fPlanning
             // 
@@ -189,6 +221,7 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -204,7 +237,10 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListBox lbWorkNotFinished;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DateTimePicker dtpWeekPlanning;
+        private System.Windows.Forms.Button btGeneratePDF;
+        private System.Windows.Forms.DateTimePicker dtpWeekPlanningStart;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DateTimePicker dtpWeekPlanningEnd;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -25,7 +25,6 @@ namespace JugaAgenda_v2
 
         #region TODO
 
-        // - Jurgen screen 2
         // - Jurgen screen 3
         // - Add extra support in calendar screen
         // - Check how to properly connect to google calendar
@@ -652,6 +651,43 @@ namespace JugaAgenda_v2
                     if (works.Count() > 0)
                         results.Add(works.First());
                 }
+            }
+
+            return results;
+        }
+
+        public List<CustomDay> getWorkBetweenDates(DateTime startDate, DateTime endDate)
+        {
+            List<CustomDay> results = new List<CustomDay>();
+
+            foreach (Tuple<DateTime, String, decimal> work in openWorkHoursList)
+            {
+
+                CustomDay customDay = new CustomDay(work.Item1);
+                if (results.Contains(customDay))
+                {
+                    customDay = results.Where(x => x.getDate().Year.Equals(work.Item1.Year) && x.getDate().Month.Equals(work.Item1.Month) && x.getDate().Day.Equals(work.Item1.Day)).First();
+                }
+                else
+                {
+                    results.Add(customDay);
+                }
+
+                IEnumerable<CustomDay> workDayList = workList.Where(x => x.getDate().Equals(work.Item1));
+                if (workDayList.Count() > 0)
+                {
+                    IEnumerable<Work> works = workDayList.First().getWorkList().Where(x => x.getId().Equals(work.Item2));
+                    if (works.Count() > 0)
+                        customDay.addWorkList(works.First());
+                }
+
+            }
+
+            for (DateTime date = startDate; date <= endDate; date.AddDays(1))
+            {
+                IEnumerable<CustomDay> days = workList.Where(x => x.getDate().Year.Equals(date.Year) && x.getDate().Month.Equals(date.Month) && x.getDate().Day.Equals(date.Day));
+                if (days.Count() > 0)
+                    results.Add(days.First());
             }
 
             return results;

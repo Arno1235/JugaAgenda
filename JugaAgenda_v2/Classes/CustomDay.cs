@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace JugaAgenda_v2.Classes
 {
-    class CustomDay
+    public class CustomDay
     {
         private DateTime date;
         private List<Work> workList;
@@ -40,6 +40,19 @@ namespace JugaAgenda_v2.Classes
         {
             technicianList.Add(technician);
         }
+
         #endregion
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || this.GetType().Equals(obj.GetType())) return false;
+
+            CustomDay other = (CustomDay)obj;
+
+            return
+                this.getDate().Year.Equals(other.getDate().Year) &&
+                this.getDate().Month.Equals(other.getDate().Month) &&
+                this.getDate().Day.Equals(other.getDate().Day);
+        }
     }
 }
