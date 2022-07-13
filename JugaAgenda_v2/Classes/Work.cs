@@ -150,6 +150,8 @@ namespace JugaAgenda_v2
                 return false;
             }
 
+            if (getOrderNumber() == "" || getOrderNumber() == null) setOrderNumber("B0");
+
             regex = new Regex("^" + titleRegexParts[3] + "$", RegexOptions.IgnoreCase);
             if (!regex.IsMatch(getOrderNumber()))
             {
