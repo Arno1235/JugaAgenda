@@ -155,7 +155,8 @@ namespace JugaAgenda_v2.Screens
             foreach (CustomDay day in mainScreen.getWorkBetweenDates(startDate, endDate))
             {
                 // TODO generate list
-                List<Tuple<Work, decimal, List<Technician>>> works = new List<Tuple<Work, decimal, List<Technician>>>();
+                //List<Tuple<Work, decimal, List<Technician>>> works = new List<Tuple<Work, decimal, List<Technician>>>();
+                List<Tuple<Work, Technician>> works = new List<Tuple<Work, Technician>>();
                 foreach (Work work in day.getWorkList())
                 {
                     if (work.getTechnicianList().Count <= 0)
@@ -164,10 +165,57 @@ namespace JugaAgenda_v2.Screens
                     }
                 }
 
+                List<List<int>> permutations = allPermutationAmounts(works.Count(), techs.Count());
 
+                int bestScore = int.MaxValue;
+                int index = -1;
 
+                for (int i = 0; i < permutations.Count; i++)
+                {
+                    List<int> order = permutations[i];
 
+                    // check if is possible
+                    Boolean possible = true;
+                    for (int j = 0; j < order.Count(); j++)
+                    {
+                        if (order[j] == -1) continue;
+                        if (works[order[j]].Item2 != null &&
+                            !works[order[j]].Item2.getName().Equals(techs[j].Item2.getName()))
+                            possible = false;
+                    }
+                    if (!possible) continue;
 
+                    // calculate score
+                    int score = 2 * order.Where(x => x == -1).Count();
+
+                    List<String> uniqueWorkTechPairs = new List<String>();
+                    foreach (int j in order)
+                    {
+                        if (j == -1) continue;
+                        String pair = works[order[j]].Item1.getId() + techs[j].Item2.getName();
+                        if (!uniqueWorkTechPairs.Contains(pair)) uniqueWorkTechPairs.Add(pair);
+                    }
+                    score += uniqueWorkTechPairs.Count();
+
+                    if (score < bestScore)
+                    {
+                        bestScore = score;
+                        index = i;
+                    }
+                }
+
+                // TODO: format/layout
+                List list =
+                        new List()
+                        .SetSymbolIndent(12)
+                        .SetListSymbol("\u2022")
+                        .SetFontSize(12)
+                        .SetMarginLeft(32);
+
+                for (int i = 0; i < permutations[index].Count(); i++)
+                {
+                    list.Add(new ListItem("Tech: " + techs[i].Item2.getName() + " - Work: " + works[permutations[index][i]].Item1.getTitle()));
+                }
 
             }
 
@@ -211,6 +259,46 @@ namespace JugaAgenda_v2.Screens
 
         }
 
+        public List<List<int>> allPermutationAmounts(int maxAmount, int length)
+        {
+            List<List<int>> results = new List<List<int>> ();
+            for (int i = 1; i <= maxAmount; i++) results.AddRange(permutationAmount(i, length));
+            return results;
+        }
+
+        public List<List<int>> permutationAmount(int amount, int length)
+        {
+            List<int> a = new List<int>();
+            for (int i = 0; i < amount; i++) a.Add(i);
+
+            if (amount < length)
+            {
+                for (int i = 0; i < length - amount; i++) a.Add(-1);
+                amount = length;
+            }
+            
+            List<List<int>> permutations = permutation(a);
+
+            List<List<int>> results = new List<List<int>>();
+            List<String> temp = new List<String>();
+
+            for (int i = 0; i < permutations.Count; i++)
+            {
+                permutations[i].RemoveRange(length, amount - length);
+                
+                String tempStr = "";
+                foreach(int j in permutations[i]) tempStr += j.ToString();
+
+                if (!temp.Contains(tempStr))
+                {
+                    temp.Add(tempStr);
+                    results.Add(permutations[i]);
+                }
+            }
+
+            return results;
+        }
+
         private List<List<int>> permutation(List<int> a, int k = 0, List<List<int>> results = null)
         {
             if (results == null) results = new List<List<int>>();
@@ -229,12 +317,8 @@ namespace JugaAgenda_v2.Screens
 
         private void btGeneratePDF_Click(object sender, EventArgs e)
         {
-            List<int> a = new List<int>();
-            a.Add(1);
-            a.Add(2);
-            a.Add(3);
-            //permutation(a);
-            foreach(List<int> lists in permutation(a)) MessageBox.Show(lists[0].ToString() + lists[1].ToString() + lists[2].ToString());
+            MessageBox.Show("Nog niet klaar");
+            //foreach(List<int> lists in allPermutationAmounts(2, 4)) MessageBox.Show(lists[0].ToString() + lists[1].ToString() + lists[2].ToString() + lists[3].ToString());
             //createPlanningOverview(dtpWeekPlanningStart.Value, dtpWeekPlanningEnd.Value);
         }
 
