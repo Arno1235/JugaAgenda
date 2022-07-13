@@ -1,22 +1,13 @@
-﻿using iText.Commons.Utils;
-using iText.IO.Font.Constants;
-using iText.Kernel.Font;
-using iText.Kernel.Geom;
+﻿using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
-using iText.Layout.Properties;
 using JugaAgenda_v2.Classes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -109,9 +100,23 @@ namespace JugaAgenda_v2.Screens
             loadComponents();
         }
 
+        private void pdfTest()
+        {
+            //Initialize PDF writer
+            PdfWriter writer = new PdfWriter("planning.pdf");
+            //Initialize PDF document
+            PdfDocument pdf = new PdfDocument(writer);
+            // Initialize document
+            Document document = new Document(pdf);
+            //Add paragraph to the document
+            document.Add(new Paragraph("Hello World!"));
+            //Close document
+            document.Close();
+        }
+
         private void createPlanningOverview(DateTime startDate, DateTime endDate)
         {
-            String filename = "planning.pdf";
+            /*String filename = "planning.pdf";
 
             FileInfo file = new FileInfo(filename);
             file.Directory.Create();
@@ -119,7 +124,7 @@ namespace JugaAgenda_v2.Screens
             PdfWriter writer = new PdfWriter(filename);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf, PageSize.A4.Rotate());
-            document.SetMargins(20, 20, 20, 20);
+            //document.SetMargins(20, 20, 20, 20);
 
             Paragraph title = 
                 new Paragraph("Planning - Van " + startDate.customToString() + " tot en met " + endDate.customToString())
@@ -132,7 +137,7 @@ namespace JugaAgenda_v2.Screens
 
             document
                 .Add(title)
-                .Add(subTitle);
+                .Add(subTitle);*/
 
 
 
@@ -150,10 +155,12 @@ namespace JugaAgenda_v2.Screens
 
 
             // TODO generate list
-            List<Tuple<DateTime, Technician, Work, decimal>> techs = new List<Tuple<DateTime, Technician, Work, decimal>>();
+            //List<Tuple<DateTime, Technician>> techs = new List<Tuple<DateTime, Technician>>();
 
             foreach (CustomDay day in mainScreen.getWorkBetweenDates(startDate, endDate))
             {
+                List<Technician> techs = day.getTechnicianList();
+
                 // TODO generate list
                 //List<Tuple<Work, decimal, List<Technician>>> works = new List<Tuple<Work, decimal, List<Technician>>>();
                 List<Tuple<Work, Technician>> works = new List<Tuple<Work, Technician>>();
@@ -161,11 +168,24 @@ namespace JugaAgenda_v2.Screens
                 {
                     if (work.getTechnicianList().Count <= 0)
                     {
-
+                        for (int i = 0; i < (work.getDuration() - work.getHoursDone()) * 2; i++) // *2 for half hours
+                            works.Add(new Tuple<Work, Technician>(work, null));
+                    }
+                    else
+                    {
+                        decimal hoursTally = work.getDuration() - work.getHoursDone();
+                        foreach (Technician tech in work.getTechnicianList())
+                        {
+                            for (int i = 0; i < tech.getHours() * 2; i++) // *2 for half hours
+                                works.Add(new Tuple<Work, Technician>(work, tech));
+                            hoursTally -= tech.getHours();
+                        }
+                        for (int i = 0; i < hoursTally * 2; i++) // *2 for half hours
+                            works.Add(new Tuple<Work, Technician>(work, null));
                     }
                 }
 
-                List<List<int>> permutations = allPermutationAmounts(works.Count(), techs.Count());
+                List<List<int>> permutations = allPermutationAmounts(works.Count() * 2, techs.Count() * 2); // *2 for half hours
 
                 int bestScore = int.MaxValue;
                 int index = -1;
@@ -180,7 +200,7 @@ namespace JugaAgenda_v2.Screens
                     {
                         if (order[j] == -1) continue;
                         if (works[order[j]].Item2 != null &&
-                            !works[order[j]].Item2.getName().Equals(techs[j].Item2.getName()))
+                            !works[order[j]].Item2.getName().Equals(techs[j].getName()))
                             possible = false;
                     }
                     if (!possible) continue;
@@ -192,7 +212,7 @@ namespace JugaAgenda_v2.Screens
                     foreach (int j in order)
                     {
                         if (j == -1) continue;
-                        String pair = works[order[j]].Item1.getId() + techs[j].Item2.getName();
+                        String pair = works[order[j]].Item1.getId() + techs[j].getName();
                         if (!uniqueWorkTechPairs.Contains(pair)) uniqueWorkTechPairs.Add(pair);
                     }
                     score += uniqueWorkTechPairs.Count();
@@ -205,17 +225,20 @@ namespace JugaAgenda_v2.Screens
                 }
 
                 // TODO: format/layout
-                List list =
+                /*List list =
                         new List()
                         .SetSymbolIndent(12)
                         .SetListSymbol("\u2022")
                         .SetFontSize(12)
-                        .SetMarginLeft(32);
+                        .SetMarginLeft(32);*/
 
                 for (int i = 0; i < permutations[index].Count(); i++)
                 {
-                    list.Add(new ListItem("Tech: " + techs[i].Item2.getName() + " - Work: " + works[permutations[index][i]].Item1.getTitle()));
+                    //list.Add(new ListItem("Tech: " + techs[i].getName() + " - Work: " + works[permutations[index][i]].Item1.getTitle()));
+                    MessageBox.Show("Tech: " + techs[i].getName() + " - Work: " + works[permutations[index][i]].Item1.getTitle());
                 }
+
+                /*document.Add(list);*/
 
             }
 
@@ -255,7 +278,7 @@ namespace JugaAgenda_v2.Screens
                 .Add(list);*/
 
 
-            document.Close();
+            //document.Close();
 
         }
 
@@ -317,6 +340,7 @@ namespace JugaAgenda_v2.Screens
 
         private void btGeneratePDF_Click(object sender, EventArgs e)
         {
+            //pdfTest();
             MessageBox.Show("Nog niet klaar");
             //foreach(List<int> lists in allPermutationAmounts(2, 4)) MessageBox.Show(lists[0].ToString() + lists[1].ToString() + lists[2].ToString() + lists[3].ToString());
             //createPlanningOverview(dtpWeekPlanningStart.Value, dtpWeekPlanningEnd.Value);
