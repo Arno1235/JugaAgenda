@@ -79,6 +79,7 @@
             this.Controls.Add(this.nuHours);
             this.Name = "fAvailability";
             this.Text = "fAvailability";
+            this.Resize += new System.EventHandler(this.fAvailability_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.nuHours)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

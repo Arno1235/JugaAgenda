@@ -37,11 +37,11 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.lbWorkNotFinished = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.dtpWeekPlanningStart = new System.Windows.Forms.DateTimePicker();
-            this.btGeneratePDF = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dtpWeekPlanningEnd = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.dtpWeekPlanningStart = new System.Windows.Forms.DateTimePicker();
+            this.btGeneratePDF = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nuWeeks)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -163,6 +163,32 @@
             this.tabPage3.Text = "Werk Planning";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(257, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(66, 30);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Finish";
+            // 
+            // dtpWeekPlanningEnd
+            // 
+            this.dtpWeekPlanningEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpWeekPlanningEnd.Location = new System.Drawing.Point(329, 6);
+            this.dtpWeekPlanningEnd.Name = "dtpWeekPlanningEnd";
+            this.dtpWeekPlanningEnd.Size = new System.Drawing.Size(182, 35);
+            this.dtpWeekPlanningEnd.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 30);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Start";
+            // 
             // dtpWeekPlanningStart
             // 
             this.dtpWeekPlanningStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -181,32 +207,6 @@
             this.btGeneratePDF.UseVisualStyleBackColor = true;
             this.btGeneratePDF.Click += new System.EventHandler(this.btGeneratePDF_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 30);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Start";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(257, 10);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 30);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Finish";
-            // 
-            // dtpWeekPlanningEnd
-            // 
-            this.dtpWeekPlanningEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpWeekPlanningEnd.Location = new System.Drawing.Point(329, 6);
-            this.dtpWeekPlanningEnd.Name = "dtpWeekPlanningEnd";
-            this.dtpWeekPlanningEnd.Size = new System.Drawing.Size(182, 35);
-            this.dtpWeekPlanningEnd.TabIndex = 3;
-            // 
             // fPlanning
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
@@ -215,6 +215,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "fPlanning";
             this.Text = "Planning";
+            this.Resize += new System.EventHandler(this.fPlanning_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.nuWeeks)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

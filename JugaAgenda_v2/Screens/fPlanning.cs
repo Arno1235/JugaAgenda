@@ -26,6 +26,8 @@ namespace JugaAgenda_v2.Screens
 
             this.mainScreen = mainScreen;
 
+            fPlanning_Resize(null, null);
+
             loadComponents();
             loadWork();
 
@@ -346,6 +348,13 @@ namespace JugaAgenda_v2.Screens
             //createPlanningOverview(dtpWeekPlanningStart.Value, dtpWeekPlanningEnd.Value);
         }
 
+        private void fPlanning_Resize(object sender, EventArgs e)
+        {
+            lbComponents.Width = this.Width - 50;
+            lbComponents.Height = this.Height - 175;
+            lbWorkNotFinished.Width = this.Width - 50;
+            lbWorkNotFinished.Height = this.Height - 125;
+        }
     }
 
 }

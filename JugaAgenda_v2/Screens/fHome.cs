@@ -22,17 +22,16 @@ namespace JugaAgenda_v2
         private fCalendarEvent calendarEventScreen = null;
         private fSearch searchScreen = null;
         private fPlanning planningScreen = null;
+        private Google.Apis.Calendar.v3.Data.Event wrongTitleSelected = null;
 
         #region TODO
 
         // - Jurgen screen 3
         // - Add extra support in calendar screen
-        // - Check how to properly connect to google calendar
         // - Add/Edit/Remove/Show tech leave
         // - Add/Edit/Remove/Show tech schedule
         // - Add list of basic work with duration and price
         // - Translate
-        // - Go through the todo's
 
         #endregion
 
@@ -101,6 +100,11 @@ namespace JugaAgenda_v2
             cbCalendarPerspective.SelectedIndex = 0;
             cbCalendarPerspective.DropDownStyle = ComboBoxStyle.DropDownList;
 
+            foreach (Work.Status status in Enum.GetValues(typeof(Work.Status))) cbStatus.Items.Add(status);
+            cbStatus.SelectedIndex = 0;
+
+            nuHoursDone.Maximum = 0;
+
         }
 
         #endregion
@@ -159,7 +163,7 @@ namespace JugaAgenda_v2
                                     openWorkHoursList.Remove(openWorkHoursToDelete.First());
                                 }
 
-                                if (item.Summary != null && checkTitleMessageBox(item))
+                                if (item.Summary != null && checkTitleMessageBox(item, false))
                                 {
                                     work.updateValues(item);
 
@@ -181,7 +185,14 @@ namespace JugaAgenda_v2
                         }
                         if (found) break;
                     }
-                    if (!found) addWorkItem(item);
+
+                    if (!found)
+                    {
+                        removeWrongTitles(item.Id);
+                        
+                        if (item.Summary != null) addWorkItem(item);
+                    }
+
                 }
                 // Can be more efficient
                 mvHome_SelectionChanged(null, null);
@@ -303,6 +314,9 @@ namespace JugaAgenda_v2
             {
                 addWorkItem(item);
             }
+
+            MessageBox.Show("There are " + nuWrongTitles.Value.ToString() + " titles wrong.");
+
             /*foreach (CustomDay day in workList)
             {
                 MessageBox.Show(day.getDate().ToString(), "Date");
@@ -373,7 +387,7 @@ namespace JugaAgenda_v2
                 workList.Add(day);
             }
 
-            if (checkTitleMessageBox(item))
+            if (checkTitleMessageBox(item, false))
             {
                 Work new_work = new Work(item);
                 day.addWorkList(new_work);
@@ -381,6 +395,11 @@ namespace JugaAgenda_v2
                     new_work.isWorkOpen())
                         openWorkHoursList.Add(new Tuple<DateTime, string, decimal>(date, new_work.getId(), new_work.getDuration() - new_work.getHoursDone()));
             }
+            else
+            {
+                addWrongTitles(item);
+            }
+
         }
 
         #endregion
@@ -716,8 +735,9 @@ namespace JugaAgenda_v2
         #region ExtraSecondaryFunctions
 
         // TODO: Change this to be completely implemented in work class
-        private bool checkTitleMessageBox(Google.Apis.Calendar.v3.Data.Event item)
+        private bool checkTitleMessageBox(Google.Apis.Calendar.v3.Data.Event item, Boolean askForTitleChange)
         {
+            if (!askForTitleChange) return new Work().check_title(item.Summary);
             if (!new Work().check_title(item.Summary))
             {
                 while (true)
@@ -873,6 +893,139 @@ namespace JugaAgenda_v2
             }
         }
 
+        public void clearPlanningScreen()
+        {
+            planningScreen = null;
+        }
+
+        public void lbWrongTitles_SizeChanged()
+        {
+            nuWrongTitles.Value = lbWrongTitles.Items.Count;
+        }
+
+        private void fHome_Resize(object sender, EventArgs e)
+        {
+            lbWrongTitles.Height = this.Height - 200;
+            lbWrongTitles.Width = this.Width - gbWrongTitlesControl.Width - 75;
+
+            System.Drawing.Point newLoc = new System.Drawing.Point();
+            newLoc.X = this.Width - gbWrongTitlesControl.Width - 50;
+            newLoc.Y = gbWrongTitlesControl.Location.Y;
+            gbWrongTitlesControl.Location = newLoc;
+        }
+
+        private void updateNUTechHours()
+        {
+            nuHoursDone.Maximum = nuHours.Value;
+        }
+
+        private void btDelete_Click(object sender, EventArgs e)
+        {
+            if (wrongTitleSelected == null) return;
+
+            DialogResult answer = MessageBox.Show("Weet je zeker dat je het agenda item wilt verwijderen?", "Opgelet", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (answer == DialogResult.Yes)
+            {
+                if (deleteWorkItem(wrongTitleSelected.Id))
+                {
+                    clearWrongTitlesControl();
+                }
+                else
+                {
+                    MessageBox.Show("Er is iets fout gelopen.");
+                }
+            }
+        }
+
+        private void btSave_Click(object sender, EventArgs e)
+        {
+            if (wrongTitleSelected == null) return;
+
+            Work work = new Work();
+            work.updateValues(wrongTitleSelected, false);
+
+            work.setStatus((Work.Status)cbStatus.SelectedItem);
+            work.setDuration(nuHours.Value);
+            work.setClientName(tbClientName.Text);
+            work.setPhoneNumber(tbPhoneNumber.Text);
+            work.setOrderNumber(tbOrderNumber.Text);
+            work.setDescription(rtbDescription.Text);
+            work.setHoursDone(nuHoursDone.Value);
+
+            if (!work.checkValues()) return;
+
+            work.updateCalendarEvent();
+
+            if (googleCalendar.editWorkEvent(work.getCalendarEvent()))
+            {
+                clearWrongTitlesControl();
+                syncCalendar();
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong when updating the event to the calendar.");
+            }
+        }
+
+        public void addWrongTitles(Google.Apis.Calendar.v3.Data.Event item)
+        {
+            lbWrongTitles.Items.Add(new WrongTitleObject(item));
+            lbWrongTitles_SizeChanged();
+        }
+
+        public void removeWrongTitles(String id)
+        {
+            foreach (WrongTitleObject wrongTitleObject in lbWrongTitles.Items)
+            {
+                if (wrongTitleObject.getId().Equals(id))
+                {
+                    lbWrongTitles.Items.Remove(wrongTitleObject);
+                    lbWrongTitles_SizeChanged();
+                    return;
+                }
+            }
+        }
+
+        public void loadWrongTitlesControl()
+        {
+            WrongTitleObject wrongTitleObject = (WrongTitleObject)lbWrongTitles.SelectedItem;
+
+            if (wrongTitleObject == null) return;
+
+            wrongTitleSelected = wrongTitleObject.getEvent();
+
+            tbOldTitle.Text = wrongTitleObject.getEvent().Summary;
+
+            Work work = new Work();
+            work.updateValues(wrongTitleObject.getEvent(), false);
+
+            cbStatus.SelectedItem = work.getStatus();
+            nuHours.Value = work.getDuration();
+            tbClientName.Text = work.getClientName();
+            tbPhoneNumber.Text = work.getPhoneNumber();
+            tbOrderNumber.Text = work.getOrderNumber();
+            rtbDescription.Text = work.getDescription();
+            nuHoursDone.Maximum = nuHours.Value;
+            nuHoursDone.Value = work.getHoursDone();
+        }
+
+        public void clearWrongTitlesControl()
+        {
+
+            wrongTitleSelected = null;
+
+            tbOldTitle.Text = null;
+            cbStatus.SelectedItem = null;
+            nuHours.Value = 0;
+            tbClientName.Text = null;
+            tbPhoneNumber.Text = null;
+            tbOrderNumber.Text = null;
+            rtbDescription.Text = null;
+            nuHoursDone.Maximum = 0;
+            nuHoursDone.Value = 0;
+        }
+
         #endregion
 
         #region SimpleButtonFunctions
@@ -981,6 +1134,30 @@ namespace JugaAgenda_v2
 
         }
 
+        private void planningToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (planningScreen == null)
+            {
+                planningScreen = new fPlanning(this);
+                planningScreen.Show();
+            }
+        }
+
+        private void lbWrongTitles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadWrongTitlesControl();
+        }
+
+        private void nuHours_ValueChanged(object sender, EventArgs e)
+        {
+            updateNUTechHours();
+        }
+
+        private void btCancel_Click(object sender, EventArgs e)
+        {
+            clearWrongTitlesControl();
+        }
+
         #endregion
 
         #region Getters
@@ -991,20 +1168,7 @@ namespace JugaAgenda_v2
         }
 
         #endregion
-
-        private void planningToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (planningScreen == null)
-            {
-                planningScreen = new fPlanning(this);
-                planningScreen.Show();
-            }
-        }
-
-        public void clearPlanningScreen()
-        {
-            planningScreen = null;
-        }
+        
     }
 
     public static class DateTimeExtensions
@@ -1053,5 +1217,32 @@ namespace JugaAgenda_v2
         }
 
     }
+
+    public class WrongTitleObject
+    {
+        private Google.Apis.Calendar.v3.Data.Event eventItem;
+
+        public WrongTitleObject(Google.Apis.Calendar.v3.Data.Event item)
+        {
+            eventItem = item;
+        }
+
+        public String getId()
+        {
+            return eventItem.Id;
+        }
+
+        public Google.Apis.Calendar.v3.Data.Event getEvent()
+        {
+            return eventItem;
+        }
+
+        public override string ToString()
+        {
+            return eventItem.Summary.ToString();
+        }
+
+    }
+
 
 }

@@ -368,35 +368,42 @@ namespace JugaAgenda_v2
         {
             this.status = status;
         }
-
-        public void updateValues(Google.Apis.Calendar.v3.Data.Event item)
+        public void setHoursDone(decimal hoursDone)
         {
-            String tempTitle = item.Summary;
-            for (int i = 0; i < titleRegexParts.Length - 1; i++)
+            this.hours_done = hoursDone;
+        }
+
+        public void updateValues(Google.Apis.Calendar.v3.Data.Event item, Boolean checkTitle = true)
+        {
+            if (checkTitle)
             {
-                String regexPattern = "";
-                for (int j = i + 1; j < titleRegexParts.Length; j++)
+                String tempTitle = item.Summary;
+                for (int i = 0; i < titleRegexParts.Length - 1; i++)
                 {
-                    regexPattern += " " + titleRegexParts[j];
+                    String regexPattern = "";
+                    for (int j = i + 1; j < titleRegexParts.Length; j++)
+                    {
+                        regexPattern += " " + titleRegexParts[j];
+                    }
+
+                    String titlePart = Regex.Split(tempTitle, regexPattern, RegexOptions.IgnoreCase)[0];
+                    int length = titlePart.Length;
+
+                    if (titlePart[0].Equals(' ')) titlePart = titlePart.Substring(1);
+                    if (titlePart[titlePart.Length-1].Equals(' ')) titlePart = titlePart.Substring(0, titlePart.Length-1);
+
+                    if (i == 0) this.duration = Convert.ToDecimal(titlePart.Replace(',', '.').Replace("u", String.Empty));
+                    if (i == 1) this.clientName = titlePart;
+                    if (i == 2) this.phoneNumber = titlePart;
+
+                    tempTitle = tempTitle.Remove(0, length);
+
                 }
 
-                String titlePart = Regex.Split(tempTitle, regexPattern, RegexOptions.IgnoreCase)[0];
-                int length = titlePart.Length;
-
-                if (titlePart[0].Equals(' ')) titlePart = titlePart.Substring(1);
-                if (titlePart[titlePart.Length-1].Equals(' ')) titlePart = titlePart.Substring(0, titlePart.Length-1);
-
-                if (i == 0) this.duration = Convert.ToDecimal(titlePart.Replace(',', '.').Replace("u", String.Empty));
-                if (i == 1) this.clientName = titlePart;
-                if (i == 2) this.phoneNumber = titlePart;
-
-                tempTitle = tempTitle.Remove(0, length);
-
+                if (tempTitle[0].Equals(' ')) tempTitle = tempTitle.Substring(1);
+                if (tempTitle[tempTitle.Length - 1].Equals(' ')) tempTitle = tempTitle.Substring(0, tempTitle.Length - 1);
+                this.orderNumber = tempTitle;
             }
-
-            if (tempTitle[0].Equals(' ')) tempTitle = tempTitle.Substring(1);
-            if (tempTitle[tempTitle.Length - 1].Equals(' ')) tempTitle = tempTitle.Substring(0, tempTitle.Length - 1);
-            this.orderNumber = tempTitle;
 
             this.id = item.Id;
             this.description = item.Description;

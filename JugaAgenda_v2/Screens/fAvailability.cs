@@ -58,5 +58,11 @@ namespace JugaAgenda_v2
                 this.Close();
             }
         }
+
+        private void fAvailability_Resize(object sender, EventArgs e)
+        {
+            lbAvailableResults.Height = this.Size.Height-125;
+            lbAvailableResults.Width = this.Size.Width-50;
+        }
     }
 }
