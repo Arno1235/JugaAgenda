@@ -400,7 +400,6 @@ namespace JugaAgenda_v2
             // 
             // refreshTimer
             // 
-            this.refreshTimer.Enabled = true;
             this.refreshTimer.Interval = 1000;
             this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
             // 

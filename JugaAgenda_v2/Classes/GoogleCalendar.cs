@@ -14,14 +14,21 @@ namespace JugaAgenda_v2
 {
     public class GoogleCalendar
     {
+        // https://console.cloud.google.com/
+
         //private string[] Scopes = { CalendarService.Scope.CalendarReadonly };
         private string[] Scopes = { CalendarService.Scope.Calendar };
         private string ApplicationName = "JugaAgenda";
-        private string jsonPath = "Google Auth Files/client_secret_517386861162-oml2v6ifqe37dbsh4ls2u023pp89c9de.apps.googleusercontent.com.json";
-        
-        private string calendarWorkID = "pvdr3fefd859hoau6aop4jn9p8@group.calendar.google.com";
-        private string calendarLeaveID = "f0msdqpsli7f1emtmfboq8b8n4@group.calendar.google.com";
-        private string calendarTechnicianID = "5q2ig7mop16pnodn500q0jm0uo@group.calendar.google.com";
+        //private string jsonPath = "Google Auth Files/client_secret_517386861162-oml2v6ifqe37dbsh4ls2u023pp89c9de.apps.googleusercontent.com.json";
+        private string jsonPath = "Google Auth Files/client_secret_273543429520-3pro0k2q9j6ds6bdlle2eibj2tiraada.apps.googleusercontent.com.json";
+
+        //private string calendarWorkID = "pvdr3fefd859hoau6aop4jn9p8@group.calendar.google.com";
+        //private string calendarLeaveID = "f0msdqpsli7f1emtmfboq8b8n4@group.calendar.google.com";
+        //private string calendarTechnicianID = "5q2ig7mop16pnodn500q0jm0uo@group.calendar.google.com";
+
+        private string calendarWorkID = "juga.be_lt432eq2jhcnic90u877av3tjs@group.calendar.google.com";
+        private string calendarLeaveID = "juga.be_h8t5taanp7k8q7aoj32pkrmbb4@group.calendar.google.com";
+        private string calendarTechnicianID = "c_j3nsdhak5j40u1qtu5s5valkjk@group.calendar.google.com";
 
         private string workSyncToken = null;
         private int syncTokenErrorCode = -2146233088;
@@ -187,6 +194,32 @@ namespace JugaAgenda_v2
             try
             {
                 service.Events.Update(new_event, calendarWorkID, new_event.Id).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool editTechnicianEvent(Event new_event)
+        {
+            try
+            {
+                service.Events.Update(new_event, calendarTechnicianID, new_event.Id).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool editLeaveEvent(Event new_event)
+        {
+            try
+            {
+                service.Events.Update(new_event, calendarLeaveID, new_event.Id).Execute();
                 return true;
             }
             catch

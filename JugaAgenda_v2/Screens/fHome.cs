@@ -68,6 +68,9 @@ namespace JugaAgenda_v2
             refresh();
 
             mvHome_SelectionChanged(null, null);
+
+            refreshTimer.Enabled = true;
+
         }
 
         private void loadStyleComponents()
@@ -115,7 +118,12 @@ namespace JugaAgenda_v2
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
             
-            syncCalendar();
+            try
+            {
+                syncCalendar();
+            } catch {
+                MessageBox.Show("Er is iets fout gelopen tijdens het synchroniseren van de agenda.");
+            }
 
         }
 
@@ -200,21 +208,25 @@ namespace JugaAgenda_v2
                 DateTime date = Convert.ToDateTime(item.Start.Date);
                 if (date.Day > 7) continue;
 
-                Regex regex = new Regex("[a-zA-Z ]+ [0-9,.]+u", RegexOptions.IgnoreCase);
+                /*Regex regex = new Regex("[a-zA-Z ]+ [0-9,.]+u", RegexOptions.IgnoreCase);
                 if (!regex.IsMatch(item.Summary))
                 {
                     MessageBox.Show("There seems to be something wrong in the technician schedule.", "Error");
                     continue;
+                }*/
+
+                if (checkTitleWithRegex(item, "^[a-zA-Z ]+ [0-9,.]+u$", true))
+                {
+                    CustomDay day = techniciansWorkWeekList[date.Day-1];
+
+                    String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
+                    decimal hours = Convert.ToDecimal(item.Summary.Split(' ').Last().Split('u')[0].Replace(',', '.'));
+                    day.addTechnicianList(new Technician(name, hours));
+
+                    Technician technician = new Technician(name);
+                    if (!technicianList.Contains(technician)) technicianList.Add(technician);
                 }
 
-                CustomDay day = techniciansWorkWeekList[date.Day-1];
-
-                String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
-                decimal hours = Convert.ToDecimal(item.Summary.Split(' ').Last().Split('u')[0].Replace(',', '.'));
-                day.addTechnicianList(new Technician(name, hours));
-
-                Technician technician = new Technician(name);
-                if (!technicianList.Contains(technician)) technicianList.Add(technician);
 
             }
 
@@ -235,32 +247,37 @@ namespace JugaAgenda_v2
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getLeaveEvents().Items)
             {
 
-                Regex regex = new Regex("[a-zA-Z ]+ verlof", RegexOptions.IgnoreCase);
+                /*Regex regex = new Regex("[a-zA-Z ]+ verlof", RegexOptions.IgnoreCase);
                 if (!regex.IsMatch(item.Summary))
                 {
                     MessageBox.Show("There seems to be something wrong in the technician leave schedule.", "Error");
                     continue;
-                }
+                }*/
 
-                DateTime date = Convert.ToDateTime(item.Start.Date);
-
-                CustomDay day = null;
-                foreach (CustomDay listday in technicianLeaveList)
+                if (checkTitleWithRegex(item, "^[a-zA-Z ]+ verlof$", false))
                 {
-                    if (DateTime.Compare(listday.getDate(), date) == 0)
+
+                    DateTime date = Convert.ToDateTime(item.Start.Date);
+
+                    CustomDay day = null;
+
+                    foreach (CustomDay listday in technicianLeaveList)
                     {
-                        day = listday;
-                        break;
+                        if (DateTime.Compare(listday.getDate(), date) == 0)
+                        {
+                            day = listday;
+                            break;
+                        }
                     }
-                }
-                if (day == null)
-                {
-                    day = new CustomDay(date);
+                    if (day == null)
+                    {
+                        day = new CustomDay(date);
 
-                    technicianLeaveList.Add(day);
-                }
+                        technicianLeaveList.Add(day);
+                    }
 
-                day.addTechnicianList(new Technician(item.Summary.Remove(item.Summary.Length-7), 0));
+                    day.addTechnicianList(new Technician(item.Summary.Remove(item.Summary.Length-7), 0));
+                }
 
             }
 
@@ -720,6 +737,62 @@ namespace JugaAgenda_v2
                             return false;
                         }
                         return true;
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Please change the title.");
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool checkTitleWithRegex(Google.Apis.Calendar.v3.Data.Event item, String regexString, Boolean trueForScheduleFalseForLeave)
+        {
+            Regex regex = new Regex(regexString, RegexOptions.IgnoreCase);
+            if (!regex.IsMatch(item.Summary))
+            {
+                while (true)
+                {
+                    String new_title;
+
+                    if (trueForScheduleFalseForLeave)
+                        new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title.", "Wrong schedule event title", item.Summary);
+                    else
+                        new_title = Microsoft.VisualBasic.Interaction.InputBox("Please change the title.", "Wrong leave event title", item.Summary);
+
+                    if (!new_title.Equals("") && new_title != null)
+                    {
+                        if (!regex.IsMatch(new_title))
+                        {
+                            MessageBox.Show("The new title is still incorrect.");
+                            continue;
+                        }
+                        item.Summary = new_title;
+                        if (trueForScheduleFalseForLeave)
+                        {
+                            if (!googleCalendar.editTechnicianEvent(item))
+                            {
+                                MessageBox.Show("Something went wrong when updating event to calendar.");
+                                return false;
+                            }
+                            else return true;
+                        }
+                        else if (!trueForScheduleFalseForLeave)
+                        {
+                            if (!googleCalendar.editLeaveEvent(item))
+                            {
+                                MessageBox.Show("Something went wrong when updating event to calendar.");
+                                return false;
+                            }
+                            else return true;
+                        }
+
+                        //return true;
                     }
                     else
                     {
