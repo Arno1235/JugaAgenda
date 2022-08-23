@@ -603,7 +603,7 @@ namespace JugaAgenda_v2
                 if (hoursTally >= duration)
                 {
                     results.Add(date);
-                    hoursTally = 0; // ???
+                    //hoursTally = 0; // ???
                 }
 
                 date = date.AddDays(1);

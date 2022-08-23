@@ -93,26 +93,35 @@ namespace JugaAgenda_v2
             cbWorkHoursList.Items.Add(new WorkHoursListItem("Dakraam plaatsen", 4));
             cbWorkHoursList.Items.Add(new WorkHoursListItem("Zijraam plaatsen", 4));
             cbWorkHoursList.Items.Add(new WorkHoursListItem("Luifel plaatsen", 3));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Airco plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Batterij vervangen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Achteruitrijcamera plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Fietsendrager plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Fietslift plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Garage bars plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Veiligheidsloten plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("LPG (1 fles) installatie plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("LPG (2 flessen) installatie plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Omvormer plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("MaxxFan plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("MaxxFan plaatsen", 5));
+
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Viesa plaatsen", 6));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Airco plaatsen", 5));
+
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Batterij vervangen", 2));
             cbWorkHoursList.Items.Add(new WorkHoursListItem("Zonnepaneel plaatsen", 5));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Frigo nakijken", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Caravan onderhoud", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Sateliet plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Mave poten plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Tesa poten plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Manuele poten plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Omvormer plaatsen", 3));
+
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Achteruitrijcamera plaatsen", 5));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Fietsendrager plaatsen", 2));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Fietslift plaatsen", 5));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Garage bars plaatsen", 1));
+
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Veiligheidsloten plaatsen", 4));
+
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("LPG (1 fles) installatie plaatsen", 1.5m));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("LPG (2 flessen) installatie plaatsen", 2));
+            
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Sateliet plaatsen", 5));
+
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Mave poten plaatsen", 16));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Tesa poten plaatsen", 12));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Manuele poten plaatsen", 2));
             cbWorkHoursList.Items.Add(new WorkHoursListItem("Mover plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Viesa plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Caravan onderhoud", 3));
+
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Frigo nakijken", 1.5m));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Prul nakijken", 1));
 
         }
 
