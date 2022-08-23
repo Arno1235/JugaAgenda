@@ -14,10 +14,10 @@ namespace JugaAgenda_v2
         public enum Status
         {
             wachten_op_onderdelen, // null = white
-            onderdelen_op_voorraad, // 5 = yellow
-            bezig, // 9 = blue
-            klaar, // 2 = green
-            geannuleerd, // 8 = gray
+            onderdelen_op_voorraad, // 5 = yellow 2groen
+            bezig, // 9 = blue 5geel
+            klaar, // 2 = green 8grijs
+            geannuleerd, // 8 = gray 9blauw
             niet_komen_opdagen, // 3 = purple
             onderdelen_niet_op_tijd, // 6 = orange
         }
@@ -242,13 +242,13 @@ namespace JugaAgenda_v2
             switch (this.status)
             {
                 case Status.onderdelen_op_voorraad:
-                    return Color.Yellow;
-                case Status.bezig:
-                    return Color.Blue;
-                case Status.klaar:
                     return Color.Green;
-                case Status.geannuleerd:
+                case Status.bezig:
+                    return Color.Yellow;
+                case Status.klaar:
                     return Color.Gray;
+                case Status.geannuleerd:
+                    return Color.Blue;
                 case Status.niet_komen_opdagen:
                     return Color.Purple;
                 case Status.onderdelen_niet_op_tijd:
@@ -268,13 +268,13 @@ namespace JugaAgenda_v2
             switch (colorID)
             {
                 case 5:
-                    return Status.onderdelen_op_voorraad;
-                case 9:
                     return Status.bezig;
-                case 2:
-                    return Status.klaar;
-                case 8:
+                case 9:
                     return Status.geannuleerd;
+                case 2:
+                    return Status.onderdelen_op_voorraad;
+                case 8:
+                    return Status.klaar;
                 case 3:
                     return Status.niet_komen_opdagen;
                 case 6:
@@ -289,13 +289,13 @@ namespace JugaAgenda_v2
             switch (status)
             {
                 case Status.onderdelen_op_voorraad:
-                    return 5;
-                case Status.bezig:
-                    return 9;
-                case Status.klaar:
                     return 2;
-                case Status.geannuleerd:
+                case Status.bezig:
+                    return 5;
+                case Status.klaar:
                     return 8;
+                case Status.geannuleerd:
+                    return 9;
                 case Status.niet_komen_opdagen:
                     return 3;
                 case Status.onderdelen_niet_op_tijd:

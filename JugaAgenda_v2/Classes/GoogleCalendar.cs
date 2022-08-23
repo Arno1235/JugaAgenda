@@ -28,7 +28,7 @@ namespace JugaAgenda_v2
 
         private string calendarWorkID = "juga.be_lt432eq2jhcnic90u877av3tjs@group.calendar.google.com";
         private string calendarLeaveID = "juga.be_h8t5taanp7k8q7aoj32pkrmbb4@group.calendar.google.com";
-        private string calendarTechnicianID = "c_j3nsdhak5j40u1qtu5s5valkjk@group.calendar.google.com";
+        private string calendarTechnicianID = "c_bu9tsbi0bsgqdpeb36uoarm2e0@group.calendar.google.com";
 
         private string workSyncToken = null;
         private int syncTokenErrorCode = -2146233088;
@@ -40,7 +40,7 @@ namespace JugaAgenda_v2
         public GoogleCalendar()
         {
             UserCredential credential;
-            perspectiveMonths = 3;
+            perspectiveMonths = 5;
 
             using (var stream =
                 new FileStream(jsonPath, FileMode.Open, FileAccess.Read))

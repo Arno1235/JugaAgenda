@@ -70,6 +70,11 @@ namespace JugaAgenda_v2
             nuTechHours.Maximum = 0;
             nuHoursDone.Maximum = 0;
 
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Dakraam plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Luifel plaatsen", 3));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Airco plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Dakraam plaatsen", 4));
+
         }
 
         private void loadWorkEvent()
@@ -401,5 +406,32 @@ namespace JugaAgenda_v2
             dtpEnd.Value = date;
         }
 
+        private void cbWorkHoursList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbWorkHoursList.SelectedIndex == -1) return;
+            nuHours.Value = ((WorkHoursListItem)cbWorkHoursList.SelectedItem).getHours();
+        }
+    }
+}
+
+public class WorkHoursListItem
+{
+    private String name;
+    private decimal hours;
+
+    public WorkHoursListItem(string name, decimal hours)
+    {
+        this.name = name;
+        this.hours = hours;
+    }
+
+    public decimal getHours()
+    {
+        return hours;
+    }
+
+    public override string ToString()
+    {
+        return name.ToString() + " - " + hours.ToString() + "u";
     }
 }

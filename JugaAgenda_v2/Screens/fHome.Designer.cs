@@ -30,11 +30,11 @@ namespace JugaAgenda_v2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange11 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange12 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange13 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange14 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange15 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange1 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange2 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange3 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange4 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange5 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             this.msHome = new System.Windows.Forms.MenuStrip();
             this.addWorkEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,7 +71,6 @@ namespace JugaAgenda_v2
             this.label6 = new System.Windows.Forms.Label();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.tbPhoneNumber = new System.Windows.Forms.TextBox();
-            this.btAvailability = new System.Windows.Forms.Button();
             this.tbOrderNumber = new System.Windows.Forms.TextBox();
             this.nuHours = new System.Windows.Forms.NumericUpDown();
             this.tbClientName = new System.Windows.Forms.TextBox();
@@ -261,27 +260,27 @@ namespace JugaAgenda_v2
             this.calHome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.calHome.FirstDayOfWeek = System.DayOfWeek.Monday;
             this.calHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            calendarHighlightRange11.DayOfWeek = System.DayOfWeek.Tuesday;
-            calendarHighlightRange11.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange11.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange12.DayOfWeek = System.DayOfWeek.Wednesday;
-            calendarHighlightRange12.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange12.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange13.DayOfWeek = System.DayOfWeek.Thursday;
-            calendarHighlightRange13.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange13.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange14.DayOfWeek = System.DayOfWeek.Friday;
-            calendarHighlightRange14.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange14.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange15.DayOfWeek = System.DayOfWeek.Saturday;
-            calendarHighlightRange15.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange15.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange1.DayOfWeek = System.DayOfWeek.Tuesday;
+            calendarHighlightRange1.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange1.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange2.DayOfWeek = System.DayOfWeek.Wednesday;
+            calendarHighlightRange2.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange2.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange3.DayOfWeek = System.DayOfWeek.Thursday;
+            calendarHighlightRange3.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange3.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange4.DayOfWeek = System.DayOfWeek.Friday;
+            calendarHighlightRange4.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange4.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange5.DayOfWeek = System.DayOfWeek.Saturday;
+            calendarHighlightRange5.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange5.StartTime = System.TimeSpan.Parse("09:00:00");
             this.calHome.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
-        calendarHighlightRange11,
-        calendarHighlightRange12,
-        calendarHighlightRange13,
-        calendarHighlightRange14,
-        calendarHighlightRange15};
+        calendarHighlightRange1,
+        calendarHighlightRange2,
+        calendarHighlightRange3,
+        calendarHighlightRange4,
+        calendarHighlightRange5};
             this.calHome.Location = new System.Drawing.Point(394, 6);
             this.calHome.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.calHome.MaximumFullDays = 7;
@@ -343,7 +342,6 @@ namespace JugaAgenda_v2
             this.gbWrongTitlesControl.Controls.Add(this.label6);
             this.gbWrongTitlesControl.Controls.Add(this.cbStatus);
             this.gbWrongTitlesControl.Controls.Add(this.tbPhoneNumber);
-            this.gbWrongTitlesControl.Controls.Add(this.btAvailability);
             this.gbWrongTitlesControl.Controls.Add(this.tbOrderNumber);
             this.gbWrongTitlesControl.Controls.Add(this.nuHours);
             this.gbWrongTitlesControl.Controls.Add(this.tbClientName);
@@ -371,9 +369,9 @@ namespace JugaAgenda_v2
             // 
             // tbOldTitle
             // 
-            this.tbOldTitle.Enabled = false;
             this.tbOldTitle.Location = new System.Drawing.Point(12, 86);
             this.tbOldTitle.Name = "tbOldTitle";
+            this.tbOldTitle.ReadOnly = true;
             this.tbOldTitle.Size = new System.Drawing.Size(570, 35);
             this.tbOldTitle.TabIndex = 28;
             // 
@@ -460,15 +458,6 @@ namespace JugaAgenda_v2
             this.tbPhoneNumber.Name = "tbPhoneNumber";
             this.tbPhoneNumber.Size = new System.Drawing.Size(407, 35);
             this.tbPhoneNumber.TabIndex = 8;
-            // 
-            // btAvailability
-            // 
-            this.btAvailability.Location = new System.Drawing.Point(175, 175);
-            this.btAvailability.Name = "btAvailability";
-            this.btAvailability.Size = new System.Drawing.Size(134, 40);
-            this.btAvailability.TabIndex = 22;
-            this.btAvailability.Text = "Availability";
-            this.btAvailability.UseVisualStyleBackColor = true;
             // 
             // tbOrderNumber
             // 
@@ -808,7 +797,6 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cbStatus;
         private System.Windows.Forms.TextBox tbPhoneNumber;
-        private System.Windows.Forms.Button btAvailability;
         private System.Windows.Forms.TextBox tbOrderNumber;
         private System.Windows.Forms.NumericUpDown nuHours;
         private System.Windows.Forms.TextBox tbClientName;

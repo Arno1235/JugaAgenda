@@ -97,7 +97,8 @@ namespace JugaAgenda_v2
             cbCalendarPerspective.Items.Add("3 maanden");
             cbCalendarPerspective.Items.Add("4 maanden");
             cbCalendarPerspective.Items.Add("5 maanden");
-            cbCalendarPerspective.SelectedIndex = 0;
+            cbCalendarPerspective.Items.Add("6 maanden");
+            cbCalendarPerspective.SelectedIndex = 4;
             cbCalendarPerspective.DropDownStyle = ComboBoxStyle.DropDownList;
 
             foreach (Work.Status status in Enum.GetValues(typeof(Work.Status))) cbStatus.Items.Add(status);
@@ -366,7 +367,7 @@ namespace JugaAgenda_v2
             {
                 day = new CustomDay(date);
 
-                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeek].getTechnicianList())
+                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeek-1].getTechnicianList())
                 {
                     bool tech_has_leave = false;
                     foreach (CustomDay leave_day in technicianLeaveList)
@@ -582,7 +583,7 @@ namespace JugaAgenda_v2
             DateTime date = DateTime.Today.StartOfWeek(DayOfWeek.Monday);
             decimal hoursTally = 0;
 
-            openWorkHoursList.Sort((x, y) => y.Item1.CompareTo(x.Item1));
+            openWorkHoursList.Sort((x, y) => x.Item1.CompareTo(y.Item1));
             foreach (Tuple<DateTime, String, decimal> item in openWorkHoursList)
             {
                 if (item.Item1 >= date)
@@ -592,10 +593,12 @@ namespace JugaAgenda_v2
                 hoursTally -= item.Item3;
             }
 
-            while(results.Count < 3)
+            while (results.Count < 3)
             {
                 hoursTally += techHoursAvailable(date);
                 hoursTally -= workHoursOnDay(date);
+
+                if (hoursTally <= int.MinValue) break;
 
                 if (hoursTally >= duration) results.Add(date);
 
@@ -643,7 +646,7 @@ namespace JugaAgenda_v2
                 List<Work> workHours = days.First().getWorkList();
                 foreach (Work work in workHours)
                 {
-                    hoursTally += work.getDuration() - work.getHoursDone();
+                    if (work.isWorkOpen()) hoursTally += work.getDuration() - work.getHoursDone();
                 }
             }
             
@@ -719,9 +722,10 @@ namespace JugaAgenda_v2
 
             }
 
-            for (DateTime date = startDate; date <= endDate; date.AddDays(1))
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
                 IEnumerable<CustomDay> days = workList.Where(x => x.getDate().Year.Equals(date.Year) && x.getDate().Month.Equals(date.Month) && x.getDate().Day.Equals(date.Day));
+                
                 if (days.Count() > 0)
                     results.Add(days.First());
             }
@@ -1100,6 +1104,9 @@ namespace JugaAgenda_v2
                     googleCalendar.setPerspectiveMonths(4);
                     break;
                 case 4:
+                    googleCalendar.setPerspectiveMonths(5);
+                    break;
+                case 5:
                     googleCalendar.setPerspectiveMonths(6);
                     break;
                 default:
@@ -1170,6 +1177,8 @@ namespace JugaAgenda_v2
         #endregion
         
     }
+
+    #region ExtraObjects
 
     public static class DateTimeExtensions
     {
@@ -1243,6 +1252,8 @@ namespace JugaAgenda_v2
         }
 
     }
+
+    #endregion
 
 
 }
