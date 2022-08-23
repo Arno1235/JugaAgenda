@@ -695,6 +695,21 @@ namespace JugaAgenda_v2
             return results;
         }
 
+        public List<Work> getWorkNoHours()
+        {
+            List<Work> results = new List<Work>();
+
+            foreach(CustomDay day in workList)
+            {
+                foreach(Work work in day.getWorkList())
+                {
+                    if (work.getDuration() <= 0) results.Add(work);
+                }
+            }
+
+            return results;
+        }
+
         public List<CustomDay> getWorkBetweenDates(DateTime startDate, DateTime endDate)
         {
             List<CustomDay> results = new List<CustomDay>();
@@ -1175,7 +1190,19 @@ namespace JugaAgenda_v2
         }
 
         #endregion
-        
+
+        private void calHome_ItemCreating(object sender, CalendarItemCancelEventArgs e)
+        {
+
+            if (calendarEventScreen == null)
+            {
+                calendarEventScreen = new fCalendarEvent(this, e.Item.Date);
+                calendarEventScreen.Show();
+            }
+
+            e.Cancel = true;
+
+        }
     }
 
     #region ExtraObjects

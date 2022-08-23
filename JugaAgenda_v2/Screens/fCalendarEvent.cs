@@ -38,6 +38,26 @@ namespace JugaAgenda_v2
             }
         }
 
+        public fCalendarEvent(fHome mainScreen, DateTime date)
+        {
+            this.mainScreen = mainScreen;
+            this.oldWorkEvent = null;
+            this.planningScreen = null;
+
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fCalendarEvent_Closed);
+
+            InitializeComponent();
+            loadComponents();
+
+            if (oldWorkEvent != null)
+            {
+                btDelete.Show();
+                loadWorkEvent();
+            }
+
+            dtpStart.Value = date;
+        }
+
         private void loadComponents()
         {
             cbFullDays.Checked = true;

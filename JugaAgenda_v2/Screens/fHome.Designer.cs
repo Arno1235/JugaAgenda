@@ -288,6 +288,7 @@ namespace JugaAgenda_v2
             this.calHome.Size = new System.Drawing.Size(1650, 1137);
             this.calHome.TabIndex = 1;
             this.calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            this.calHome.ItemCreating += new System.Windows.Forms.Calendar.Calendar.CalendarItemCancelEventHandler(this.calHome_ItemCreating);
             this.calHome.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calHome_ItemDoubleClick);
             // 
             // mvHome

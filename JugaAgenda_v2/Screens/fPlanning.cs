@@ -49,6 +49,10 @@ namespace JugaAgenda_v2.Screens
             lbWorkNotFinished.Items.Clear();
             foreach (Work work in mainScreen.getWorkNotFinished())
                 lbWorkNotFinished.Items.Add(work);
+
+            lbWorkNoHours.Items.Clear();
+            foreach (Work work in mainScreen.getWorkNoHours())
+                lbWorkNoHours.Items.Add(work);
         }
 
         private void nuWeeks_ValueChanged(object sender, EventArgs e)
@@ -426,6 +430,8 @@ namespace JugaAgenda_v2.Screens
             lbComponents.Height = this.Height - 175;
             lbWorkNotFinished.Width = this.Width - 50;
             lbWorkNotFinished.Height = this.Height - 125;
+            lbWorkNoHours.Width = this.Width - 50;
+            lbWorkNoHours.Height = this.Height - 125;
             lbWorkToPlan.Height = this.Height - 200;
             lbWorkToPlan.Width = this.Width/2 - 50;
             lbTechAvailable.Height = this.Height - 200;
