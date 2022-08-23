@@ -600,7 +600,11 @@ namespace JugaAgenda_v2
 
                 if (hoursTally <= int.MinValue) break;
 
-                if (hoursTally >= duration) results.Add(date);
+                if (hoursTally >= duration)
+                {
+                    results.Add(date);
+                    hoursTally = 0; // ???
+                }
 
                 date = date.AddDays(1);
             }
