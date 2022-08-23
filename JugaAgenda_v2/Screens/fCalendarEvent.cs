@@ -91,9 +91,28 @@ namespace JugaAgenda_v2
             nuHoursDone.Maximum = 0;
 
             cbWorkHoursList.Items.Add(new WorkHoursListItem("Dakraam plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Zijraam plaatsen", 4));
             cbWorkHoursList.Items.Add(new WorkHoursListItem("Luifel plaatsen", 3));
             cbWorkHoursList.Items.Add(new WorkHoursListItem("Airco plaatsen", 4));
-            cbWorkHoursList.Items.Add(new WorkHoursListItem("Dakraam plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Batterij vervangen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Achteruitrijcamera plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Fietsendrager plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Fietslift plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Garage bars plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Veiligheidsloten plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("LPG (1 fles) installatie plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("LPG (2 flessen) installatie plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Omvormer plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("MaxxFan plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Zonnepaneel plaatsen", 5));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Frigo nakijken", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Caravan onderhoud", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Sateliet plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Mave poten plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Tesa poten plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Manuele poten plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Mover plaatsen", 4));
+            cbWorkHoursList.Items.Add(new WorkHoursListItem("Viesa plaatsen", 4));
 
         }
 
