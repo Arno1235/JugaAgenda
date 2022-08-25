@@ -9,13 +9,13 @@ namespace JugaAgenda_v2.Classes
     public class Technician
     {
         private String name;
-        private decimal hours;
+        private Decimal hours;
 
         public Technician(String name)
         {
             this.name = name;
         }
-        public Technician(String name, decimal hours)
+        public Technician(String name, Decimal hours)
         {
             this.name = name;
             this.hours = hours;
@@ -26,7 +26,7 @@ namespace JugaAgenda_v2.Classes
         {
             return this.name;
         }
-        public decimal getHours()
+        public Decimal getHours()
         {
             return this.hours;
         }
@@ -37,7 +37,7 @@ namespace JugaAgenda_v2.Classes
         {
             this.name = name;
         }
-        public void setHours(decimal hours)
+        public void setHours(Decimal hours)
         {
             this.hours = hours;
         }

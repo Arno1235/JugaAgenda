@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -135,8 +136,8 @@ namespace JugaAgenda_v2
                 dtpEnd.Value = (DateTime)oldWorkEvent.End.DateTime;
                 cbHourStart.SelectedIndex = ((DateTime)oldWorkEvent.Start.DateTime).Hour;
                 cbHourEnd.SelectedIndex = ((DateTime)oldWorkEvent.End.DateTime).Hour;
-                cbMinuteStart.SelectedIndex = Convert.ToInt32(Math.Floor((decimal)((DateTime)oldWorkEvent.Start.DateTime).Minute / 5));
-                cbMinuteEnd.SelectedIndex = Convert.ToInt32(Math.Floor((decimal)((DateTime)oldWorkEvent.End.DateTime).Minute / 5));
+                cbMinuteStart.SelectedIndex = Convert.ToInt32(Math.Floor((Decimal)((DateTime)oldWorkEvent.Start.DateTime).Minute / 5));
+                cbMinuteEnd.SelectedIndex = Convert.ToInt32(Math.Floor((Decimal)((DateTime)oldWorkEvent.End.DateTime).Minute / 5));
                 cbHourStart.Enabled = true;
                 cbMinuteStart.Enabled = true;
                 cbHourEnd.Enabled = true;
@@ -229,12 +230,12 @@ namespace JugaAgenda_v2
                         Work new_work = new Work(
                             null,
                             rtbDescription.Text.ToString(),
-                            Convert.ToDecimal(nuHours.Value.ToString()),
+                            Decimal.Parse(nuHours.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             tbClientName.Text.ToString(),
                             tbPhoneNumber.Text.ToString(),
                             tbOrderNumber.Text.ToString(),
                             (Work.Status)cbStatus.SelectedItem,
-                            Convert.ToDecimal(nuHoursDone.Value.ToString()),
+                            Decimal.Parse(nuHoursDone.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
                             dtpStart.Value.ToString("yyyy-MM-dd"),
                             dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd")
@@ -260,12 +261,12 @@ namespace JugaAgenda_v2
                         Work new_work = new Work(
                             null,
                             rtbDescription.Text.ToString(),
-                            Convert.ToDecimal(nuHours.Value.ToString()),
+                            Decimal.Parse(nuHours.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             tbClientName.Text.ToString(),
                             tbPhoneNumber.Text.ToString(),
                             tbOrderNumber.Text.ToString(),
                             (Work.Status)cbStatus.SelectedItem,
-                            Convert.ToDecimal(nuHoursDone.Value.ToString()),
+                            Decimal.Parse(nuHoursDone.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
                             dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)),
                             dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem))
@@ -296,12 +297,12 @@ namespace JugaAgenda_v2
                         Work new_work = new Work(
                             oldWorkEvent.Id,
                             rtbDescription.Text.ToString(),
-                            Convert.ToDecimal(nuHours.Value.ToString()),
+                            Decimal.Parse(nuHours.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             tbClientName.Text.ToString(),
                             tbPhoneNumber.Text.ToString(),
                             tbOrderNumber.Text.ToString(),
                             (Work.Status)cbStatus.SelectedItem,
-                            Convert.ToDecimal(nuHoursDone.Value.ToString()),
+                            Decimal.Parse(nuHoursDone.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
                             dtpStart.Value.ToString("yyyy-MM-dd"),
                             dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd")
@@ -328,12 +329,12 @@ namespace JugaAgenda_v2
                         Work new_work = new Work(
                             oldWorkEvent.Id,
                             rtbDescription.Text.ToString(),
-                            Convert.ToDecimal(nuHours.Value.ToString()),
+                            Decimal.Parse(nuHours.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             tbClientName.Text.ToString(),
                             tbPhoneNumber.Text.ToString(),
                             tbOrderNumber.Text.ToString(),
                             (Work.Status)cbStatus.SelectedItem,
-                            Convert.ToDecimal(nuHoursDone.Value.ToString()),
+                            Decimal.Parse(nuHoursDone.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
                             dtpStart.Value.Date.AddHours(Convert.ToInt64(cbHourStart.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteStart.SelectedItem)),
                             dtpEnd.Value.Date.AddHours(Convert.ToInt64(cbHourEnd.SelectedItem)).AddMinutes(Convert.ToInt64(cbMinuteEnd.SelectedItem))
@@ -443,7 +444,7 @@ namespace JugaAgenda_v2
             updateNUTechHours();
         }
 
-        public void setHours(decimal hours)
+        public void setHours(Decimal hours)
         {
             nuHours.Value = hours;
         }
@@ -465,15 +466,15 @@ namespace JugaAgenda_v2
 public class WorkHoursListItem
 {
     private String name;
-    private decimal hours;
+    private Decimal hours;
 
-    public WorkHoursListItem(string name, decimal hours)
+    public WorkHoursListItem(string name, Decimal hours)
     {
         this.name = name;
         this.hours = hours;
     }
 
-    public decimal getHours()
+    public Decimal getHours()
     {
         return hours;
     }

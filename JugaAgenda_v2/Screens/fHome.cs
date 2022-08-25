@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Calendar;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace JugaAgenda_v2
 {
@@ -17,7 +18,7 @@ namespace JugaAgenda_v2
         private List<CustomDay> techniciansWorkWeekList;
         private List<CustomDay> technicianLeaveList;
         private List<CustomDay> workList;
-        private List<Tuple<DateTime, String, decimal>> openWorkHoursList;
+        private List<Tuple<DateTime, String, Decimal>> openWorkHoursList;
         private List<Technician> technicianList;
         private fCalendarEvent calendarEventScreen = null;
         private fSearch searchScreen = null;
@@ -43,6 +44,12 @@ namespace JugaAgenda_v2
             InitializeComponent();
 
             googleCalendar = new GoogleCalendar();
+
+            if (googleCalendar.getSuccess() != null)
+            {
+                MessageBox.Show(googleCalendar.getSuccess(), "Error");
+                this.Close();
+            }
 
             mvHome.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             mvHome.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
@@ -151,10 +158,10 @@ namespace JugaAgenda_v2
                             if (work.getId() == item.Id)
                             {
 
-                                IEnumerable<Tuple<DateTime, String, decimal>> openWorkHoursToDelete = openWorkHoursList.Where(x => x.Item2.Equals(item.Id));
+                                IEnumerable<Tuple<DateTime, String, Decimal>> openWorkHoursToDelete = openWorkHoursList.Where(x => x.Item2.Equals(item.Id));
                                 if (openWorkHoursToDelete.Count() > 1)
                                 {
-                                    foreach (Tuple<DateTime, String, decimal> tuple in openWorkHoursToDelete)
+                                    foreach (Tuple<DateTime, String, Decimal> tuple in openWorkHoursToDelete)
                                     {
                                         openWorkHoursList.Remove(tuple);
                                     }
@@ -171,7 +178,7 @@ namespace JugaAgenda_v2
                                     if (day.getDate() < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
                                         work.isWorkOpen())
                                     {
-                                        openWorkHoursList.Add(new Tuple<DateTime, string, decimal>(day.getDate(), work.getId(), work.getDuration() - work.getHoursDone()));
+                                        openWorkHoursList.Add(new Tuple<DateTime, string, Decimal>(day.getDate(), work.getId(), work.getDuration() - work.getHoursDone()));
                                     }
 
                                 }
@@ -232,7 +239,8 @@ namespace JugaAgenda_v2
                     CustomDay day = techniciansWorkWeekList[date.Day-1];
 
                     String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
-                    decimal hours = Convert.ToDecimal(item.Summary.Split(' ').Last().Split('u')[0].Replace(',', '.'));
+                    //Decimal hours = Decimal.Parse(item.Summary.Split(' ').Last().Split('u')[0].Replace('.', ','));
+                    Decimal hours = Decimal.Parse(item.Summary.Split(' ').Last().Split('u')[0].Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," });
                     day.addTechnicianList(new Technician(name, hours));
 
                     Technician technician = new Technician(name);
@@ -308,7 +316,7 @@ namespace JugaAgenda_v2
             if (workList == null) workList = new List<CustomDay>();
             workList.Clear();
 
-            if (openWorkHoursList == null) openWorkHoursList = new List<Tuple<DateTime, String, decimal>>();
+            if (openWorkHoursList == null) openWorkHoursList = new List<Tuple<DateTime, String, Decimal>>();
             openWorkHoursList.Clear();
 
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents())
@@ -394,7 +402,7 @@ namespace JugaAgenda_v2
                 day.addWorkList(new_work);
                 if (date < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
                     new_work.isWorkOpen())
-                        openWorkHoursList.Add(new Tuple<DateTime, string, decimal>(date, new_work.getId(), new_work.getDuration() - new_work.getHoursDone()));
+                        openWorkHoursList.Add(new Tuple<DateTime, string, Decimal>(date, new_work.getId(), new_work.getDuration() - new_work.getHoursDone()));
             }
             else
             {
@@ -576,15 +584,15 @@ namespace JugaAgenda_v2
             return results;
         }
 
-        public List<DateTime> checkAvailability(decimal duration)
+        public List<DateTime> checkAvailability(Decimal duration)
         {
             List<DateTime> results = new List<DateTime>();
 
             DateTime date = DateTime.Today.StartOfWeek(DayOfWeek.Monday);
-            decimal hoursTally = 0;
+            Decimal hoursTally = 0;
 
             openWorkHoursList.Sort((x, y) => x.Item1.CompareTo(y.Item1));
-            foreach (Tuple<DateTime, String, decimal> item in openWorkHoursList)
+            foreach (Tuple<DateTime, String, Decimal> item in openWorkHoursList)
             {
                 if (item.Item1 >= date)
                 {
@@ -603,7 +611,7 @@ namespace JugaAgenda_v2
                 if (hoursTally >= duration)
                 {
                     results.Add(date);
-                    //hoursTally = 0; // ???
+                    hoursTally = 0; // ???
                 }
 
                 date = date.AddDays(1);
@@ -612,9 +620,9 @@ namespace JugaAgenda_v2
             return results;
         }
 
-        private decimal techHoursAvailable(DateTime date)
+        private Decimal techHoursAvailable(DateTime date)
         {
-            decimal hoursTally = 0;
+            Decimal hoursTally = 0;
 
             IEnumerable<CustomDay> workDays = techniciansWorkWeekList.Where(x => x.getDate().DayOfWeek.Equals(date.DayOfWeek));
             if (workDays.Count() > 0)
@@ -640,9 +648,9 @@ namespace JugaAgenda_v2
         }
 
         // TODO: check if work isn't already done
-        private decimal workHoursOnDay(DateTime date)
+        private Decimal workHoursOnDay(DateTime date)
         {
-            decimal hoursTally = 0;
+            Decimal hoursTally = 0;
 
             IEnumerable<CustomDay> days = workList.Where(x => x.getDate().Equals(date));
             if (days.Count() > 0)
@@ -685,7 +693,7 @@ namespace JugaAgenda_v2
         {
             List<Work> results = new List<Work>();
 
-            foreach (Tuple<DateTime, String, decimal> work in openWorkHoursList)
+            foreach (Tuple<DateTime, String, Decimal> work in openWorkHoursList)
             {
                 IEnumerable<CustomDay> workDayList = workList.Where(x => x.getDate().Equals(work.Item1));
                 if (workDayList.Count() > 0)
@@ -718,7 +726,7 @@ namespace JugaAgenda_v2
         {
             List<CustomDay> results = new List<CustomDay>();
 
-            foreach (Tuple<DateTime, String, decimal> work in openWorkHoursList)
+            foreach (Tuple<DateTime, String, Decimal> work in openWorkHoursList)
             {
 
                 CustomDay customDay = new CustomDay(work.Item1);

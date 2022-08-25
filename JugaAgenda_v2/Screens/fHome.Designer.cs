@@ -128,8 +128,8 @@ namespace JugaAgenda_v2
             // addWorkEventToolStripMenuItem
             // 
             this.addWorkEventToolStripMenuItem.Name = "addWorkEventToolStripMenuItem";
-            this.addWorkEventToolStripMenuItem.Size = new System.Drawing.Size(131, 34);
-            this.addWorkEventToolStripMenuItem.Text = "Niew Werk";
+            this.addWorkEventToolStripMenuItem.Size = new System.Drawing.Size(143, 34);
+            this.addWorkEventToolStripMenuItem.Text = "Nieuw Werk";
             this.addWorkEventToolStripMenuItem.Click += new System.EventHandler(this.addWorkEventToolStripMenuItem_Click);
             // 
             // searchToolStripMenuItem

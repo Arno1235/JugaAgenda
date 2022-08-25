@@ -180,7 +180,7 @@ namespace JugaAgenda_v2.Screens
 
 
                 /*// TODO generate list
-                //List<Tuple<Work, decimal, List<Technician>>> works = new List<Tuple<Work, decimal, List<Technician>>>();
+                //List<Tuple<Work, Decimal, List<Technician>>> works = new List<Tuple<Work, Decimal, List<Technician>>>();
                 List<Tuple<Work, Technician>> works = new List<Tuple<Work, Technician>>();
                 foreach (Work work in day.getWorkList())
                 {
@@ -192,7 +192,7 @@ namespace JugaAgenda_v2.Screens
                     }
                     else
                     {
-                        decimal hoursTally = work.getDuration() - work.getHoursDone();
+                        Decimal hoursTally = work.getDuration() - work.getHoursDone();
                         foreach (Technician tech in work.getTechnicianList())
                         {
                             for (int i = 0; i < tech.getHours() * 2; i++) // *2 for half hours
@@ -606,24 +606,24 @@ namespace JugaAgenda_v2.Screens
     public class CustomTech
     {
         Technician tech;
-        decimal hoursAvailable;
+        Decimal hoursAvailable;
         public CustomTech(Technician tech)
         {
             this.tech = tech;
             hoursAvailable = tech.getHours();
         }
 
-        public void increaseHoursAvailable(decimal hours)
+        public void increaseHoursAvailable(Decimal hours)
         {
             hoursAvailable += hours;
         }
 
-        public void decreaseHoursAvailable(decimal hours)
+        public void decreaseHoursAvailable(Decimal hours)
         {
             hoursAvailable -= hours;
         }
 
-        public decimal getAvailableHours()
+        public Decimal getAvailableHours()
         {
             return hoursAvailable;
         }

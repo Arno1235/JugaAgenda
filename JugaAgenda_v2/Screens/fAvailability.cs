@@ -15,7 +15,7 @@ namespace JugaAgenda_v2
         private fHome mainScreen;
         private fCalendarEvent calendarScreen;
         private List<DateTime> dates;
-        public fAvailability(fHome mainScreen, fCalendarEvent calendarScreen, decimal hours = 0)
+        public fAvailability(fHome mainScreen, fCalendarEvent calendarScreen, Decimal hours = 0)
         {
             InitializeComponent();
 
@@ -38,7 +38,7 @@ namespace JugaAgenda_v2
             showAvailability(nuHours.Value);
         }
 
-        private void showAvailability(decimal hours)
+        private void showAvailability(Decimal hours)
         {
             lbAvailableResults.Items.Clear();
 

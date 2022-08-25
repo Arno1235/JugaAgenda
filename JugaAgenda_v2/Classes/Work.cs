@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Google.Apis.Calendar.v3.Data;
 using System.Linq;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace JugaAgenda_v2
 {
@@ -24,12 +25,12 @@ namespace JugaAgenda_v2
 
         private String id;
         private String description;
-        private decimal duration;
+        private Decimal duration;
         private String clientName;
         private String phoneNumber;
         private String orderNumber;
         private Status status;
-        private decimal hours_done;
+        private Decimal hours_done;
         private List<Technician> technicianList = new List<Technician>();
         private Google.Apis.Calendar.v3.Data.Event calendarEvent;
 
@@ -48,12 +49,12 @@ namespace JugaAgenda_v2
         public Work( // Full day
             String id,
             String description,
-            decimal duration,
+            Decimal duration,
             String clientName,
             String phoneNumber,
             String orderNumber,
             Status status,
-            decimal hours_done,
+            Decimal hours_done,
             IList<Technician> technicianList,
             String startDate,
             String endDate)
@@ -75,12 +76,12 @@ namespace JugaAgenda_v2
         public Work(
             String id,
             String description,
-            decimal duration,
+            Decimal duration,
             String clientName,
             String phoneNumber,
             String orderNumber,
             Status status,
-            decimal hours_done,
+            Decimal hours_done,
             IList<Technician> technicianList,
             DateTime startDate,
             DateTime endDate)
@@ -211,7 +212,7 @@ namespace JugaAgenda_v2
         {
             return description;
         }
-        public decimal getDuration()
+        public Decimal getDuration()
         {
             return duration;
         }
@@ -305,7 +306,7 @@ namespace JugaAgenda_v2
             }
         }
 
-        public decimal getHoursDone()
+        public Decimal getHoursDone()
         {
             return hours_done;
         }
@@ -348,7 +349,7 @@ namespace JugaAgenda_v2
         {
             this.description = description;
         }
-        public void setDuration(decimal duration)
+        public void setDuration(Decimal duration)
         {
             this.duration = duration;
         }
@@ -368,7 +369,7 @@ namespace JugaAgenda_v2
         {
             this.status = status;
         }
-        public void setHoursDone(decimal hoursDone)
+        public void setHoursDone(Decimal hoursDone)
         {
             this.hours_done = hoursDone;
         }
@@ -392,7 +393,7 @@ namespace JugaAgenda_v2
                     if (titlePart[0].Equals(' ')) titlePart = titlePart.Substring(1);
                     if (titlePart[titlePart.Length-1].Equals(' ')) titlePart = titlePart.Substring(0, titlePart.Length-1);
 
-                    if (i == 0) this.duration = Convert.ToDecimal(titlePart.Replace(',', '.').Replace("u", String.Empty));
+                    if (i == 0) this.duration = Decimal.Parse(titlePart.Replace('.', ',').Replace("u", String.Empty), new NumberFormatInfo() { NumberDecimalSeparator = "," });
                     if (i == 1) this.clientName = titlePart;
                     if (i == 2) this.phoneNumber = titlePart;
 
@@ -415,12 +416,12 @@ namespace JugaAgenda_v2
                 IDictionary<String, String> properties = item.ExtendedProperties.Shared;
 
                 if (properties["hours_done"] != null)
-                    this.hours_done = Convert.ToDecimal(properties["hours_done"]);
+                    this.hours_done = Decimal.Parse(properties["hours_done"], new NumberFormatInfo() { NumberDecimalSeparator = "," });
 
                 foreach (KeyValuePair<String, String> property in properties)
                 {
                     if (property.Key.Substring(0, 4).Equals("tech"))
-                        technicianList.Add(new Technician(property.Key.Substring(5), Convert.ToDecimal(property.Value)));
+                        technicianList.Add(new Technician(property.Key.Substring(5), Decimal.Parse(property.Value.Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," })));
                 }
 
             }

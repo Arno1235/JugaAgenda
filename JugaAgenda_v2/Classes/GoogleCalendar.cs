@@ -37,32 +37,41 @@ namespace JugaAgenda_v2
 
         private int perspectiveMonths;
 
+        private String success;
+
         public GoogleCalendar()
         {
-            UserCredential credential;
-            perspectiveMonths = 5;
-
-            using (var stream =
-                new FileStream(jsonPath, FileMode.Open, FileAccess.Read))
+            try
             {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
-                string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.FromStream(stream).Secrets,
-                    Scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
+
+                UserCredential credential;
+                perspectiveMonths = 5;
+
+                using (var stream =
+                    new FileStream(jsonPath, FileMode.Open, FileAccess.Read))
+                {
+                    // The file token.json stores the user's access and refresh tokens, and is created
+                    // automatically when the authorization flow completes for the first time.
+                    string credPath = "token.json";
+                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.FromStream(stream).Secrets,
+                        Scopes,
+                        "user",
+                        CancellationToken.None,
+                        new FileDataStore(credPath, true)).Result;
+                    Console.WriteLine("Credential file saved to: " + credPath);
+                }
+
+                // Create Google Calendar API service.
+                service = new CalendarService(new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = ApplicationName,
+                });
+            } catch (Exception ex)
+            {
+                success = ex.ToString();
             }
-
-            // Create Google Calendar API service.
-            service = new CalendarService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
         }
 
         public bool testConnection()
@@ -89,6 +98,10 @@ namespace JugaAgenda_v2
         }
 
         #region getters
+        public String getSuccess()
+        {
+            return success;
+        }
         public IList<Event> getWorkEvents() // TODO: add multiple pages
         {
             EventsResource.ListRequest request = service.Events.List(calendarWorkID);
