@@ -25,6 +25,9 @@ namespace JugaAgenda_v2
         private fPlanning planningScreen = null;
         private Google.Apis.Calendar.v3.Data.Event wrongTitleSelected = null;
 
+        private Boolean focussed = true;
+        private int unfocusCounter = 0;
+
         #region TODO
 
         // - Jurgen screen 3
@@ -129,12 +132,21 @@ namespace JugaAgenda_v2
 
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
-            
-            try
+
+            if (focussed) unfocusCounter = 0;
+            else if (unfocusCounter < 10) 
+                unfocusCounter++;
+
+            if (unfocusCounter < 10)
             {
-                syncCalendar();
-            } catch {
-                MessageBox.Show("Er is iets fout gelopen tijdens het synchroniseren van de agenda.");
+                try
+                {
+                    syncCalendar();
+                } catch {
+                    refreshTimer.Enabled = false;
+                    MessageBox.Show("Er is iets fout gelopen tijdens het synchroniseren van de agenda.");
+                    refreshTimer.Enabled = true;
+                }
             }
 
         }
@@ -1214,6 +1226,16 @@ namespace JugaAgenda_v2
 
             e.Cancel = true;
 
+        }
+
+        private void fHome_Activated(object sender, EventArgs e)
+        {
+            focussed = true;
+        }
+
+        private void fHome_Deactivate(object sender, EventArgs e)
+        {
+            focussed = false;
         }
     }
 
