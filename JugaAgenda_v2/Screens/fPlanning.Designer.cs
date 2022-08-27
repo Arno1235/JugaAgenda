@@ -231,12 +231,15 @@
             // 
             // lbTechAvailable
             // 
+            this.lbTechAvailable.AllowDrop = true;
             this.lbTechAvailable.FormattingEnabled = true;
             this.lbTechAvailable.ItemHeight = 30;
             this.lbTechAvailable.Location = new System.Drawing.Point(684, 93);
             this.lbTechAvailable.Name = "lbTechAvailable";
             this.lbTechAvailable.Size = new System.Drawing.Size(569, 724);
             this.lbTechAvailable.TabIndex = 8;
+            this.lbTechAvailable.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbTechAvailable_DragDrop);
+            this.lbTechAvailable.DragOver += new System.Windows.Forms.DragEventHandler(this.lbTechAvailable_DragOver);
             // 
             // btRemoveWorkFromTech
             // 
@@ -267,6 +270,7 @@
             this.lbWorkToPlan.Size = new System.Drawing.Size(588, 724);
             this.lbWorkToPlan.TabIndex = 5;
             this.lbWorkToPlan.SelectedIndexChanged += new System.EventHandler(this.lbWorkToPlan_SelectedIndexChanged);
+            this.lbWorkToPlan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbWorkToPlan_MouseDown);
             // 
             // label3
             // 

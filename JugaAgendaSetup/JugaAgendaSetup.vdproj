@@ -74,6 +74,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -313,15 +321,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:JugaAgendaSetup"
-        "ProductCode" = "8:{839AFD58-F45B-4E39-8C24-57DA0073D9E3}"
-        "PackageCode" = "8:{72CD82FA-DF8C-4203-A7C9-E65673DB9F0A}"
+        "ProductCode" = "8:{049D148E-C8B1-4DAE-A0FF-C56A26EA5A2F}"
+        "PackageCode" = "8:{FF0D7BC1-2F45-48E5-BBE3-7A346226B16B}"
         "UpgradeCode" = "8:{21EF94E8-74D7-441A-8838-914D0B16C44A}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.5"
         "Manufacturer" = "8:Arno Van Eetvelde"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

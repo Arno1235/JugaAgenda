@@ -6,6 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Parsing;
+using Syncfusion.Pdf.Graphics;
+using Syncfusion.Pdf.Grid;
+using Syncfusion.Drawing;
+using System.IO;
+using System.Drawing;
+
 namespace JugaAgenda_v2.Screens
 {
     public partial class fPlanning : Form
@@ -106,11 +114,25 @@ namespace JugaAgenda_v2.Screens
         private void pdfTest()
         {
 
-            var Renderer = new IronPdf.ChromePdfRenderer();
+            //Create a new PDF document.
+            PdfDocument document = new PdfDocument();
+            //Add a page to the document.
+            PdfPage page = document.Pages.Add();
+            //Create PDF graphics for the page.
+            PdfGraphics graphics = page.Graphics;
+            //Set the standard font.
+            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
+            //Draw the text.
+            graphics.DrawString("Hello World!!!", font, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, 0));
+            //Save the document.
 
-            using var pdf = Renderer.RenderHtmlAsPdf("<h1>Hello World</h1><ul><li>test</li><li>qsdf</li></ul>");
-
-            pdf.SaveAs("planning.pdf");
+            using (FileStream fs = File.Create("test.pdf"))
+            {
+                document.Save(fs);
+            }
+            
+            //Close the document.
+            document.Close(true);
 
         }
 
@@ -151,7 +173,7 @@ namespace JugaAgenda_v2.Screens
 
 
 
-            var Renderer = new IronPdf.ChromePdfRenderer();
+            /*var Renderer = new IronPdf.ChromePdfRenderer();
 
             String html = "<h1>Planning for " + startDate.customToString() + " until " + endDate.customToString() + "</h1>";
 
@@ -179,7 +201,7 @@ namespace JugaAgenda_v2.Screens
                 }
 
 
-                /*// TODO generate list
+                *//*// TODO generate list
                 //List<Tuple<Work, Decimal, List<Technician>>> works = new List<Tuple<Work, Decimal, List<Technician>>>();
                 List<Tuple<Work, Technician>> works = new List<Tuple<Work, Technician>>();
                 foreach (Work work in day.getWorkList())
@@ -272,7 +294,7 @@ namespace JugaAgenda_v2.Screens
 
                 *//*document.Add(list);*//*
 
-                break;*/
+                break;*//*
 
             }
 
@@ -280,7 +302,7 @@ namespace JugaAgenda_v2.Screens
 
             using var pdf = Renderer.RenderHtmlAsPdf(html);
 
-            pdf.SaveAs("planning.pdf");
+            pdf.SaveAs("planning.pdf");*/
 
 
 
@@ -399,7 +421,7 @@ namespace JugaAgenda_v2.Screens
 
         private void generatePDF(DateTime startDate, DateTime endDate)
         {
-            var Renderer = new IronPdf.ChromePdfRenderer();
+            /*var Renderer = new IronPdf.ChromePdfRenderer();
 
             String html = "<h1>Planning for " + startDate.customToString() + " until " + endDate.customToString() + "</h1>";
 
@@ -419,7 +441,48 @@ namespace JugaAgenda_v2.Screens
 
             using var pdf = Renderer.RenderHtmlAsPdf(html);
 
-            pdf.SaveAs("planning.pdf");
+            pdf.SaveAs("planning.pdf");*/
+
+
+
+
+            PdfDocument document = new PdfDocument();
+            PdfPage page = document.Pages.Add();
+            PdfGraphics graphics = page.Graphics;
+            PdfFont fontTitle = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
+            PdfFont fontSubTitle = new PdfStandardFont(PdfFontFamily.Helvetica, 12, PdfFontStyle.Bold);
+            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 12);
+
+            int YLoc = 0;
+            
+            graphics.DrawString(startDate.customToString() + " tot " + endDate.customToString(), fontTitle, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, YLoc));
+            YLoc += 25;
+
+            CustomTech currentTech = null;
+            foreach (Object item in lbTechAvailable.Items)
+            {
+                if (item.GetType() == typeof(CustomDayItem))
+                {
+                    graphics.DrawString(((CustomDayItem)item).getDate().customToString(), fontSubTitle, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, YLoc));
+                    YLoc += 12;
+                }
+
+                else if (item.GetType() == typeof(CustomTech))
+                    currentTech = (CustomTech)item;
+                else if (item.GetType() == typeof(CustomWork))
+                {
+                    graphics.DrawString("Tech: " + currentTech.getTech().getName() + " - Work: " + ((CustomWork)item).ToString() + " - " + ((CustomWork)item).getWork().getDescription(), font, PdfBrushes.Black, new Syncfusion.Drawing.PointF(10, YLoc));
+                    YLoc += 20;
+                }
+
+            }
+
+            using (FileStream fs = File.Create("test.pdf"))
+            {
+                document.Save(fs);
+            }
+            document.Close(true);
+
 
             MessageBox.Show("PDF gegenereerd!");
         }
@@ -548,6 +611,48 @@ namespace JugaAgenda_v2.Screens
                 }
             }
         }
+
+
+
+
+        private void lbWorkToPlan_MouseDown(object sender, MouseEventArgs e)
+        {
+
+            if (lbWorkToPlan.Items.Count == 0)
+                return;
+
+            int index = lbWorkToPlan.IndexFromPoint(e.X, e.Y);
+            string s = lbWorkToPlan.Items[index].ToString();
+            DragDropEffects dde1 = DoDragDrop(s,
+                DragDropEffects.All);
+
+            if (dde1 == DragDropEffects.All)
+            {
+                lbWorkToPlan.Items.RemoveAt(lbWorkToPlan.IndexFromPoint(e.X, e.Y));
+            }
+        }
+
+        private void lbTechAvailable_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.All;
+            lbTechAvailable.SelectedIndex = lbTechAvailable.IndexFromPoint(lbTechAvailable.PointToClient(new System.Drawing.Point(e.X, e.Y)));
+        }
+
+        private void lbTechAvailable_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            {
+                string str = (string)e.Data.GetData(
+                    DataFormats.StringFormat);
+
+                int index = lbTechAvailable.IndexFromPoint(lbTechAvailable.PointToClient(new System.Drawing.Point(e.X, e.Y))) + 1;
+                lbTechAvailable.Items.Insert(index, str);
+
+                lbTechAvailable.SelectedIndex = index;
+
+            }
+        }
+
     }
 
     public class CustomDayItem
