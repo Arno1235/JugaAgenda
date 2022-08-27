@@ -36,6 +36,8 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.lbWorkNotFinished = new System.Windows.Forms.ListBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.lbWorkNoHours = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.nuWorkToPlanHours = new System.Windows.Forms.NumericUpDown();
             this.btReset = new System.Windows.Forms.Button();
@@ -48,15 +50,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dtpWeekPlanningStart = new System.Windows.Forms.DateTimePicker();
             this.btGeneratePDF = new System.Windows.Forms.Button();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.lbWorkNoHours = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nuWeeks)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuWorkToPlanHours)).BeginInit();
-            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -158,6 +158,27 @@
             this.lbWorkNotFinished.Size = new System.Drawing.Size(695, 1024);
             this.lbWorkNotFinished.TabIndex = 0;
             this.lbWorkNotFinished.DoubleClick += new System.EventHandler(this.lbWorkNotFinished_DoubleClick);
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.lbWorkNoHours);
+            this.tabPage4.Location = new System.Drawing.Point(4, 39);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(1319, 1046);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Werk zonder uren";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // lbWorkNoHours
+            // 
+            this.lbWorkNoHours.FormattingEnabled = true;
+            this.lbWorkNoHours.ItemHeight = 30;
+            this.lbWorkNoHours.Location = new System.Drawing.Point(8, 6);
+            this.lbWorkNoHours.Name = "lbWorkNoHours";
+            this.lbWorkNoHours.Size = new System.Drawing.Size(695, 1024);
+            this.lbWorkNoHours.TabIndex = 1;
+            this.lbWorkNoHours.DoubleClick += new System.EventHandler(this.lbWorkNoHours_DoubleClick);
             // 
             // tabPage3
             // 
@@ -291,26 +312,6 @@
             this.btGeneratePDF.UseVisualStyleBackColor = true;
             this.btGeneratePDF.Click += new System.EventHandler(this.btGeneratePDF_Click);
             // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.lbWorkNoHours);
-            this.tabPage4.Location = new System.Drawing.Point(4, 39);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1319, 1046);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Werk zonder uren";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // lbWorkNoHours
-            // 
-            this.lbWorkNoHours.FormattingEnabled = true;
-            this.lbWorkNoHours.ItemHeight = 30;
-            this.lbWorkNoHours.Location = new System.Drawing.Point(8, 6);
-            this.lbWorkNoHours.Name = "lbWorkNoHours";
-            this.lbWorkNoHours.Size = new System.Drawing.Size(695, 1024);
-            this.lbWorkNoHours.TabIndex = 1;
-            // 
             // fPlanning
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
@@ -325,10 +326,10 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuWorkToPlanHours)).EndInit();
-            this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

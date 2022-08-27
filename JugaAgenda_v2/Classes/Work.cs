@@ -14,11 +14,11 @@ namespace JugaAgenda_v2
     {
         public enum Status
         {
-            wachten_op_onderdelen, // null = white
-            onderdelen_op_voorraad, // 5 = yellow 2groen
-            bezig, // 9 = blue 5geel
-            klaar, // 2 = green 8grijs
-            geannuleerd, // 8 = gray 9blauw
+            wachten_op_onderdelen, // null = red
+            onderdelen_op_voorraad, // 10 = groen
+            bezig, // 5 = geel
+            klaar, // 8 = grijs
+            geannuleerd, // 9 = blauw
             niet_komen_opdagen, // 3 = purple
             onderdelen_niet_op_tijd, // 6 = orange
         }
@@ -255,7 +255,7 @@ namespace JugaAgenda_v2
                 case Status.onderdelen_niet_op_tijd:
                     return Color.Orange;
                 default:
-                    return Color.White;
+                    return Color.Red;
             }
         }
 
@@ -272,7 +272,7 @@ namespace JugaAgenda_v2
                     return Status.bezig;
                 case 9:
                     return Status.geannuleerd;
-                case 2:
+                case 10:
                     return Status.onderdelen_op_voorraad;
                 case 8:
                     return Status.klaar;
@@ -290,7 +290,7 @@ namespace JugaAgenda_v2
             switch (status)
             {
                 case Status.onderdelen_op_voorraad:
-                    return 2;
+                    return 10;
                 case Status.bezig:
                     return 5;
                 case Status.klaar:

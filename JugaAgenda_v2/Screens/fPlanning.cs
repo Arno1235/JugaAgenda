@@ -532,6 +532,22 @@ namespace JugaAgenda_v2.Screens
             }
 
         }
+
+        private void lbWorkNoHours_DoubleClick(object sender, EventArgs e)
+        {
+            Work selectedWork = (Work)lbWorkNoHours.SelectedItem;
+            if (selectedWork != null)
+            {
+                if (mainScreen.getCalendarScreenAlreadyOpen())
+                {
+                    MessageBox.Show("Sluit het extra agenda scherm en probeer opnieuw.");
+                }
+                else
+                {
+                    mainScreen.openCalendarScreen(mainScreen.getGoogleEventById(selectedWork.getId()), this);
+                }
+            }
+        }
     }
 
     public class CustomDayItem
