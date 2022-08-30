@@ -20,9 +20,12 @@ namespace JugaAgenda_v2
         private List<CustomDay> workList;
         private List<Tuple<DateTime, String, Decimal>> openWorkHoursList;
         private List<Technician> technicianList;
+
         private fCalendarEvent calendarEventScreen = null;
         private fSearch searchScreen = null;
         private fPlanning planningScreen = null;
+        private fTechSchedule scheduleScreen = null;
+
         private Google.Apis.Calendar.v3.Data.Event wrongTitleSelected = null;
 
         private Boolean focussed = true;
@@ -30,11 +33,9 @@ namespace JugaAgenda_v2
 
         #region TODO
 
-        // - Jurgen screen 3
         // - Add extra support in calendar screen
         // - Add/Edit/Remove/Show tech leave
         // - Add/Edit/Remove/Show tech schedule
-        // - Add list of basic work with duration and price
         // - Translate
 
         #endregion
@@ -65,6 +66,20 @@ namespace JugaAgenda_v2
             DateTime now = DateTime.Now;
             newDayTimer.Interval = 1000 - now.Millisecond + (59 - now.Second)*1000 + (59 - now.Minute)*1000*60 + (23 - now.Hour)*1000*60*60 + 1*60*1000;
             newDayTimer.Enabled = true;
+
+            calWorkSchedule.TimeScale = CalendarTimeScale.SixtyMinutes;
+
+            int factor = 7;
+            int nearestMultiple =
+                    (int)Math.Round(
+                         ((now - new DateTime(2021, 2, 1)).Days / (double)factor),
+                         MidpointRounding.AwayFromZero
+                     ) * factor;
+
+            calWorkSchedule.MaximumViewDays = nearestMultiple + 49;
+
+            calWorkSchedule.ViewStart = new DateTime(2021, 2, 1);
+            calWorkSchedule.ViewEnd = new DateTime(2021, 2, 7);
 
             loadStyleComponents();
 
@@ -254,12 +269,21 @@ namespace JugaAgenda_v2
                 {
                     CustomDay day = techniciansWorkWeekList[date.Day-1];
 
-                    String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
-                    //Decimal hours = Decimal.Parse(item.Summary.Split(' ').Last().Split('u')[0].Replace('.', ','));
+                    /*String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
                     Decimal hours = Decimal.Parse(item.Summary.Split(' ').Last().Split('u')[0].Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," });
-                    day.addTechnicianList(new Technician(name, hours));
+                    Technician tech = new Technician(name, hours);*/
 
-                    Technician technician = new Technician(name);
+                    Technician tech = new Technician(item.Summary, true);
+                    day.addTechnicianList(tech);
+
+                    CalendarItem newItem = new CalendarItem(calWorkSchedule,
+                        day.getDate(),
+                        day.getDate().AddDays(1).AddSeconds(-1),
+                        tech.ToString());
+
+                    calWorkSchedule.Items.Add(newItem);
+
+                    Technician technician = new Technician(tech.getName());
                     if (!technicianList.Contains(technician)) technicianList.Add(technician);
                 }
 
@@ -1301,6 +1325,37 @@ namespace JugaAgenda_v2
         {
             focussed = false;
         }
+
+        public void closeScheduleScreen()
+        {
+            scheduleScreen = null;
+        }
+
+        private void calWorkSchedule_ItemDoubleClick(object sender, CalendarItemEventArgs e)
+        {
+            if (scheduleScreen == null)
+            {
+                fTechSchedule techSchedule = new fTechSchedule(this, new Technician(e.Item.Text, true), e.Item.Date.DayOfWeekStartingMonday());
+                scheduleScreen = techSchedule;
+                scheduleScreen.Show();
+            }
+        }
+
+        public Boolean deleteTechSchedule()
+        {
+            return true;
+        }
+
+        public Boolean updateTechSchedule()
+        {
+            return true;
+        }
+
+        public Boolean createTechSchedule()
+        {
+            return true;
+        }
+
     }
 
     #region ExtraObjects

@@ -35,6 +35,11 @@ namespace JugaAgenda_v2
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange3 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange4 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange5 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange6 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange7 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange8 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange9 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange10 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             this.msHome = new System.Windows.Forms.MenuStrip();
             this.addWorkEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,6 +100,8 @@ namespace JugaAgenda_v2
             this.cbCalendarSelectionMode = new System.Windows.Forms.ComboBox();
             this.tpGoogleSettings = new System.Windows.Forms.TabPage();
             this.btTestGoogleConnection = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.calWorkSchedule = new System.Windows.Forms.Calendar.Calendar();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.newDayTimer = new System.Windows.Forms.Timer(this.components);
             this.msHome.SuspendLayout();
@@ -109,6 +116,7 @@ namespace JugaAgenda_v2
             this.tcSettings.SuspendLayout();
             this.tpCalendarSettings.SuspendLayout();
             this.tpGoogleSettings.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // msHome
@@ -231,6 +239,7 @@ namespace JugaAgenda_v2
             this.tcHome.Controls.Add(this.tpCalendar);
             this.tcHome.Controls.Add(this.tabPage1);
             this.tcHome.Controls.Add(this.tpSettings);
+            this.tcHome.Controls.Add(this.tabPage2);
             this.tcHome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcHome.Location = new System.Drawing.Point(0, 42);
             this.tcHome.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -249,7 +258,7 @@ namespace JugaAgenda_v2
             this.tpCalendar.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.tpCalendar.Size = new System.Drawing.Size(2049, 1149);
             this.tpCalendar.TabIndex = 0;
-            this.tpCalendar.Text = "Calendar View";
+            this.tpCalendar.Text = "Werk Calendar";
             this.tpCalendar.UseVisualStyleBackColor = true;
             // 
             // calHome
@@ -328,7 +337,7 @@ namespace JugaAgenda_v2
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(2049, 1149);
             this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Foute agenda titels";
+            this.tabPage1.Text = "Foute werk agenda titels";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // gbWrongTitlesControl
@@ -578,9 +587,9 @@ namespace JugaAgenda_v2
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(175, 8);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(192, 30);
+            this.label5.Size = new System.Drawing.Size(241, 30);
             this.label5.TabIndex = 1;
-            this.label5.Text = "foute agenda titels.";
+            this.label5.Text = "foute werk agenda titels.";
             // 
             // label4
             // 
@@ -705,6 +714,51 @@ namespace JugaAgenda_v2
             this.btTestGoogleConnection.UseVisualStyleBackColor = true;
             this.btTestGoogleConnection.Click += new System.EventHandler(this.btTestGoogleConnection_Click);
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.calWorkSchedule);
+            this.tabPage2.Location = new System.Drawing.Point(4, 39);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(2049, 1149);
+            this.tabPage2.TabIndex = 3;
+            this.tabPage2.Text = "Techniekers Werkschema";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // calWorkSchedule
+            // 
+            this.calWorkSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.calWorkSchedule.FirstDayOfWeek = System.DayOfWeek.Monday;
+            this.calWorkSchedule.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            calendarHighlightRange6.DayOfWeek = System.DayOfWeek.Monday;
+            calendarHighlightRange6.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange6.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange7.DayOfWeek = System.DayOfWeek.Tuesday;
+            calendarHighlightRange7.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange7.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange8.DayOfWeek = System.DayOfWeek.Wednesday;
+            calendarHighlightRange8.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange8.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange9.DayOfWeek = System.DayOfWeek.Thursday;
+            calendarHighlightRange9.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange9.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange10.DayOfWeek = System.DayOfWeek.Friday;
+            calendarHighlightRange10.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange10.StartTime = System.TimeSpan.Parse("08:00:00");
+            this.calWorkSchedule.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
+        calendarHighlightRange6,
+        calendarHighlightRange7,
+        calendarHighlightRange8,
+        calendarHighlightRange9,
+        calendarHighlightRange10};
+            this.calWorkSchedule.Location = new System.Drawing.Point(3, 3);
+            this.calWorkSchedule.Name = "calWorkSchedule";
+            this.calWorkSchedule.Size = new System.Drawing.Size(2043, 1143);
+            this.calWorkSchedule.TabIndex = 0;
+            this.calWorkSchedule.Text = "calWorkSchedule";
+            this.calWorkSchedule.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            this.calWorkSchedule.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calWorkSchedule_ItemDoubleClick);
+            // 
             // refreshTimer
             // 
             this.refreshTimer.Interval = 1000;
@@ -745,6 +799,7 @@ namespace JugaAgenda_v2
             this.tpCalendarSettings.ResumeLayout(false);
             this.tpCalendarSettings.PerformLayout();
             this.tpGoogleSettings.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -814,6 +869,8 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.Button btDelete;
         private System.Windows.Forms.Button btSave;
         private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Calendar.Calendar calWorkSchedule;
     }
 }
 

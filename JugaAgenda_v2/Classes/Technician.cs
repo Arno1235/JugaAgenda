@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,14 @@ namespace JugaAgenda_v2.Classes
         private String name;
         private Decimal hours;
 
-        public Technician(String name)
+        public Technician(String input, Boolean title = false)
         {
-            this.name = name;
+            if (title)
+            {
+                this.name = input.Remove(input.Length - input.Split(' ').Last().Length - 1);
+                this.hours = Decimal.Parse(input.Split(' ').Last().Split('u')[0].Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," });
+            } else
+                this.name = input;
         }
         public Technician(String name, Decimal hours)
         {
@@ -54,7 +60,7 @@ namespace JugaAgenda_v2.Classes
         public override string ToString()
         {
             if (this.getHours() == null || this.getHours() == 0) return this.getName();
-            return this.getName() + " - " + this.getHours().ToString() + "h";
+            return this.getName() + " " + this.getHours().ToString() + "u";
         }
     }
 }

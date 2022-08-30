@@ -391,11 +391,10 @@ namespace JugaAgenda_v2
             
             if (answer == DialogResult.Yes)
             {
-                if (this.mainScreen.deleteWorkItem(oldWorkEvent.Id)) {
+                if (this.mainScreen.deleteWorkItem(oldWorkEvent.Id))
                     this.Close();
-                } else {
+                else
                     MessageBox.Show("Er is iets fout gelopen.");
-                }
             }
         }
 
