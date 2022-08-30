@@ -204,6 +204,23 @@ namespace JugaAgenda_v2
         {
             return calendarEvent;
         }
+
+        public Boolean isMultipleDays()
+        {
+            if (calendarEvent == null) return false;
+
+            if (calendarEvent.Start.Date == null || calendarEvent.End.Date == null) return false;
+
+            return Convert.ToDateTime(calendarEvent.End.Date) - Convert.ToDateTime(calendarEvent.Start.Date) > TimeSpan.FromDays(1);
+        }
+
+        public Tuple<DateTime, DateTime> getMultipleDaysDates()
+        {
+            if (!isMultipleDays()) return null;
+
+            return new Tuple<DateTime, DateTime>(Convert.ToDateTime(calendarEvent.Start.Date), Convert.ToDateTime(calendarEvent.End.Date));
+        }
+
         public string getId()
         {
             return id;

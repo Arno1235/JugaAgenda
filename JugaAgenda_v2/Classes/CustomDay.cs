@@ -36,6 +36,12 @@ namespace JugaAgenda_v2.Classes
         {
             workList.Add(work);
         }
+
+        public void removeWorkList(Work work)
+        {
+            workList.Remove(work);
+        }
+
         public void addTechnicianList(Technician technician)
         {
             technicianList.Add(technician);

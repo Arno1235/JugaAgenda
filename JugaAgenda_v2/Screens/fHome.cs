@@ -188,17 +188,20 @@ namespace JugaAgenda_v2
                                 {
                                     work.updateValues(item);
 
+                                    updateWorkItemDate(day, work, item);
+
                                     if (day.getDate() < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
                                         work.isWorkOpen())
                                     {
                                         openWorkHoursList.Add(new Tuple<DateTime, string, Decimal>(day.getDate(), work.getId(), work.getDuration() - work.getHoursDone()));
                                     }
-
                                 }
+
                                 else
                                 {
                                     day.getWorkList().RemoveAt(i);
                                 }
+
                                 found = true;
                                 break;
                             }
@@ -388,7 +391,11 @@ namespace JugaAgenda_v2
             {
                 day = new CustomDay(date);
 
-                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeek-1].getTechnicianList())
+                //if ((int)date.DayOfWeek - 1 < 0) MessageBox.Show(date.customToString());
+
+                //MessageBox.Show(((int)date.DayOfWeek - 1).ToString(), techniciansWorkWeekList.Count.ToString());
+
+                foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeekStartingMonday()].getTechnicianList())
                 {
                     bool tech_has_leave = false;
                     foreach (CustomDay leave_day in technicianLeaveList)
@@ -492,15 +499,36 @@ namespace JugaAgenda_v2
                         {
                             foreach (Work work in day.getWorkList())
                             {
-                                CalendarItem newItem = new CalendarItem(calHome,
-                                    date,
-                                    date.AddDays(1).AddSeconds(-1),
-                                    work.getTitle());
+                                CalendarItem newItem;
 
-                                newItem.ApplyColor(work.getColor());
-                                newItem.setCalendarEvent(work.getCalendarEvent());
+                                if (work.isMultipleDays())
+                                {
+                                    Tuple<DateTime, DateTime> dates = work.getMultipleDaysDates();
+                                    for (DateTime datesDate = dates.Item1; datesDate < dates.Item2; datesDate = datesDate.AddDays(1))
+                                    {
+                                        newItem = new CalendarItem(calHome,
+                                            datesDate,
+                                            datesDate.AddDays(1).AddSeconds(-1),
+                                            work.getTitle());
+                                        newItem.ApplyColor(work.getColor());
+                                        newItem.setCalendarEvent(work.getCalendarEvent());
 
-                                calHome.Items.Add(newItem);
+                                        calHome.Items.Add(newItem);
+                                    }
+                                } else
+                                {
+                                    newItem = new CalendarItem(calHome,
+                                        date,
+                                        date.AddDays(1).AddSeconds(-1),
+                                        work.getTitle());
+
+                                    newItem.ApplyColor(work.getColor());
+                                    newItem.setCalendarEvent(work.getCalendarEvent());
+
+                                    calHome.Items.Add(newItem);
+                                }
+
+                                
                             }
                         }
                     }
@@ -551,6 +579,39 @@ namespace JugaAgenda_v2
         public bool deleteWorkItem(String eventId)
         {
             return googleCalendar.deleteWorkEvent(eventId);
+        }
+
+        public void updateWorkItemDate(CustomDay oldDay, Work work, Google.Apis.Calendar.v3.Data.Event item)
+        {
+
+            DateTime date;
+            if (item.Start.DateTime != null)
+            {
+                date = (DateTime)item.Start.DateTime;
+                date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
+            }
+            else
+            {
+                date = Convert.ToDateTime(item.Start.Date);
+            }
+
+            if (oldDay.getDate().Equals(date.Date)) return;
+
+            oldDay.removeWorkList(work);
+
+            IEnumerable<CustomDay> newDays = workList.Where(x => x.getDate().Equals(date.Date));
+            if (newDays.Count() > 0)
+            {
+                CustomDay newDay = newDays.First();
+                newDay.addWorkList(work);
+            }
+            else
+            {
+                CustomDay newDay = new CustomDay(date.Date);
+                newDay.addWorkList(work);
+                workList.Add(newDay);
+            }
+
         }
 
         public List<Work> searchWork(String clientName, String phoneNumber, String orderNumber, String description, Boolean OR = true)
@@ -1261,6 +1322,13 @@ namespace JugaAgenda_v2
         public static String customToString(this DateTime dt)
         {
             return dt.DayOfWeek.ToString() + " " + dt.Day.ToString() + " " + dt.ToString("MMMM");
+        }
+
+        public static int DayOfWeekStartingMonday(this DateTime dt)
+        {
+            int customDayOfWeek = (int)dt.Date.DayOfWeek - 1;
+            if (customDayOfWeek == -1) customDayOfWeek = 6;
+            return customDayOfWeek;
         }
 
     }
