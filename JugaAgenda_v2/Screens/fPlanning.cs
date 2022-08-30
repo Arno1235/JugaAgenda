@@ -421,30 +421,6 @@ namespace JugaAgenda_v2.Screens
 
         private void generatePDF(DateTime startDate, DateTime endDate)
         {
-            /*var Renderer = new IronPdf.ChromePdfRenderer();
-
-            String html = "<h1>Planning for " + startDate.customToString() + " until " + endDate.customToString() + "</h1>";
-
-            CustomTech currentTech = null;
-            foreach (Object item in lbTechAvailable.Items)
-            {
-                if (item.GetType() == typeof(CustomDayItem))
-                    html += "<h2>" + ((CustomDayItem)item).getDate().customToString() + "</h2>";
-                else if (item.GetType() == typeof(CustomTech))
-                    currentTech = (CustomTech)item;
-                else if (item.GetType() == typeof(CustomWork))
-                    html += "<li>" + "Tech: " + currentTech.getTech().getName() + " - Work: " + ((CustomWork)item).ToString() + " - " + ((CustomWork)item).getWork().getDescription() + "</li>";
-
-            }
-            html += "</ul>";
-
-
-            using var pdf = Renderer.RenderHtmlAsPdf(html);
-
-            pdf.SaveAs("planning.pdf");*/
-
-
-
 
             PdfDocument document = new PdfDocument();
             PdfPage page = document.Pages.Add();
@@ -454,37 +430,57 @@ namespace JugaAgenda_v2.Screens
             PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 12);
 
             int YLoc = 0;
-            
-            graphics.DrawString(startDate.customToString() + " tot " + endDate.customToString(), fontTitle, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, YLoc));
-            YLoc += 25;
+
+            string text = startDate.customToString() + " tot " + endDate.customToString();
+            graphics.DrawString(text, fontTitle, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, YLoc));
+
+            Syncfusion.Drawing.SizeF size = fontTitle.MeasureString(text);
+
+            YLoc += (int)size.Height;
 
             CustomTech currentTech = null;
             foreach (Object item in lbTechAvailable.Items)
             {
                 if (item.GetType() == typeof(CustomDayItem))
                 {
-                    graphics.DrawString(((CustomDayItem)item).getDate().customToString(), fontSubTitle, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, YLoc));
-                    YLoc += 12;
+                    text = ((CustomDayItem)item).getDate().customToString();
+                    graphics.DrawString(text, fontSubTitle, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, YLoc));
+
+                    size = fontSubTitle.MeasureString(text);
+
+                    YLoc += (int) size.Height;
                 }
 
                 else if (item.GetType() == typeof(CustomTech))
                     currentTech = (CustomTech)item;
                 else if (item.GetType() == typeof(CustomWork))
                 {
-                    graphics.DrawString("Tech: " + currentTech.getTech().getName() + " - Work: " + ((CustomWork)item).ToString() + " - " + ((CustomWork)item).getWork().getDescription(), font, PdfBrushes.Black, new Syncfusion.Drawing.PointF(10, YLoc));
-                    YLoc += 20;
+                    text = "Tech: " + currentTech.getTech().getName() + " - Work: " + ((CustomWork)item).ToString() + " - " + ((CustomWork)item).getWork().getDescription();
+                    graphics.DrawString(text, font, PdfBrushes.Black, new Syncfusion.Drawing.PointF(10, YLoc));
+
+                    size = font.MeasureString(text);
+
+                    YLoc += (int)size.Height;
                 }
 
             }
 
-            using (FileStream fs = File.Create("test.pdf"))
+            try
             {
-                document.Save(fs);
+
+                using (FileStream fs = File.Create(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/planning.pdf"))
+                {
+                    document.Save(fs);
+                }
+                document.Close(true);
+
+                MessageBox.Show("PDF gegenereerd!");
+            } catch {
+                MessageBox.Show("Er is iets fout gelopen tijdens het opslaan van de planning");
             }
-            document.Close(true);
 
 
-            MessageBox.Show("PDF gegenereerd!");
+
         }
 
         private void fPlanning_Resize(object sender, EventArgs e)
@@ -506,6 +502,9 @@ namespace JugaAgenda_v2.Screens
         {
             List<CustomDay> workAndTechList = mainScreen.getWorkBetweenDates(startDate, endDate);
             workAndTechList.Sort((x, y) => x.getDate().CompareTo(y.getDate()));
+
+            lbWorkToPlan.Items.Clear();
+            lbTechAvailable.Items.Clear();
 
             foreach (CustomDay day in workAndTechList)
             {
@@ -622,37 +621,119 @@ namespace JugaAgenda_v2.Screens
                 return;
 
             int index = lbWorkToPlan.IndexFromPoint(e.X, e.Y);
-            string s = lbWorkToPlan.Items[index].ToString();
-            DragDropEffects dde1 = DoDragDrop(s,
-                DragDropEffects.All);
 
-            if (dde1 == DragDropEffects.All)
+            if (lbWorkToPlan.Items[index].GetType() == typeof(CustomWork))
             {
-                lbWorkToPlan.Items.RemoveAt(lbWorkToPlan.IndexFromPoint(e.X, e.Y));
+
+                CustomWork customWork = (CustomWork)lbWorkToPlan.Items[index];
+
+                DragDropEffects dde1 = DoDragDrop(customWork, DragDropEffects.All);
+
+                if (dde1 == DragDropEffects.All)
+                {
+                    lbWorkToPlan.Items.RemoveAt(index);
+                    lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, customWork);
+                }
             }
+
         }
 
         private void lbTechAvailable_DragOver(object sender, DragEventArgs e)
         {
-            e.Effect = DragDropEffects.All;
-            lbTechAvailable.SelectedIndex = lbTechAvailable.IndexFromPoint(lbTechAvailable.PointToClient(new System.Drawing.Point(e.X, e.Y)));
+            
+            int index = lbTechAvailable.IndexFromPoint(lbTechAvailable.PointToClient(new System.Drawing.Point(e.X, e.Y)));
+
+            if (lbTechAvailable.Items[index].GetType() != typeof(CustomTech) && lbTechAvailable.Items[index].GetType() != typeof(CustomWork) && !e.Data.GetDataPresent(typeof(CustomWork)))
+                e.Effect = DragDropEffects.None;
+            else
+                e.Effect = DragDropEffects.All;
+
+            lbTechAvailable.SelectedIndex = index;
         }
 
         private void lbTechAvailable_DragDrop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            if (e.Data.GetDataPresent(typeof(CustomWork)))
             {
-                string str = (string)e.Data.GetData(
-                    DataFormats.StringFormat);
 
-                int index = lbTechAvailable.IndexFromPoint(lbTechAvailable.PointToClient(new System.Drawing.Point(e.X, e.Y))) + 1;
-                lbTechAvailable.Items.Insert(index, str);
+                int index = lbTechAvailable.IndexFromPoint(lbTechAvailable.PointToClient(new System.Drawing.Point(e.X, e.Y)));
+                if (index == -1) index = lbTechAvailable.Items.Count - 1;
+
+                if (lbTechAvailable.Items[index].GetType() != typeof(CustomTech) && lbTechAvailable.Items[index].GetType() != typeof(CustomWork))
+                {
+                    e.Effect = DragDropEffects.None;
+                    return;
+                }
+
+                CustomWork customWork = (CustomWork)e.Data
+                    .GetData(typeof(CustomWork));
+
+                int currentIndex = index;
+                
+                while(currentIndex > 0)
+                {
+                    if (lbTechAvailable.Items[currentIndex].GetType() == typeof(CustomTech))
+                    {
+                        customWork.assignTech((CustomTech)lbTechAvailable.Items[currentIndex]);
+                        break;
+                    }
+                    currentIndex--;
+                }
+
+                //lbTechAvailable.Items.Insert(index + 1, customWork);
 
                 lbTechAvailable.SelectedIndex = index;
 
             }
         }
 
+        private void lbTechAvailable_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (lbTechAvailable.Items.Count == 0)
+                return;
+
+            int index = lbTechAvailable.IndexFromPoint(e.X, e.Y);
+
+            if (lbTechAvailable.Items[index].GetType() == typeof(CustomWork))
+            {
+
+                CustomWork customWork = (CustomWork)lbTechAvailable.Items[index];
+
+                DragDropEffects dde2 = DoDragDrop(customWork, DragDropEffects.All);
+
+                if (dde2 == DragDropEffects.All && index != lbTechAvailable.SelectedIndex)
+                {
+                    lbTechAvailable.Items.RemoveAt(index);
+                    lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, customWork);
+                } else if (dde2 == DragDropEffects.Move)
+                    lbTechAvailable.Items.RemoveAt(index);
+            }
+        }
+
+        private void lbWorkToPlan_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(CustomWork)) && ((CustomWork) e.Data.GetData(typeof(CustomWork))).getTech() != null)
+                e.Effect = DragDropEffects.Move;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void lbWorkToPlan_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(CustomWork)) && ((CustomWork)e.Data.GetData(typeof(CustomWork))).getTech() != null)
+            {
+
+                CustomWork customWork = (CustomWork)e.Data
+                    .GetData(typeof(CustomWork));
+
+                customWork.unAssignTech();
+
+                int index = lbWorkToPlan.Items.IndexOf(customWork.getDay()) + 1;
+                lbWorkToPlan.Items.Insert(index, customWork);
+                lbWorkToPlan.SelectedIndex = index;
+
+            }
+        }
     }
 
     public class CustomDayItem

@@ -152,6 +152,7 @@ namespace JugaAgenda_v2
         }
 
         // Can be more efficient
+        // TODO: Update correctly when changing dates
         public void syncCalendar()
         {
             IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.sync();
@@ -1231,6 +1232,8 @@ namespace JugaAgenda_v2
         private void fHome_Activated(object sender, EventArgs e)
         {
             focussed = true;
+            if (calendarEventScreen != null)
+                calendarEventScreen.Focus();
         }
 
         private void fHome_Deactivate(object sender, EventArgs e)

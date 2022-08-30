@@ -240,6 +240,7 @@
             this.lbTechAvailable.TabIndex = 8;
             this.lbTechAvailable.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbTechAvailable_DragDrop);
             this.lbTechAvailable.DragOver += new System.Windows.Forms.DragEventHandler(this.lbTechAvailable_DragOver);
+            this.lbTechAvailable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbTechAvailable_MouseDown);
             // 
             // btRemoveWorkFromTech
             // 
@@ -263,6 +264,7 @@
             // 
             // lbWorkToPlan
             // 
+            this.lbWorkToPlan.AllowDrop = true;
             this.lbWorkToPlan.FormattingEnabled = true;
             this.lbWorkToPlan.ItemHeight = 30;
             this.lbWorkToPlan.Location = new System.Drawing.Point(8, 93);
@@ -270,6 +272,8 @@
             this.lbWorkToPlan.Size = new System.Drawing.Size(588, 724);
             this.lbWorkToPlan.TabIndex = 5;
             this.lbWorkToPlan.SelectedIndexChanged += new System.EventHandler(this.lbWorkToPlan_SelectedIndexChanged);
+            this.lbWorkToPlan.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbWorkToPlan_DragDrop);
+            this.lbWorkToPlan.DragOver += new System.Windows.Forms.DragEventHandler(this.lbWorkToPlan_DragOver);
             this.lbWorkToPlan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbWorkToPlan_MouseDown);
             // 
             // label3

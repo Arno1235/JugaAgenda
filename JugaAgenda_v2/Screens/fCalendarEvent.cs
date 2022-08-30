@@ -37,6 +37,13 @@ namespace JugaAgenda_v2
                 btDelete.Show();
                 loadWorkEvent();
             }
+
+            Rectangle screenRectangle = this.RectangleToScreen(this.ClientRectangle);
+
+            int titleHeight = screenRectangle.Top - this.Top;
+
+            this.Size = new System.Drawing.Size(this.Size.Width, this.btSave.Location.Y + this.btSave.Height*2 + titleHeight + this.Padding.Top + this.Padding.Bottom);
+
         }
 
         public fCalendarEvent(fHome mainScreen, DateTime date)
