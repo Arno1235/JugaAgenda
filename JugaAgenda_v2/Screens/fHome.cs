@@ -55,31 +55,26 @@ namespace JugaAgenda_v2
                 this.Close();
             }
 
+            mvHome.MaxSelectionCount = calHome.MaximumViewDays;
             mvHome.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             mvHome.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
-            mvHome.MaxSelectionCount = calHome.MaximumViewDays;
 
             mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
-
-            calHome.TimeScale = CalendarTimeScale.SixtyMinutes;
 
             DateTime now = DateTime.Now;
             newDayTimer.Interval = 1000 - now.Millisecond + (59 - now.Second)*1000 + (59 - now.Minute)*1000*60 + (23 - now.Hour)*1000*60*60 + 1*60*1000;
             newDayTimer.Enabled = true;
 
-            calWorkSchedule.TimeScale = CalendarTimeScale.SixtyMinutes;
-
             int factor = 7;
-            int nearestMultiple =
-                    (int)Math.Round(
-                         ((now - new DateTime(2021, 2, 1)).Days / (double)factor),
-                         MidpointRounding.AwayFromZero
-                     ) * factor;
-
+            int nearestMultiple = (int)Math.Round(((now - new DateTime(2021, 2, 1)).Days / (double)factor), MidpointRounding.AwayFromZero) * factor;
             calWorkSchedule.MaximumViewDays = nearestMultiple + 49;
 
             calWorkSchedule.ViewStart = new DateTime(2021, 2, 1);
             calWorkSchedule.ViewEnd = new DateTime(2021, 2, 7);
+
+            //mvLeave.MaxSelectionCount = calLeave.MaximumViewDays;
+            //mvLeave.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            //mvLeave.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
 
             loadStyleComponents();
 
