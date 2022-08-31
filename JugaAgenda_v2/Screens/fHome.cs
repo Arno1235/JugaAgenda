@@ -248,8 +248,6 @@ namespace JugaAgenda_v2
 
             for (int i = 1; i <= 7; i++) techniciansWorkWeekList.Add(new CustomDay(new DateTime(2021, 2, i)));
 
-            calWorkSchedule.Items.Clear();
-
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getTechnicianEvents().Items)
             {
                 DateTime date = Convert.ToDateTime(item.Start.Date);
@@ -277,8 +275,6 @@ namespace JugaAgenda_v2
                         day.getDate(),
                         day.getDate().AddDays(1).AddSeconds(-1),
                         tech.ToString());
-
-                    newItem.setCalendarEvent(item);
 
                     calWorkSchedule.Items.Add(newItem);
 
@@ -1328,44 +1324,33 @@ namespace JugaAgenda_v2
         public void closeScheduleScreen()
         {
             scheduleScreen = null;
-            loadTechniciansWorkWeek();
         }
 
         private void calWorkSchedule_ItemDoubleClick(object sender, CalendarItemEventArgs e)
         {
             if (scheduleScreen == null)
             {
-                fTechSchedule techSchedule = new fTechSchedule(this, e.Item.Date.DayOfWeekStartingMonday(), e.Item.getCalendarEvent());
+                fTechSchedule techSchedule = new fTechSchedule(this, new Technician(e.Item.Text, true), e.Item.Date.DayOfWeekStartingMonday());
                 scheduleScreen = techSchedule;
                 scheduleScreen.Show();
             }
         }
 
-        public Boolean deleteTechSchedule(string eventID)
+        public Boolean deleteTechSchedule()
         {
-            return googleCalendar.deleteTechnicianEvent(eventID);
+            return true;
         }
 
-        public Boolean updateTechSchedule(Google.Apis.Calendar.v3.Data.Event newEvent)
+        public Boolean updateTechSchedule()
         {
-            return googleCalendar.editTechnicianEvent(newEvent);
+            return true;
         }
 
-        public Boolean createTechSchedule(Google.Apis.Calendar.v3.Data.Event newEvent)
+        public Boolean createTechSchedule()
         {
-            return googleCalendar.addTechnicianEvent(newEvent);
+            return true;
         }
 
-        private void calWorkSchedule_ItemCreating(object sender, CalendarItemCancelEventArgs e)
-        {
-            e.Cancel = true;
-            if (scheduleScreen == null)
-            {
-                fTechSchedule techSchedule = new fTechSchedule(this, e.Item.Date.DayOfWeekStartingMonday());
-                scheduleScreen = techSchedule;
-                scheduleScreen.Show();
-            }
-        }
     }
 
     #region ExtraObjects

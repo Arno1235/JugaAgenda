@@ -840,6 +840,54 @@ namespace JugaAgenda_v2
             this.btTestGoogleConnection.UseVisualStyleBackColor = true;
             this.btTestGoogleConnection.Click += new System.EventHandler(this.btTestGoogleConnection_Click);
             // 
+<<<<<<< HEAD
+=======
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.calWorkSchedule);
+            this.tabPage2.Location = new System.Drawing.Point(4, 39);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(2049, 1149);
+            this.tabPage2.TabIndex = 3;
+            this.tabPage2.Text = "Techniekers Werkschema";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // calWorkSchedule
+            // 
+            this.calWorkSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.calWorkSchedule.FirstDayOfWeek = System.DayOfWeek.Monday;
+            this.calWorkSchedule.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            calendarHighlightRange6.DayOfWeek = System.DayOfWeek.Monday;
+            calendarHighlightRange6.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange6.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange7.DayOfWeek = System.DayOfWeek.Tuesday;
+            calendarHighlightRange7.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange7.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange8.DayOfWeek = System.DayOfWeek.Wednesday;
+            calendarHighlightRange8.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange8.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange9.DayOfWeek = System.DayOfWeek.Thursday;
+            calendarHighlightRange9.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange9.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange10.DayOfWeek = System.DayOfWeek.Friday;
+            calendarHighlightRange10.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange10.StartTime = System.TimeSpan.Parse("08:00:00");
+            this.calWorkSchedule.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
+        calendarHighlightRange6,
+        calendarHighlightRange7,
+        calendarHighlightRange8,
+        calendarHighlightRange9,
+        calendarHighlightRange10};
+            this.calWorkSchedule.Location = new System.Drawing.Point(3, 3);
+            this.calWorkSchedule.Name = "calWorkSchedule";
+            this.calWorkSchedule.Size = new System.Drawing.Size(2043, 1143);
+            this.calWorkSchedule.TabIndex = 0;
+            this.calWorkSchedule.Text = "calWorkSchedule";
+            this.calWorkSchedule.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            this.calWorkSchedule.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calWorkSchedule_ItemDoubleClick);
+            // 
+>>>>>>> parent of a64c81f (programming)
             // refreshTimer
             // 
             this.refreshTimer.Interval = 1000;

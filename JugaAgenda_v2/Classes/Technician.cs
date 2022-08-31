@@ -1,5 +1,4 @@
-﻿using Google.Apis.Calendar.v3.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -37,24 +36,6 @@ namespace JugaAgenda_v2.Classes
         {
             return this.hours;
         }
-        public Google.Apis.Calendar.v3.Data.Event createCalendarEvent(int dayOfWeek, string eventID = null)
-        {
-            Google.Apis.Calendar.v3.Data.Event techEvent = new Google.Apis.Calendar.v3.Data.Event();
-
-            techEvent.Start = new EventDateTime();
-            techEvent.Start.Date = "2021-02-0" + (dayOfWeek+1).ToString();
-            techEvent.Start.DateTime = null;
-            techEvent.End = new EventDateTime();
-            techEvent.End.Date = "2021-02-0" + (dayOfWeek + 2).ToString();
-            techEvent.End.DateTime = null;
-
-            techEvent.Summary = this.ToString();
-
-            if (eventID != null)
-                techEvent.Id = eventID;
-
-            return techEvent;
-        }
         #endregion
 
         #region setters
@@ -78,7 +59,7 @@ namespace JugaAgenda_v2.Classes
 
         public override string ToString()
         {
-            if (this.getHours() == 0 || this.getHours() == 0) return this.getName();
+            if (this.getHours() == null || this.getHours() == 0) return this.getName();
             return this.getName() + " " + this.getHours().ToString() + "u";
         }
     }
