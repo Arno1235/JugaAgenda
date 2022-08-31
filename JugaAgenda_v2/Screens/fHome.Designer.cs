@@ -757,6 +757,7 @@ namespace JugaAgenda_v2
             this.calWorkSchedule.TabIndex = 0;
             this.calWorkSchedule.Text = "calWorkSchedule";
             this.calWorkSchedule.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            this.calWorkSchedule.ItemCreating += new System.Windows.Forms.Calendar.Calendar.CalendarItemCancelEventHandler(this.calWorkSchedule_ItemCreating);
             this.calWorkSchedule.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calWorkSchedule_ItemDoubleClick);
             // 
             // refreshTimer

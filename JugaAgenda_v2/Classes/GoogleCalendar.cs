@@ -202,6 +202,19 @@ namespace JugaAgenda_v2
             }
         }
 
+        public bool addTechnicianEvent(Event new_event)
+        {
+            try
+            {
+                service.Events.Insert(new_event, calendarTechnicianID).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool editWorkEvent(Event new_event)
         {
             try
@@ -246,6 +259,19 @@ namespace JugaAgenda_v2
             try
             {
                 service.Events.Delete(calendarWorkID, eventID).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool deleteTechnicianEvent(String eventID)
+        {
+            try
+            {
+                service.Events.Delete(calendarTechnicianID, eventID).Execute();
                 return true;
             }
             catch
