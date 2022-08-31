@@ -167,7 +167,7 @@ namespace JugaAgenda_v2
         public Events getLeaveEvents()
         {
             EventsResource.ListRequest request = service.Events.List(calendarLeaveID);
-            request.TimeMin = DateTime.Now.AddMonths(-1);
+            request.TimeMin = DateTime.Now.AddMonths(-2);
             request.TimeMax = DateTime.Now.AddMonths(perspectiveMonths);
             request.ShowDeleted = false;
             request.SingleEvents = true;

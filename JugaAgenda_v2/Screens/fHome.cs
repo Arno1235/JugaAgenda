@@ -322,7 +322,18 @@ namespace JugaAgenda_v2
                 if (checkTitleWithRegex(item, "^[a-zA-Z ]+ verlof$", false))
                 {
 
-                    DateTime date = Convert.ToDateTime(item.Start.Date);
+                    //DateTime date = Convert.ToDateTime(item.Start.Date);
+
+                    DateTime date;
+                    if (item.Start.DateTime != null)
+                    {
+                        date = (DateTime)item.Start.DateTime;
+                        date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
+                    }
+                    else
+                    {
+                        date = Convert.ToDateTime(item.Start.Date);
+                    }
 
                     CustomDay day = null;
 
@@ -526,7 +537,8 @@ namespace JugaAgenda_v2
                     {
                         DateTime date = day.getDate();
 
-                        if (date >= calHome.ViewStart && date < calHome.ViewEnd)
+                        //if (date >= calHome.ViewStart && date < calHome.ViewEnd)
+                        if (date < calHome.ViewEnd)
                         {
                             foreach (Work work in day.getWorkList())
                             {
@@ -535,6 +547,10 @@ namespace JugaAgenda_v2
                                 if (work.isMultipleDays())
                                 {
                                     Tuple<DateTime, DateTime> dates = work.getMultipleDaysDates();
+
+                                    if (dates.Item2 < calHome.ViewStart)
+                                        continue;
+
                                     for (DateTime datesDate = dates.Item1; datesDate < dates.Item2; datesDate = datesDate.AddDays(1))
                                     {
                                         newItem = new CalendarItem(calHome,
@@ -546,8 +562,18 @@ namespace JugaAgenda_v2
 
                                         calHome.Items.Add(newItem);
                                     }
+
+                                    /*newItem = new CalendarItem(calHome,
+                                            dates.Item1,
+                                            dates.Item2.AddDays(-1).AddSeconds(-1),
+                                            work.getTitle());
+                                    newItem.ApplyColor(work.getColor());
+                                    newItem.setCalendarEvent(work.getCalendarEvent());
+
+                                    calHome.Items.Add(newItem);*/
+
                                 }
-                                else
+                                else if (date >= calHome.ViewStart)
                                 {
                                     newItem = new CalendarItem(calHome,
                                         date,
@@ -632,21 +658,37 @@ namespace JugaAgenda_v2
                     {
                         DateTime date = day.getDate();
 
-                        if (date >= calLeave.ViewStart && date < calLeave.ViewEnd)
+                        //if (date >= calLeave.ViewStart && date < calLeave.ViewEnd)
+                        if (date < calLeave.ViewEnd)
                         {
-
                             foreach (Technician tech in day.getTechnicianList())
                             {
+
+                                DateTime endDate;
+                                if (tech.getCalendarEvent().End.DateTime != null)
+                                {
+                                    endDate = (DateTime)tech.getCalendarEvent().End.DateTime;
+                                    endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day + 1, 0, 0, 0, 0);
+                                }
+                                else
+                                {
+                                    endDate = Convert.ToDateTime(tech.getCalendarEvent().End.Date);
+                                }
+
+                                if (endDate < calLeave.ViewStart)
+                                    continue;
+
                                 CalendarItem newItem;
 
                                 newItem = new CalendarItem(calLeave,
-                                        date,
-                                        Convert.ToDateTime(tech.getCalendarEvent().End.Date).AddSeconds(-1),
-                                        tech.getName());
+                                    date,
+                                    endDate.AddSeconds(-1),
+                                    tech.getName());
 
-                                newItem.setCalendarEvent(tech.getCalendarEvent());
+                                //newItem.setCalendarEvent(tech.getCalendarEvent());
 
                                 calLeave.Items.Add(newItem);
+
                             }
 
                         }
