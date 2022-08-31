@@ -30,16 +30,21 @@ namespace JugaAgenda_v2
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange1 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange2 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange3 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange4 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange5 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange6 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange7 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange8 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange9 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange10 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange16 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange17 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange18 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange19 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange20 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange21 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange22 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange23 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange24 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange25 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange26 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange27 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange28 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange29 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
+            System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange30 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             this.msHome = new System.Windows.Forms.MenuStrip();
             this.addWorkEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,6 +107,9 @@ namespace JugaAgenda_v2
             this.btTestGoogleConnection = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.calWorkSchedule = new System.Windows.Forms.Calendar.Calendar();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.calLeave = new System.Windows.Forms.Calendar.Calendar();
+            this.mvLeave = new System.Windows.Forms.Calendar.MonthView();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.newDayTimer = new System.Windows.Forms.Timer(this.components);
             this.msHome.SuspendLayout();
@@ -117,6 +125,7 @@ namespace JugaAgenda_v2
             this.tpCalendarSettings.SuspendLayout();
             this.tpGoogleSettings.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // msHome
@@ -240,6 +249,7 @@ namespace JugaAgenda_v2
             this.tcHome.Controls.Add(this.tabPage1);
             this.tcHome.Controls.Add(this.tpSettings);
             this.tcHome.Controls.Add(this.tabPage2);
+            this.tcHome.Controls.Add(this.tabPage3);
             this.tcHome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcHome.Location = new System.Drawing.Point(0, 42);
             this.tcHome.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -269,27 +279,27 @@ namespace JugaAgenda_v2
             this.calHome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.calHome.FirstDayOfWeek = System.DayOfWeek.Monday;
             this.calHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            calendarHighlightRange1.DayOfWeek = System.DayOfWeek.Tuesday;
-            calendarHighlightRange1.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange1.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange2.DayOfWeek = System.DayOfWeek.Wednesday;
-            calendarHighlightRange2.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange2.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange3.DayOfWeek = System.DayOfWeek.Thursday;
-            calendarHighlightRange3.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange3.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange4.DayOfWeek = System.DayOfWeek.Friday;
-            calendarHighlightRange4.EndTime = System.TimeSpan.Parse("18:00:00");
-            calendarHighlightRange4.StartTime = System.TimeSpan.Parse("09:00:00");
-            calendarHighlightRange5.DayOfWeek = System.DayOfWeek.Saturday;
-            calendarHighlightRange5.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange5.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange16.DayOfWeek = System.DayOfWeek.Tuesday;
+            calendarHighlightRange16.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange16.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange17.DayOfWeek = System.DayOfWeek.Wednesday;
+            calendarHighlightRange17.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange17.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange18.DayOfWeek = System.DayOfWeek.Thursday;
+            calendarHighlightRange18.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange18.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange19.DayOfWeek = System.DayOfWeek.Friday;
+            calendarHighlightRange19.EndTime = System.TimeSpan.Parse("18:00:00");
+            calendarHighlightRange19.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange20.DayOfWeek = System.DayOfWeek.Saturday;
+            calendarHighlightRange20.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange20.StartTime = System.TimeSpan.Parse("09:00:00");
             this.calHome.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
-        calendarHighlightRange1,
-        calendarHighlightRange2,
-        calendarHighlightRange3,
-        calendarHighlightRange4,
-        calendarHighlightRange5};
+        calendarHighlightRange16,
+        calendarHighlightRange17,
+        calendarHighlightRange18,
+        calendarHighlightRange19,
+        calendarHighlightRange20};
             this.calHome.Location = new System.Drawing.Point(394, 6);
             this.calHome.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.calHome.MaximumFullDays = 7;
@@ -730,27 +740,27 @@ namespace JugaAgenda_v2
             this.calWorkSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.calWorkSchedule.FirstDayOfWeek = System.DayOfWeek.Monday;
             this.calWorkSchedule.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            calendarHighlightRange6.DayOfWeek = System.DayOfWeek.Monday;
-            calendarHighlightRange6.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange6.StartTime = System.TimeSpan.Parse("08:00:00");
-            calendarHighlightRange7.DayOfWeek = System.DayOfWeek.Tuesday;
-            calendarHighlightRange7.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange7.StartTime = System.TimeSpan.Parse("08:00:00");
-            calendarHighlightRange8.DayOfWeek = System.DayOfWeek.Wednesday;
-            calendarHighlightRange8.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange8.StartTime = System.TimeSpan.Parse("08:00:00");
-            calendarHighlightRange9.DayOfWeek = System.DayOfWeek.Thursday;
-            calendarHighlightRange9.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange9.StartTime = System.TimeSpan.Parse("08:00:00");
-            calendarHighlightRange10.DayOfWeek = System.DayOfWeek.Friday;
-            calendarHighlightRange10.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange10.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange21.DayOfWeek = System.DayOfWeek.Monday;
+            calendarHighlightRange21.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange21.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange22.DayOfWeek = System.DayOfWeek.Tuesday;
+            calendarHighlightRange22.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange22.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange23.DayOfWeek = System.DayOfWeek.Wednesday;
+            calendarHighlightRange23.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange23.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange24.DayOfWeek = System.DayOfWeek.Thursday;
+            calendarHighlightRange24.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange24.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange25.DayOfWeek = System.DayOfWeek.Friday;
+            calendarHighlightRange25.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange25.StartTime = System.TimeSpan.Parse("08:00:00");
             this.calWorkSchedule.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
-        calendarHighlightRange6,
-        calendarHighlightRange7,
-        calendarHighlightRange8,
-        calendarHighlightRange9,
-        calendarHighlightRange10};
+        calendarHighlightRange21,
+        calendarHighlightRange22,
+        calendarHighlightRange23,
+        calendarHighlightRange24,
+        calendarHighlightRange25};
             this.calWorkSchedule.Location = new System.Drawing.Point(3, 3);
             this.calWorkSchedule.Name = "calWorkSchedule";
             this.calWorkSchedule.Size = new System.Drawing.Size(2043, 1143);
@@ -759,6 +769,75 @@ namespace JugaAgenda_v2
             this.calWorkSchedule.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
             this.calWorkSchedule.ItemCreating += new System.Windows.Forms.Calendar.Calendar.CalendarItemCancelEventHandler(this.calWorkSchedule_ItemCreating);
             this.calWorkSchedule.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calWorkSchedule_ItemDoubleClick);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.calLeave);
+            this.tabPage3.Controls.Add(this.mvLeave);
+            this.tabPage3.Location = new System.Drawing.Point(4, 39);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(2049, 1149);
+            this.tabPage3.TabIndex = 4;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // calLeave
+            // 
+            this.calLeave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.calLeave.FirstDayOfWeek = System.DayOfWeek.Monday;
+            this.calLeave.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            calendarHighlightRange26.DayOfWeek = System.DayOfWeek.Monday;
+            calendarHighlightRange26.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange26.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange27.DayOfWeek = System.DayOfWeek.Tuesday;
+            calendarHighlightRange27.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange27.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange28.DayOfWeek = System.DayOfWeek.Wednesday;
+            calendarHighlightRange28.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange28.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange29.DayOfWeek = System.DayOfWeek.Thursday;
+            calendarHighlightRange29.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange29.StartTime = System.TimeSpan.Parse("08:00:00");
+            calendarHighlightRange30.DayOfWeek = System.DayOfWeek.Friday;
+            calendarHighlightRange30.EndTime = System.TimeSpan.Parse("17:00:00");
+            calendarHighlightRange30.StartTime = System.TimeSpan.Parse("08:00:00");
+            this.calLeave.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
+        calendarHighlightRange26,
+        calendarHighlightRange27,
+        calendarHighlightRange28,
+        calendarHighlightRange29,
+        calendarHighlightRange30};
+            this.calLeave.Location = new System.Drawing.Point(392, 3);
+            this.calLeave.Name = "calLeave";
+            this.calLeave.Size = new System.Drawing.Size(1654, 1143);
+            this.calLeave.TabIndex = 3;
+            this.calLeave.Text = "calendar1";
+            this.calLeave.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            // 
+            // mvLeave
+            // 
+            this.mvLeave.ArrowsColor = System.Drawing.SystemColors.Window;
+            this.mvLeave.ArrowsSelectedColor = System.Drawing.Color.Gold;
+            this.mvLeave.DayBackgroundColor = System.Drawing.Color.Empty;
+            this.mvLeave.DayGrayedText = System.Drawing.SystemColors.GrayText;
+            this.mvLeave.DaySelectedBackgroundColor = System.Drawing.SystemColors.Highlight;
+            this.mvLeave.DaySelectedColor = System.Drawing.SystemColors.WindowText;
+            this.mvLeave.DaySelectedTextColor = System.Drawing.SystemColors.HighlightText;
+            this.mvLeave.Dock = System.Windows.Forms.DockStyle.Left;
+            this.mvLeave.FirstDayOfWeek = System.DayOfWeek.Monday;
+            this.mvLeave.ItemPadding = new System.Windows.Forms.Padding(2);
+            this.mvLeave.Location = new System.Drawing.Point(3, 3);
+            this.mvLeave.MonthTitleColor = System.Drawing.SystemColors.ActiveCaption;
+            this.mvLeave.MonthTitleColorInactive = System.Drawing.SystemColors.InactiveCaption;
+            this.mvLeave.MonthTitleTextColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.mvLeave.MonthTitleTextColorInactive = System.Drawing.SystemColors.InactiveCaptionText;
+            this.mvLeave.Name = "mvLeave";
+            this.mvLeave.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month;
+            this.mvLeave.Size = new System.Drawing.Size(389, 1143);
+            this.mvLeave.TabIndex = 2;
+            this.mvLeave.Text = "monthView1";
+            this.mvLeave.TodayBorderColor = System.Drawing.Color.Maroon;
             // 
             // refreshTimer
             // 
@@ -801,6 +880,7 @@ namespace JugaAgenda_v2
             this.tpCalendarSettings.PerformLayout();
             this.tpGoogleSettings.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -872,5 +952,8 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Calendar.Calendar calWorkSchedule;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Calendar.MonthView mvLeave;
+        private System.Windows.Forms.Calendar.Calendar calLeave;
     }
 }

@@ -61,25 +61,24 @@ namespace JugaAgenda_v2
 
             mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
 
-            calHome.TimeScale = CalendarTimeScale.SixtyMinutes;
-
             DateTime now = DateTime.Now;
             newDayTimer.Interval = 1000 - now.Millisecond + (59 - now.Second) * 1000 + (59 - now.Minute) * 1000 * 60 + (23 - now.Hour) * 1000 * 60 * 60 + 1 * 60 * 1000;
             newDayTimer.Enabled = true;
 
             calWorkSchedule.TimeScale = CalendarTimeScale.SixtyMinutes;
 
-            int factor = 7;
-            int nearestMultiple =
-                    (int)Math.Round(
-                         ((now - new DateTime(2021, 2, 1)).Days / (double)factor),
-                         MidpointRounding.AwayFromZero
-                     ) * factor;
+            int days = (int)Math.Ceiling((double)((now - new DateTime(2021, 2, 1)).Days / 7)) * 7 + 7;
 
-            calWorkSchedule.MaximumViewDays = nearestMultiple + 49;
+            calWorkSchedule.MaximumViewDays = days + 49;
 
             calWorkSchedule.ViewStart = new DateTime(2021, 2, 1);
             calWorkSchedule.ViewEnd = new DateTime(2021, 2, 7);
+
+            mvLeave.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            mvLeave.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            mvLeave.MaxSelectionCount = calLeave.MaximumViewDays;
+
+            mvLeave.SelectionChanged += new System.EventHandler(mvLeave_SelectionChanged);
 
             loadStyleComponents();
 
@@ -342,7 +341,8 @@ namespace JugaAgenda_v2
                         technicianLeaveList.Add(day);
                     }
 
-                    day.addTechnicianList(new Technician(item.Summary.Remove(item.Summary.Length - 7), 0));
+                    //day.addTechnicianList(new Technician(item.Summary.Remove(item.Summary.Length - 7), 0));
+                    day.addTechnicianList(new Technician(item));
                 }
 
             }
@@ -605,7 +605,59 @@ namespace JugaAgenda_v2
                 MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days.");
             }
 
+        }
 
+        private void mvLeave_SelectionChanged(object sender, EventArgs e)
+        {
+            if ((mvLeave.SelectionEnd - mvLeave.SelectionStart).Days > -1 && (mvLeave.SelectionEnd - mvLeave.SelectionStart).Days < calLeave.MaximumViewDays)
+            {
+                int days = Math.Max((mvLeave.SelectionEnd - calLeave.ViewStart).Days, (calLeave.ViewEnd - mvLeave.SelectionStart).Days);
+                days = (int)Math.Ceiling((double)(days / 7)) * 7 + 7;
+                calLeave.MaximumViewDays = days;
+
+                if (mvLeave.SelectionStart <= calLeave.ViewEnd)
+                {
+                    calLeave.ViewStart = mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday);
+                    calLeave.ViewEnd = mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
+                }
+                else
+                {
+                    calLeave.ViewEnd = mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
+                    calLeave.ViewStart = mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday);
+                }
+
+                if (technicianLeaveList != null)
+                {
+                    foreach (CustomDay day in technicianLeaveList)
+                    {
+                        DateTime date = day.getDate();
+
+                        if (date >= calLeave.ViewStart && date < calLeave.ViewEnd)
+                        {
+
+                            foreach (Technician tech in day.getTechnicianList())
+                            {
+                                CalendarItem newItem;
+
+                                newItem = new CalendarItem(calLeave,
+                                        date,
+                                        Convert.ToDateTime(tech.getCalendarEvent().End.Date).AddSeconds(-1),
+                                        tech.getName());
+
+                                newItem.setCalendarEvent(tech.getCalendarEvent());
+
+                                calLeave.Items.Add(newItem);
+                            }
+
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days.");
+            }
         }
 
         public bool deleteWorkItem(String eventId)

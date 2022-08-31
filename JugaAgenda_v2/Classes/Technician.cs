@@ -12,6 +12,7 @@ namespace JugaAgenda_v2.Classes
     {
         private String name;
         private Decimal hours;
+        private Google.Apis.Calendar.v3.Data.Event calendarEvent = null;
 
         public Technician(String input, Boolean title = false)
         {
@@ -27,6 +28,12 @@ namespace JugaAgenda_v2.Classes
         {
             this.name = name;
             this.hours = hours;
+        }
+
+        public Technician(Google.Apis.Calendar.v3.Data.Event calendarEvent)
+        {
+            this.calendarEvent = calendarEvent;
+            this.name = calendarEvent.Summary.Remove(calendarEvent.Summary.Length - 7);
         }
 
         #region getters
@@ -56,6 +63,12 @@ namespace JugaAgenda_v2.Classes
 
             return techEvent;
         }
+
+        public Google.Apis.Calendar.v3.Data.Event getCalendarEvent()
+        {
+            return calendarEvent;
+        }
+
         #endregion
 
         #region setters
