@@ -306,7 +306,7 @@ namespace JugaAgenda_v2
             }*/
         }
 
-        private void loadTechnicianLeave(Boolean askForTitleChange = true)
+        private void loadTechnicianLeave(Boolean askForTitleChange = false)
         {
             if (technicianLeaveList == null) technicianLeaveList = new List<CustomDay>();
             technicianLeaveList.Clear();
@@ -1543,6 +1543,12 @@ namespace JugaAgenda_v2
                 leaveEventScreen = new fLeaveEvent(this, null, e.Item.StartDate);
                 leaveEventScreen.Show();
             }
+        }
+
+        private void s_Click(object sender, EventArgs e)
+        {
+            loadTechnicianLeave(true);
+            mvLeave_SelectionChanged(null, null);
         }
     }
 

@@ -112,6 +112,7 @@ namespace JugaAgenda_v2
             this.btTestGoogleConnection = new System.Windows.Forms.Button();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.newDayTimer = new System.Windows.Forms.Timer(this.components);
+            this.s = new System.Windows.Forms.Button();
             this.msHome.SuspendLayout();
             this.tcHome.SuspendLayout();
             this.tpCalendar.SuspendLayout();
@@ -753,6 +754,7 @@ namespace JugaAgenda_v2
             // 
             // tpCalendarSettings
             // 
+            this.tpCalendarSettings.Controls.Add(this.s);
             this.tpCalendarSettings.Controls.Add(this.label3);
             this.tpCalendarSettings.Controls.Add(this.label2);
             this.tpCalendarSettings.Controls.Add(this.cbCalendarPerspective);
@@ -849,6 +851,16 @@ namespace JugaAgenda_v2
             // newDayTimer
             // 
             this.newDayTimer.Tick += new System.EventHandler(this.newDayTimer_Tick);
+            // 
+            // s
+            // 
+            this.s.Location = new System.Drawing.Point(6, 342);
+            this.s.Name = "s";
+            this.s.Size = new System.Drawing.Size(358, 40);
+            this.s.TabIndex = 6;
+            this.s.Text = "Corrigeer foute verlof agenda titels";
+            this.s.UseVisualStyleBackColor = true;
+            this.s.Click += new System.EventHandler(this.s_Click);
             // 
             // fHome
             // 
@@ -957,5 +969,6 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Calendar.MonthView mvLeave;
         private System.Windows.Forms.Calendar.Calendar calLeave;
+        private System.Windows.Forms.Button s;
     }
 }
