@@ -34,7 +34,7 @@ namespace JugaAgenda_v2.Screens
                 tbTechName.Text = technician.getName();
                 foreach (Technician tech in cbTechnicians.Items)
                 {
-                    if (tech.getName() == technician.getName())
+                    if (tech.getName().Equals(technician.getName()))
                     {
                         cbTechnicians.SelectedItem = tech;
                         break;
@@ -98,6 +98,9 @@ namespace JugaAgenda_v2.Screens
             }
         }
 
-
+        private void cbTechnicians_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbTechName.Text = cbTechnicians.Text;
+        }
     }
 }

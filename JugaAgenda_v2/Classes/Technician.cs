@@ -64,6 +64,25 @@ namespace JugaAgenda_v2.Classes
             return techEvent;
         }
 
+        public Google.Apis.Calendar.v3.Data.Event createCalendarLeaveEvent(DateTime startDate, DateTime endDate, string eventID = null)
+        {
+            Google.Apis.Calendar.v3.Data.Event techEvent = new Google.Apis.Calendar.v3.Data.Event();
+
+            techEvent.Start = new EventDateTime();
+            techEvent.Start.Date = startDate.Year.ToString() + "-" + startDate.Month.ToString() + "-" + startDate.Day.ToString();
+            techEvent.Start.DateTime = null;
+            techEvent.End = new EventDateTime();
+            techEvent.End.Date = endDate.Year.ToString() + "-" + endDate.Month.ToString() + "-" + endDate.Day.ToString();
+            techEvent.End.DateTime = null;
+
+            techEvent.Summary = getName() + " Verlof";
+
+            if (eventID != null)
+                techEvent.Id = eventID;
+
+            return techEvent;
+        }
+
         public Google.Apis.Calendar.v3.Data.Event getCalendarEvent()
         {
             return calendarEvent;

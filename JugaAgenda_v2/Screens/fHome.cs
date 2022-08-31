@@ -25,6 +25,7 @@ namespace JugaAgenda_v2
         private fSearch searchScreen = null;
         private fPlanning planningScreen = null;
         private fTechSchedule scheduleScreen = null;
+        private fLeaveEvent leaveEventScreen = null;
 
         private Google.Apis.Calendar.v3.Data.Event wrongTitleSelected = null;
 
@@ -91,6 +92,7 @@ namespace JugaAgenda_v2
             refresh();
 
             mvHome_SelectionChanged(null, null);
+            mvLeave_SelectionChanged(null, null);
 
             refreshTimer.Enabled = true;
 
@@ -304,7 +306,7 @@ namespace JugaAgenda_v2
             }*/
         }
 
-        private void loadTechnicianLeave()
+        private void loadTechnicianLeave(Boolean askForTitleChange = true)
         {
             if (technicianLeaveList == null) technicianLeaveList = new List<CustomDay>();
             technicianLeaveList.Clear();
@@ -319,7 +321,7 @@ namespace JugaAgenda_v2
                     continue;
                 }*/
 
-                if (checkTitleWithRegex(item, "^[a-zA-Z ]+ verlof$", false))
+                if (checkTitleWithRegex(item, "^[a-zA-Z ]+ verlof$", false, askForTitleChange))
                 {
 
                     //DateTime date = Convert.ToDateTime(item.Start.Date);
@@ -678,6 +680,9 @@ namespace JugaAgenda_v2
                                 if (endDate < calLeave.ViewStart)
                                     continue;
 
+                                if (endDate.Equals(date))
+                                    endDate = endDate.AddDays(1);
+
                                 CalendarItem newItem;
 
                                 newItem = new CalendarItem(calLeave,
@@ -685,7 +690,7 @@ namespace JugaAgenda_v2
                                     endDate.AddSeconds(-1),
                                     tech.getName());
 
-                                //newItem.setCalendarEvent(tech.getCalendarEvent());
+                                newItem.setCalendarEvent(tech.getCalendarEvent());
 
                                 calLeave.Items.Add(newItem);
 
@@ -1002,9 +1007,13 @@ namespace JugaAgenda_v2
             }
         }
 
-        private bool checkTitleWithRegex(Google.Apis.Calendar.v3.Data.Event item, String regexString, Boolean trueForScheduleFalseForLeave)
+        private bool checkTitleWithRegex(Google.Apis.Calendar.v3.Data.Event item, String regexString, Boolean trueForScheduleFalseForLeave, Boolean askForTitleChange = true)
         {
             Regex regex = new Regex(regexString, RegexOptions.IgnoreCase);
+
+            if (!askForTitleChange)
+                return regex.IsMatch(item.Summary);
+
             if (!regex.IsMatch(item.Summary))
             {
                 while (true)
@@ -1469,6 +1478,72 @@ namespace JugaAgenda_v2
                 scheduleScreen.Show();
             }
         }
+
+        public Tuple<DateTime, DateTime> convertEventDateTime(Google.Apis.Calendar.v3.Data.Event calendarEvent)
+        {
+            DateTime startDate;
+            if (calendarEvent.Start.DateTime != null)
+            {
+                startDate = (DateTime)calendarEvent.Start.DateTime;
+                startDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, 0, 0, 0, 0);
+            }
+            else
+            {
+                startDate = Convert.ToDateTime(calendarEvent.Start.Date);
+            }
+            DateTime endDate;
+            if (calendarEvent.End.DateTime != null)
+            {
+                endDate = (DateTime)calendarEvent.End.DateTime;
+                endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 0, 0, 0, 0);
+            }
+            else
+            {
+                endDate = Convert.ToDateTime(calendarEvent.End.Date);
+            }
+            return Tuple.Create(startDate, endDate);
+        }
+
+        private void calLeave_ItemDoubleClick(object sender, CalendarItemEventArgs e)
+        {
+            if (leaveEventScreen == null)
+            {
+                leaveEventScreen = new fLeaveEvent(this, e.Item.getCalendarEvent());
+                leaveEventScreen.Show();
+            }
+        }
+
+        public void closeLeaveEventScreen()
+        {
+            leaveEventScreen = null;
+            loadTechnicianLeave(false);
+            mvLeave_SelectionChanged(null, null);
+        }
+
+        public Boolean deleteLeaveEvent(string eventID)
+        {
+            return googleCalendar.deleteLeaveEvent(eventID);
+        }
+
+        public Boolean updateLeaveEvent(Google.Apis.Calendar.v3.Data.Event newEvent)
+        {
+            return googleCalendar.editLeaveEvent(newEvent);
+        }
+
+        public Boolean addLeaveEvent(Google.Apis.Calendar.v3.Data.Event newEvent)
+        {
+            return googleCalendar.addLeaveEvent(newEvent);
+        }
+
+        private void calLeave_ItemCreating(object sender, CalendarItemCancelEventArgs e)
+        {
+            e.Cancel = true;
+            if (leaveEventScreen == null)
+            {
+                leaveEventScreen = new fLeaveEvent(this, null, e.Item.StartDate);
+                leaveEventScreen.Show();
+            }
+        }
     }
 
     #region ExtraObjects
@@ -1552,6 +1627,8 @@ namespace JugaAgenda_v2
         }
 
     }
+
+    
 
     #endregion
 
