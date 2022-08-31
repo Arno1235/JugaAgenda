@@ -15,23 +15,22 @@ namespace JugaAgenda_v2.Screens
     {
 
         private fHome mainScreen;
-        private Technician technician;
-        private int day;
+        private Google.Apis.Calendar.v3.Data.Event calendarEvent;
 
-        public fTechSchedule(fHome mainScreen, Technician technician = null, int day = -1)
+        public fTechSchedule(fHome mainScreen, int day = -1, Google.Apis.Calendar.v3.Data.Event calendarEvent = null)
         {
             this.mainScreen = mainScreen;
-            this.technician = technician;
-            this.day = day;
+            this.calendarEvent = calendarEvent;
 
             InitializeComponent();
 
             loadTechnicians();
 
             if (day >= 0) cbDay.SelectedIndex = day;
-            
-            if (technician != null)
+
+            if (this.calendarEvent != null)
             {
+                Technician technician = new Technician(this.calendarEvent.Summary, true);
                 tbTechName.Text = technician.getName();
                 foreach (Technician tech in cbTechnicians.Items)
                 {
@@ -44,12 +43,12 @@ namespace JugaAgenda_v2.Screens
                 nuHours.Value = technician.getHours();
                 btDelete.Show();
             }
-            
+
         }
 
         private void loadTechnicians()
         {
-            foreach(Technician tech in mainScreen.getTechnicianList())
+            foreach (Technician tech in mainScreen.getTechnicianList())
                 cbTechnicians.Items.Add(tech);
         }
 
@@ -65,16 +64,21 @@ namespace JugaAgenda_v2.Screens
 
         private void btSave_Click(object sender, EventArgs e)
         {
-            if (technician == null)
+            if (cbDay.SelectedIndex == -1)
             {
-                if (mainScreen.createTechSchedule())
+                MessageBox.Show("Selecteer een dag");
+                return;
+            }
+            if (calendarEvent == null)
+            {
+                if (mainScreen.createTechSchedule(new Technician(tbTechName.Text, nuHours.Value).createCalendarEvent(cbDay.SelectedIndex)))
                     this.Close();
                 else
                     MessageBox.Show("Er is iets fout gelopen.");
             }
             else
             {
-                if (mainScreen.updateTechSchedule())
+                if (mainScreen.updateTechSchedule(new Technician(tbTechName.Text, nuHours.Value).createCalendarEvent(cbDay.SelectedIndex, calendarEvent.Id)))
                     this.Close();
                 else
                     MessageBox.Show("Er is iets fout gelopen.");
@@ -87,7 +91,7 @@ namespace JugaAgenda_v2.Screens
 
             if (answer == DialogResult.Yes)
             {
-                if (mainScreen.deleteTechSchedule())
+                if (mainScreen.deleteTechSchedule(calendarEvent.Id))
                     this.Close();
                 else
                     MessageBox.Show("Er is iets fout gelopen.");

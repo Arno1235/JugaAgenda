@@ -55,26 +55,31 @@ namespace JugaAgenda_v2
                 this.Close();
             }
 
-            mvHome.MaxSelectionCount = calHome.MaximumViewDays;
             mvHome.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             mvHome.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            mvHome.MaxSelectionCount = calHome.MaximumViewDays;
 
             mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
 
+            calHome.TimeScale = CalendarTimeScale.SixtyMinutes;
+
             DateTime now = DateTime.Now;
-            newDayTimer.Interval = 1000 - now.Millisecond + (59 - now.Second)*1000 + (59 - now.Minute)*1000*60 + (23 - now.Hour)*1000*60*60 + 1*60*1000;
+            newDayTimer.Interval = 1000 - now.Millisecond + (59 - now.Second) * 1000 + (59 - now.Minute) * 1000 * 60 + (23 - now.Hour) * 1000 * 60 * 60 + 1 * 60 * 1000;
             newDayTimer.Enabled = true;
 
+            calWorkSchedule.TimeScale = CalendarTimeScale.SixtyMinutes;
+
             int factor = 7;
-            int nearestMultiple = (int)Math.Round(((now - new DateTime(2021, 2, 1)).Days / (double)factor), MidpointRounding.AwayFromZero) * factor;
+            int nearestMultiple =
+                    (int)Math.Round(
+                         ((now - new DateTime(2021, 2, 1)).Days / (double)factor),
+                         MidpointRounding.AwayFromZero
+                     ) * factor;
+
             calWorkSchedule.MaximumViewDays = nearestMultiple + 49;
 
             calWorkSchedule.ViewStart = new DateTime(2021, 2, 1);
             calWorkSchedule.ViewEnd = new DateTime(2021, 2, 7);
-
-            //mvLeave.MaxSelectionCount = calLeave.MaximumViewDays;
-            //mvLeave.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            //mvLeave.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
 
             loadStyleComponents();
 
@@ -144,7 +149,7 @@ namespace JugaAgenda_v2
         {
 
             if (focussed) unfocusCounter = 0;
-            else if (unfocusCounter < 10) 
+            else if (unfocusCounter < 10)
                 unfocusCounter++;
 
             if (unfocusCounter < 10)
@@ -152,7 +157,9 @@ namespace JugaAgenda_v2
                 try
                 {
                     syncCalendar();
-                } catch {
+                }
+                catch
+                {
                     refreshTimer.Enabled = false;
                     MessageBox.Show("Er is iets fout gelopen tijdens het synchroniseren van de agenda.");
                     refreshTimer.Enabled = true;
@@ -223,7 +230,7 @@ namespace JugaAgenda_v2
                     if (!found)
                     {
                         removeWrongTitles(item.Id);
-                        
+
                         if (item.Summary != null) addWorkItem(item);
                     }
 
@@ -248,6 +255,8 @@ namespace JugaAgenda_v2
 
             for (int i = 1; i <= 7; i++) techniciansWorkWeekList.Add(new CustomDay(new DateTime(2021, 2, i)));
 
+            calWorkSchedule.Items.Clear();
+
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getTechnicianEvents().Items)
             {
                 DateTime date = Convert.ToDateTime(item.Start.Date);
@@ -262,7 +271,7 @@ namespace JugaAgenda_v2
 
                 if (checkTitleWithRegex(item, "^[a-zA-Z ]+ [0-9,.]+u$", true))
                 {
-                    CustomDay day = techniciansWorkWeekList[date.Day-1];
+                    CustomDay day = techniciansWorkWeekList[date.Day - 1];
 
                     /*String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
                     Decimal hours = Decimal.Parse(item.Summary.Split(' ').Last().Split('u')[0].Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," });
@@ -275,6 +284,8 @@ namespace JugaAgenda_v2
                         day.getDate(),
                         day.getDate().AddDays(1).AddSeconds(-1),
                         tech.ToString());
+
+                    newItem.setCalendarEvent(item);
 
                     calWorkSchedule.Items.Add(newItem);
 
@@ -331,7 +342,7 @@ namespace JugaAgenda_v2
                         technicianLeaveList.Add(day);
                     }
 
-                    day.addTechnicianList(new Technician(item.Summary.Remove(item.Summary.Length-7), 0));
+                    day.addTechnicianList(new Technician(item.Summary.Remove(item.Summary.Length - 7), 0));
                 }
 
             }
@@ -441,7 +452,7 @@ namespace JugaAgenda_v2
                 day.addWorkList(new_work);
                 if (date < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
                     new_work.isWorkOpen())
-                        openWorkHoursList.Add(new Tuple<DateTime, string, Decimal>(date, new_work.getId(), new_work.getDuration() - new_work.getHoursDone()));
+                    openWorkHoursList.Add(new Tuple<DateTime, string, Decimal>(date, new_work.getId(), new_work.getDuration() - new_work.getHoursDone()));
             }
             else
             {
@@ -486,7 +497,8 @@ namespace JugaAgenda_v2
                     {
                         calHome.ViewStart = mvHome.SelectionStart.StartOfWeek(DayOfWeek.Monday);
                         calHome.ViewEnd = mvHome.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
-                    } else
+                    }
+                    else
                     {
                         calHome.ViewStart = mvHome.SelectionStart;
                         calHome.ViewEnd = mvHome.SelectionEnd;
@@ -534,7 +546,8 @@ namespace JugaAgenda_v2
 
                                         calHome.Items.Add(newItem);
                                     }
-                                } else
+                                }
+                                else
                                 {
                                     newItem = new CalendarItem(calHome,
                                         date,
@@ -547,7 +560,7 @@ namespace JugaAgenda_v2
                                     calHome.Items.Add(newItem);
                                 }
 
-                                
+
                             }
                         }
                     }
@@ -754,7 +767,7 @@ namespace JugaAgenda_v2
                     if (work.isWorkOpen()) hoursTally += work.getDuration() - work.getHoursDone();
                 }
             }
-            
+
             return hoursTally;
         }
 
@@ -804,9 +817,9 @@ namespace JugaAgenda_v2
         {
             List<Work> results = new List<Work>();
 
-            foreach(CustomDay day in workList)
+            foreach (CustomDay day in workList)
             {
-                foreach(Work work in day.getWorkList())
+                foreach (Work work in day.getWorkList())
                 {
                     if (work.getDuration() <= 0) results.Add(work);
                 }
@@ -845,7 +858,7 @@ namespace JugaAgenda_v2
             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
                 IEnumerable<CustomDay> days = workList.Where(x => x.getDate().Year.Equals(date.Year) && x.getDate().Month.Equals(date.Month) && x.getDate().Day.Equals(date.Day));
-                
+
                 if (days.Count() > 0)
                     results.Add(days.First());
             }
@@ -1324,33 +1337,44 @@ namespace JugaAgenda_v2
         public void closeScheduleScreen()
         {
             scheduleScreen = null;
+            loadTechniciansWorkWeek();
         }
 
         private void calWorkSchedule_ItemDoubleClick(object sender, CalendarItemEventArgs e)
         {
             if (scheduleScreen == null)
             {
-                fTechSchedule techSchedule = new fTechSchedule(this, new Technician(e.Item.Text, true), e.Item.Date.DayOfWeekStartingMonday());
+                fTechSchedule techSchedule = new fTechSchedule(this, e.Item.Date.DayOfWeekStartingMonday(), e.Item.getCalendarEvent());
                 scheduleScreen = techSchedule;
                 scheduleScreen.Show();
             }
         }
 
-        public Boolean deleteTechSchedule()
+        public Boolean deleteTechSchedule(string eventID)
         {
-            return true;
+            return googleCalendar.deleteTechnicianEvent(eventID);
         }
 
-        public Boolean updateTechSchedule()
+        public Boolean updateTechSchedule(Google.Apis.Calendar.v3.Data.Event newEvent)
         {
-            return true;
+            return googleCalendar.editTechnicianEvent(newEvent);
         }
 
-        public Boolean createTechSchedule()
+        public Boolean createTechSchedule(Google.Apis.Calendar.v3.Data.Event newEvent)
         {
-            return true;
+            return googleCalendar.addTechnicianEvent(newEvent);
         }
 
+        private void calWorkSchedule_ItemCreating(object sender, CalendarItemCancelEventArgs e)
+        {
+            e.Cancel = true;
+            if (scheduleScreen == null)
+            {
+                fTechSchedule techSchedule = new fTechSchedule(this, e.Item.Date.DayOfWeekStartingMonday());
+                scheduleScreen = techSchedule;
+                scheduleScreen.Show();
+            }
+        }
     }
 
     #region ExtraObjects

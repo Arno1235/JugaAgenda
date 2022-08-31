@@ -68,7 +68,8 @@ namespace JugaAgenda_v2
                     HttpClientInitializer = credential,
                     ApplicationName = ApplicationName,
                 });
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 success = ex.ToString();
             }
@@ -76,7 +77,7 @@ namespace JugaAgenda_v2
 
         public bool testConnection()
         {
-            
+
             try
             {
                 EventsResource.ListRequest request;
@@ -91,7 +92,8 @@ namespace JugaAgenda_v2
                 request.Execute();
 
                 return true;
-            } catch
+            }
+            catch
             {
                 return false;
             }
@@ -114,7 +116,7 @@ namespace JugaAgenda_v2
             Events events = request.Execute();
             workSyncToken = events.NextSyncToken;
 
-            return (List<Event>) events.Items;
+            return (List<Event>)events.Items;
         }
 
         public IList<Event> sync()
@@ -185,7 +187,7 @@ namespace JugaAgenda_v2
 
             return request.Execute();
         }
-            #endregion
+        #endregion
 
         #region setters
 
@@ -194,6 +196,19 @@ namespace JugaAgenda_v2
             try
             {
                 service.Events.Insert(new_event, calendarWorkID).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool addTechnicianEvent(Event new_event)
+        {
+            try
+            {
+                service.Events.Insert(new_event, calendarTechnicianID).Execute();
                 return true;
             }
             catch
@@ -254,11 +269,24 @@ namespace JugaAgenda_v2
             }
         }
 
+        public bool deleteTechnicianEvent(String eventID)
+        {
+            try
+            {
+                service.Events.Delete(calendarTechnicianID, eventID).Execute();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public void setPerspectiveMonths(int perspectiveMonths)
         {
             this.perspectiveMonths = perspectiveMonths;
         }
-    #endregion
+        #endregion
 
     }
 
