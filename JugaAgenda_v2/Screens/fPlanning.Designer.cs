@@ -42,8 +42,6 @@
             this.nuWorkToPlanHours = new System.Windows.Forms.NumericUpDown();
             this.btReset = new System.Windows.Forms.Button();
             this.lbTechAvailable = new System.Windows.Forms.ListBox();
-            this.btRemoveWorkFromTech = new System.Windows.Forms.Button();
-            this.btAddWorkToTech = new System.Windows.Forms.Button();
             this.lbWorkToPlan = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.dtpWeekPlanningEnd = new System.Windows.Forms.DateTimePicker();
@@ -185,8 +183,6 @@
             this.tabPage3.Controls.Add(this.nuWorkToPlanHours);
             this.tabPage3.Controls.Add(this.btReset);
             this.tabPage3.Controls.Add(this.lbTechAvailable);
-            this.tabPage3.Controls.Add(this.btRemoveWorkFromTech);
-            this.tabPage3.Controls.Add(this.btAddWorkToTech);
             this.tabPage3.Controls.Add(this.lbWorkToPlan);
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Controls.Add(this.dtpWeekPlanningEnd);
@@ -208,14 +204,13 @@
             0,
             0,
             65536});
-            this.nuWorkToPlanHours.Location = new System.Drawing.Point(323, 50);
+            this.nuWorkToPlanHours.Location = new System.Drawing.Point(791, 8);
             this.nuWorkToPlanHours.Maximum = new decimal(new int[] {
             0,
             0,
             0,
             0});
             this.nuWorkToPlanHours.Name = "nuWorkToPlanHours";
-            this.nuWorkToPlanHours.ReadOnly = true;
             this.nuWorkToPlanHours.Size = new System.Drawing.Size(90, 35);
             this.nuWorkToPlanHours.TabIndex = 10;
             // 
@@ -234,7 +229,7 @@
             this.lbTechAvailable.AllowDrop = true;
             this.lbTechAvailable.FormattingEnabled = true;
             this.lbTechAvailable.ItemHeight = 30;
-            this.lbTechAvailable.Location = new System.Drawing.Point(684, 93);
+            this.lbTechAvailable.Location = new System.Drawing.Point(602, 51);
             this.lbTechAvailable.Name = "lbTechAvailable";
             this.lbTechAvailable.Size = new System.Drawing.Size(569, 724);
             this.lbTechAvailable.TabIndex = 8;
@@ -242,32 +237,12 @@
             this.lbTechAvailable.DragOver += new System.Windows.Forms.DragEventHandler(this.lbTechAvailable_DragOver);
             this.lbTechAvailable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbTechAvailable_MouseDown);
             // 
-            // btRemoveWorkFromTech
-            // 
-            this.btRemoveWorkFromTech.Location = new System.Drawing.Point(476, 47);
-            this.btRemoveWorkFromTech.Name = "btRemoveWorkFromTech";
-            this.btRemoveWorkFromTech.Size = new System.Drawing.Size(309, 40);
-            this.btRemoveWorkFromTech.TabIndex = 7;
-            this.btRemoveWorkFromTech.Text = "Remove Work From Technician";
-            this.btRemoveWorkFromTech.UseVisualStyleBackColor = true;
-            this.btRemoveWorkFromTech.Click += new System.EventHandler(this.btRemoveWorkFromTech_Click);
-            // 
-            // btAddWorkToTech
-            // 
-            this.btAddWorkToTech.Location = new System.Drawing.Point(8, 47);
-            this.btAddWorkToTech.Name = "btAddWorkToTech";
-            this.btAddWorkToTech.Size = new System.Drawing.Size(309, 40);
-            this.btAddWorkToTech.TabIndex = 6;
-            this.btAddWorkToTech.Text = "Add Work To Technician";
-            this.btAddWorkToTech.UseVisualStyleBackColor = true;
-            this.btAddWorkToTech.Click += new System.EventHandler(this.btAddWorkToTech_Click);
-            // 
             // lbWorkToPlan
             // 
             this.lbWorkToPlan.AllowDrop = true;
             this.lbWorkToPlan.FormattingEnabled = true;
             this.lbWorkToPlan.ItemHeight = 30;
-            this.lbWorkToPlan.Location = new System.Drawing.Point(8, 93);
+            this.lbWorkToPlan.Location = new System.Drawing.Point(8, 51);
             this.lbWorkToPlan.Name = "lbWorkToPlan";
             this.lbWorkToPlan.Size = new System.Drawing.Size(588, 724);
             this.lbWorkToPlan.TabIndex = 5;
@@ -359,8 +334,6 @@
         private System.Windows.Forms.DateTimePicker dtpWeekPlanningEnd;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lbTechAvailable;
-        private System.Windows.Forms.Button btRemoveWorkFromTech;
-        private System.Windows.Forms.Button btAddWorkToTech;
         private System.Windows.Forms.ListBox lbWorkToPlan;
         private System.Windows.Forms.Button btReset;
         private System.Windows.Forms.NumericUpDown nuWorkToPlanHours;

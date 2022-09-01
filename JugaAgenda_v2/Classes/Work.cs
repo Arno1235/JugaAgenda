@@ -433,7 +433,7 @@ namespace JugaAgenda_v2
                 IDictionary<String, String> properties = item.ExtendedProperties.Shared;
 
                 if (properties["hours_done"] != null)
-                    this.hours_done = Decimal.Parse(properties["hours_done"], new NumberFormatInfo() { NumberDecimalSeparator = "," });
+                    this.hours_done = Decimal.Parse(properties["hours_done"].Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," });
 
                 foreach (KeyValuePair<String, String> property in properties)
                 {

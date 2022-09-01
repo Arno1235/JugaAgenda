@@ -427,16 +427,13 @@ namespace JugaAgenda_v2.Screens
             PdfGraphics graphics = page.Graphics;
             PdfFont fontTitle = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
             PdfFont fontSubTitle = new PdfStandardFont(PdfFontFamily.Helvetica, 12, PdfFontStyle.Bold);
-            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 12);
+            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 10);
+            PdfFont paragraphFont = new PdfStandardFont(PdfFontFamily.Helvetica, 8);
 
             int YLoc = 0;
 
             string text = startDate.customToString() + " tot " + endDate.customToString();
-            graphics.DrawString(text, fontTitle, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, YLoc));
-
-            Syncfusion.Drawing.SizeF size = fontTitle.MeasureString(text);
-
-            YLoc += (int)size.Height;
+            YLoc = writeString(text, fontTitle, graphics, YLoc);
 
             CustomTech currentTech = null;
             foreach (Object item in lbTechAvailable.Items)
@@ -444,25 +441,22 @@ namespace JugaAgenda_v2.Screens
                 if (item.GetType() == typeof(CustomDayItem))
                 {
                     text = ((CustomDayItem)item).getDate().customToString();
-                    graphics.DrawString(text, fontSubTitle, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, YLoc));
-
-                    size = fontSubTitle.MeasureString(text);
-
-                    YLoc += (int) size.Height;
+                    YLoc = writeString(text, fontSubTitle, graphics, YLoc, new Tuple<int, int>(6, 3));
                 }
-
                 else if (item.GetType() == typeof(CustomTech))
+                {
                     currentTech = (CustomTech)item;
+                    text = currentTech.getTech().getName();
+                    YLoc = writeString(text, font, graphics, YLoc, new Tuple<int, int>(3, 0), 6);
+                }
                 else if (item.GetType() == typeof(CustomWork))
                 {
-                    text = "Tech: " + currentTech.getTech().getName() + " - Work: " + ((CustomWork)item).ToString() + " - " + ((CustomWork)item).getWork().getDescription();
-                    graphics.DrawString(text, font, PdfBrushes.Black, new Syncfusion.Drawing.PointF(10, YLoc));
+                    text = ((CustomWork)item).ToString();
+                    YLoc = writeString(text, font, graphics, YLoc, null, 12);
 
-                    size = font.MeasureString(text);
-
-                    YLoc += (int)size.Height;
+                    text = ((CustomWork)item).getWork().getDescription();
+                    YLoc = writeString(text, paragraphFont, graphics, YLoc, new Tuple<int, int>(0, 3), 36);
                 }
-
             }
 
             try
@@ -479,8 +473,21 @@ namespace JugaAgenda_v2.Screens
                 MessageBox.Show("Er is iets fout gelopen tijdens het opslaan van de planning");
             }
 
+        }
 
+        private int writeString(string text, PdfFont font, PdfGraphics graphics, int YLoc, Tuple<int, int> marginTopBottom = null, int indent = 0)
+        {
+            if (marginTopBottom != null)
+                YLoc += marginTopBottom.Item1;
+            graphics.DrawString(text, font, PdfBrushes.Black, new Syncfusion.Drawing.PointF(indent, YLoc));
+            if (marginTopBottom != null)
+                YLoc += marginTopBottom.Item2;
 
+            Syncfusion.Drawing.SizeF size = font.MeasureString(text);
+
+            YLoc += (int)size.Height;
+
+            return YLoc;
         }
 
         private void fPlanning_Resize(object sender, EventArgs e)
@@ -491,9 +498,9 @@ namespace JugaAgenda_v2.Screens
             lbWorkNotFinished.Height = this.Height - 125;
             lbWorkNoHours.Width = this.Width - 50;
             lbWorkNoHours.Height = this.Height - 125;
-            lbWorkToPlan.Height = this.Height - 200;
+            lbWorkToPlan.Height = this.Height - 150;
             lbWorkToPlan.Width = this.Width/2 - 50;
-            lbTechAvailable.Height = this.Height - 200;
+            lbTechAvailable.Height = this.Height - 150;
             lbTechAvailable.Width = this.Width / 2 - 50;
             lbTechAvailable.Location = new System.Drawing.Point(this.Width / 2 - 25, lbTechAvailable.Location.Y);
         }
@@ -531,54 +538,6 @@ namespace JugaAgenda_v2.Screens
         private void btReset_Click(object sender, EventArgs e)
         {
             loadManualWorkAndTech(dtpWeekPlanningStart.Value, dtpWeekPlanningEnd.Value);
-        }
-
-        private void btAddWorkToTech_Click(object sender, EventArgs e)
-        {
-            if (lbWorkToPlan.SelectedItem == null || lbWorkToPlan.SelectedItem.GetType() != typeof(CustomWork))
-            {
-                MessageBox.Show("Geen werk geselecteerd.");
-                return;
-            }
-            if (lbTechAvailable.SelectedItem == null || lbTechAvailable.SelectedItem.GetType() != typeof(CustomTech))
-            {
-                MessageBox.Show("Geen technieker geselecteerd.");
-                return;
-            }            
-            
-            CustomWork work = (CustomWork) lbWorkToPlan.SelectedItem;
-            CustomTech tech = (CustomTech)lbTechAvailable.SelectedItem;
-
-            if (tech.getAvailableHours() >= work.getWork().getDuration() ||
-                MessageBox.Show("Het werk duurt langer dan de technieker tijd heeft.", "Opgepast", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                    lbWorkToPlan.Items.Remove(work);
-
-                    work.assignTech(tech);
-                    lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, work);
-
-                    lbTechAvailable.Items.Remove(tech);
-                    lbTechAvailable.Items.Insert(lbTechAvailable.Items.IndexOf(work), tech);
-            }
-        }
-
-        private void btRemoveWorkFromTech_Click(object sender, EventArgs e)
-        {
-            if (lbTechAvailable.SelectedItem == null || lbTechAvailable.SelectedItem.GetType() != typeof(CustomWork))
-            {
-                MessageBox.Show("Geen werk geselecteerd.");
-                return;
-            }
-
-            CustomWork work = (CustomWork)lbTechAvailable.SelectedItem;
-            CustomTech tech = work.getTech();
-            work.unAssignTech();
-            lbTechAvailable.Items.Remove(tech);
-            lbTechAvailable.Items.Insert(lbTechAvailable.Items.IndexOf(work), tech);
-            lbTechAvailable.Items.Remove(work);
-            lbWorkToPlan.Items.Insert(lbWorkToPlan.Items.IndexOf(work.getDay()) + 1, work);
-
-            
         }
 
         private void lbWorkToPlan_SelectedIndexChanged(object sender, EventArgs e)
@@ -631,9 +590,31 @@ namespace JugaAgenda_v2.Screens
 
                 if (dde1 == DragDropEffects.All)
                 {
-                    lbWorkToPlan.Items.RemoveAt(index);
-                    lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, customWork);
-                }
+                    if (nuWorkToPlanHours.Value.Equals(0) || nuWorkToPlanHours.Value.Equals(customWork.getWork().getDuration()))
+                    {
+                        lbWorkToPlan.Items.RemoveAt(index);
+                        lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, customWork);
+                    } else
+                    {
+                        CustomWork copyCustomWork = new CustomWork(customWork.getWork(), customWork.getDay(), nuWorkToPlanHours.Value);
+                        lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, copyCustomWork);
+                        nuWorkToPlanHours.Value = 0;
+
+                        int currentIndex = lbTechAvailable.SelectedIndex + 1;
+
+                        while (currentIndex > 0)
+                        {
+                            if (lbTechAvailable.Items[currentIndex].GetType() == typeof(CustomTech))
+                            {
+                                copyCustomWork.assignTech((CustomTech)lbTechAvailable.Items[currentIndex]);
+                                break;
+                            }
+                            currentIndex--;
+                        }
+                    }
+                    
+                } else if (dde1 == DragDropEffects.None)
+                    lbWorkToPlan_SelectedIndexChanged(null, null);
             }
 
         }
@@ -761,12 +742,14 @@ namespace JugaAgenda_v2.Screens
         Work work;
         CustomTech assignedTech;
         CustomDayItem day;
+        Decimal hours;
 
-        public CustomWork(Work work, CustomDayItem day)
+        public CustomWork(Work work, CustomDayItem day, Decimal hours = -1)
         {
             this.work = work;
             this.assignedTech = null;
             this.day = day;
+            this.hours = hours;
         }
 
         public void assignTech(CustomTech tech)
@@ -798,10 +781,31 @@ namespace JugaAgenda_v2.Screens
 
         public override string ToString()
         {
-            if (assignedTech != null)
-                return "   -> " + work.getDuration().ToString() + "u " + work.getClientName();
+            String output;
+            if (hours == -1)
+                output = work.getDuration().ToString();
+            else
+                output = hours.ToString();
 
-            return work.getDuration().ToString() + "u " + work.getClientName();
+            output += "u " + work.getClientName();
+
+            for (int i = 0; i < work.getTechnicianList().Count; i++)
+            {
+                if (i == 0)
+                    output += " (";
+
+                Technician tech = work.getTechnicianList()[i];
+                output += tech.getName() + " " + tech.getHours().ToString() + "u";
+
+                if (i < work.getTechnicianList().Count - 1)
+                    output += "; ";
+                else
+                    output += ")";
+            }
+
+            if (assignedTech != null)
+                return "   -> " + output;
+            return output;
         }
     }
 

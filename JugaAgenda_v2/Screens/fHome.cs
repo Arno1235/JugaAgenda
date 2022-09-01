@@ -553,7 +553,7 @@ namespace JugaAgenda_v2
                                     if (dates.Item2 < calHome.ViewStart)
                                         continue;
 
-                                    for (DateTime datesDate = dates.Item1; datesDate < dates.Item2; datesDate = datesDate.AddDays(1))
+                                    /*for (DateTime datesDate = dates.Item1; datesDate < dates.Item2; datesDate = datesDate.AddDays(1))
                                     {
                                         newItem = new CalendarItem(calHome,
                                             datesDate,
@@ -563,16 +563,16 @@ namespace JugaAgenda_v2
                                         newItem.setCalendarEvent(work.getCalendarEvent());
 
                                         calHome.Items.Add(newItem);
-                                    }
+                                    }*/
 
-                                    /*newItem = new CalendarItem(calHome,
+                                    newItem = new CalendarItem(calHome,
                                             dates.Item1,
                                             dates.Item2.AddDays(-1).AddSeconds(-1),
                                             work.getTitle());
                                     newItem.ApplyColor(work.getColor());
                                     newItem.setCalendarEvent(work.getCalendarEvent());
 
-                                    calHome.Items.Add(newItem);*/
+                                    calHome.Items.Add(newItem);
 
                                 }
                                 else if (date >= calHome.ViewStart)
