@@ -210,6 +210,11 @@ namespace JugaAgenda_v2
                 MessageBox.Show("Times are incorrect.");
                 return false;
             }
+
+            if ((tbOrderNumber.Text.Equals("") || tbOrderNumber.Text == null || tbOrderNumber.Text.Equals("B0") || tbOrderNumber.Text.Equals("b0")) &&
+                (Work.Status)cbStatus.SelectedItem == Work.Status.wachten_op_onderdelen)
+                cbStatus.SelectedItem = Work.Status.onderdelen_op_voorraad;
+
             return true;
         }
 
@@ -228,6 +233,7 @@ namespace JugaAgenda_v2
         {
             if (checkValues())
             {
+
                 if (this.oldWorkEvent == null)
                 {
 

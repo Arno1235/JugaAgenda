@@ -50,6 +50,10 @@ namespace JugaAgenda_v2.Screens
             lbComponents.Items.Clear();
             foreach (Work work in mainScreen.getWorkWithNoAvailableComponents(DateTime.Now, DateTime.Now.AddDays(Convert.ToDouble(nuWeeks.Value) * 7)))
                 lbComponents.Items.Add(work);
+
+            lbCompORCamperNotInTime.Items.Clear();
+            foreach (Work work in mainScreen.getWorkWithComponentsORCamperNotInTime())
+                lbCompORCamperNotInTime.Items.Add(work);
         }
 
         public void loadWork()
@@ -494,10 +498,10 @@ namespace JugaAgenda_v2.Screens
         {
             lbComponents.Width = this.Width - 50;
             lbComponents.Height = this.Height - 175;
-            lbWorkNotFinished.Width = this.Width - 50;
+            /*lbWorkNotFinished.Width = this.Width - 50;
             lbWorkNotFinished.Height = this.Height - 125;
             lbWorkNoHours.Width = this.Width - 50;
-            lbWorkNoHours.Height = this.Height - 125;
+            lbWorkNoHours.Height = this.Height - 125;*/
             lbWorkToPlan.Height = this.Height - 150;
             lbWorkToPlan.Width = this.Width/2 - 50;
             lbTechAvailable.Height = this.Height - 150;
@@ -713,6 +717,22 @@ namespace JugaAgenda_v2.Screens
                 lbWorkToPlan.Items.Insert(index, customWork);
                 lbWorkToPlan.SelectedIndex = index;
 
+            }
+        }
+
+        private void lbCompNotInTime_DoubleClick(object sender, EventArgs e)
+        {
+            Work selectedWork = (Work)lbCompORCamperNotInTime.SelectedItem;
+            if (selectedWork != null)
+            {
+                if (mainScreen.getCalendarScreenAlreadyOpen())
+                {
+                    MessageBox.Show("Sluit het extra agenda scherm en probeer opnieuw.");
+                }
+                else
+                {
+                    mainScreen.openCalendarScreen(mainScreen.getGoogleEventById(selectedWork.getId()), this);
+                }
             }
         }
     }

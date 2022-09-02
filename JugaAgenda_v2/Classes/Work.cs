@@ -35,7 +35,7 @@ namespace JugaAgenda_v2
         private Google.Apis.Calendar.v3.Data.Event calendarEvent;
 
         // Example: 2.5u Arno Van Eetvelde +32 490 11 17 78 B2020/123
-        private String[] titleRegexParts = {"[0-9.,]+u", "[a-zA-Z ]+", "[+]?[0-9 ]+", "B[0-9/]+"};
+        private String[] titleRegexParts = {"[0-9.,]+u", "[a-zA-Z ]+", "[+]?[0-9 ]+", "[BW][0-9/]+" };
 
         public Work() {}
 

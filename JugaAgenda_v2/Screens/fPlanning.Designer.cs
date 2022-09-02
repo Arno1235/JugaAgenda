@@ -36,6 +36,8 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.lbWorkNotFinished = new System.Windows.Forms.ListBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.lbCompORCamperNotInTime = new System.Windows.Forms.ListBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.lbWorkNoHours = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -52,6 +54,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nuWorkToPlanHours)).BeginInit();
@@ -113,6 +116,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -149,13 +153,36 @@
             // 
             // lbWorkNotFinished
             // 
+            this.lbWorkNotFinished.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbWorkNotFinished.FormattingEnabled = true;
             this.lbWorkNotFinished.ItemHeight = 30;
-            this.lbWorkNotFinished.Location = new System.Drawing.Point(8, 6);
+            this.lbWorkNotFinished.Location = new System.Drawing.Point(3, 3);
             this.lbWorkNotFinished.Name = "lbWorkNotFinished";
-            this.lbWorkNotFinished.Size = new System.Drawing.Size(695, 1024);
+            this.lbWorkNotFinished.Size = new System.Drawing.Size(1313, 1040);
             this.lbWorkNotFinished.TabIndex = 0;
             this.lbWorkNotFinished.DoubleClick += new System.EventHandler(this.lbWorkNotFinished_DoubleClick);
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.lbCompORCamperNotInTime);
+            this.tabPage5.Location = new System.Drawing.Point(4, 39);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(1319, 1046);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Onderdelen of camper niet op tijd";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // lbCompORCamperNotInTime
+            // 
+            this.lbCompORCamperNotInTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbCompORCamperNotInTime.FormattingEnabled = true;
+            this.lbCompORCamperNotInTime.ItemHeight = 30;
+            this.lbCompORCamperNotInTime.Location = new System.Drawing.Point(3, 3);
+            this.lbCompORCamperNotInTime.Name = "lbCompORCamperNotInTime";
+            this.lbCompORCamperNotInTime.Size = new System.Drawing.Size(1313, 1040);
+            this.lbCompORCamperNotInTime.TabIndex = 1;
+            this.lbCompORCamperNotInTime.DoubleClick += new System.EventHandler(this.lbCompNotInTime_DoubleClick);
             // 
             // tabPage4
             // 
@@ -170,11 +197,12 @@
             // 
             // lbWorkNoHours
             // 
+            this.lbWorkNoHours.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbWorkNoHours.FormattingEnabled = true;
             this.lbWorkNoHours.ItemHeight = 30;
-            this.lbWorkNoHours.Location = new System.Drawing.Point(8, 6);
+            this.lbWorkNoHours.Location = new System.Drawing.Point(3, 3);
             this.lbWorkNoHours.Name = "lbWorkNoHours";
-            this.lbWorkNoHours.Size = new System.Drawing.Size(695, 1024);
+            this.lbWorkNoHours.Size = new System.Drawing.Size(1313, 1040);
             this.lbWorkNoHours.TabIndex = 1;
             this.lbWorkNoHours.DoubleClick += new System.EventHandler(this.lbWorkNoHours_DoubleClick);
             // 
@@ -309,6 +337,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
@@ -339,5 +368,7 @@
         private System.Windows.Forms.NumericUpDown nuWorkToPlanHours;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.ListBox lbWorkNoHours;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.ListBox lbCompORCamperNotInTime;
     }
 }

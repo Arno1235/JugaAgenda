@@ -208,7 +208,8 @@ namespace JugaAgenda_v2
 
                                     updateWorkItemDate(day, work, item);
 
-                                    if (day.getDate() < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
+                                    if (work.getStatus() == Work.Status.bezig ||
+                                        day.getDate() <= DateTime.Now &&
                                         work.isWorkOpen())
                                     {
                                         openWorkHoursList.Add(new Tuple<DateTime, string, Decimal>(day.getDate(), work.getId(), work.getDuration() - work.getHoursDone()));
@@ -463,7 +464,8 @@ namespace JugaAgenda_v2
             {
                 Work new_work = new Work(item);
                 day.addWorkList(new_work);
-                if (date < DateTime.Now.StartOfWeek(DayOfWeek.Monday) &&
+                if (new_work.getStatus() == Work.Status.bezig ||
+                    date <= DateTime.Now &&
                     new_work.isWorkOpen())
                     openWorkHoursList.Add(new Tuple<DateTime, string, Decimal>(date, new_work.getId(), new_work.getDuration() - new_work.getHoursDone()));
             }
@@ -894,6 +896,23 @@ namespace JugaAgenda_v2
             return results;
         }
 
+        public List<Work> getWorkWithComponentsORCamperNotInTime()
+        {
+            List<Work> results = new List<Work>();
+
+            foreach (CustomDay day in workList)
+            {
+                foreach (Work work in day.getWorkList())
+                {
+                    if (work.getStatus() == Work.Status.onderdelen_niet_op_tijd ||
+                        !work.isWorkReady() && day.getDate() < DateTime.Now)
+                        results.Add(work);
+                }
+            }
+
+            return results;
+        }
+
         public List<Work> getWorkNotFinished()
         {
             List<Work> results = new List<Work>();
@@ -920,7 +939,9 @@ namespace JugaAgenda_v2
             {
                 foreach (Work work in day.getWorkList())
                 {
-                    if (work.getDuration() <= 0) results.Add(work);
+                    if (work.getDuration() <= 0 &&
+                        (day.getDate() >= DateTime.Now || (!work.isWorkReady() || work.getStatus() == Work.Status.bezig)))
+                        results.Add(work);
                 }
             }
 
