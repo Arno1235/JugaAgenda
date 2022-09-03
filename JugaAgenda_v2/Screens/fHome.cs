@@ -32,6 +32,8 @@ namespace JugaAgenda_v2
         private Boolean focussed = true;
         private int unfocusCounter = 0;
 
+        private int lastOpenedIndex = 0;
+
         #region TODO
 
         // - Add extra support in calendar screen
@@ -641,7 +643,7 @@ namespace JugaAgenda_v2
         {
             if ((mvLeave.SelectionEnd - mvLeave.SelectionStart).Days > -1 && (mvLeave.SelectionEnd - mvLeave.SelectionStart).Days < calLeave.MaximumViewDays)
             {
-                int days = Math.Max((mvLeave.SelectionEnd - calLeave.ViewStart).Days, (calLeave.ViewEnd - mvLeave.SelectionStart).Days);
+                int days = Math.Max((mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday) - calLeave.ViewStart).Days, (calLeave.ViewEnd - mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday)).Days);
                 days = (int)Math.Ceiling((double)(days / 7)) * 7 + 7;
                 calLeave.MaximumViewDays = days;
 
@@ -1429,6 +1431,20 @@ namespace JugaAgenda_v2
         public List<Technician> getTechnicianList()
         {
             return technicianList;
+        }
+
+        public int getLastOpenedIndex()
+        {
+            return lastOpenedIndex;
+        }
+
+        #endregion
+
+        #region Setters
+
+        public void setLastOpenedIndex(int lastOpenedIndex)
+        {
+            this.lastOpenedIndex = lastOpenedIndex;
         }
 
         #endregion

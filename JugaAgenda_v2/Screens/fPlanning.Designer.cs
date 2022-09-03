@@ -100,6 +100,7 @@
             this.lbComponents.Name = "lbComponents";
             this.lbComponents.Size = new System.Drawing.Size(712, 844);
             this.lbComponents.TabIndex = 2;
+            this.lbComponents.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbComponents_DrawItem);
             this.lbComponents.DoubleClick += new System.EventHandler(this.lbComponents_DoubleClick);
             // 
             // btComponentsReady

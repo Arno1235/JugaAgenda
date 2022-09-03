@@ -34,6 +34,8 @@ namespace JugaAgenda_v2.Screens
             loadComponents();
             loadWork();
 
+            lbComponents.DrawMode = DrawMode.OwnerDrawFixed;
+
             dtpWeekPlanningStart.Value = DateTime.Now.StartOfWeek(DayOfWeek.Monday).AddDays(7);
             dtpWeekPlanningEnd.Value = dtpWeekPlanningStart.Value.AddDays(6);
 
@@ -83,6 +85,7 @@ namespace JugaAgenda_v2.Screens
                 }
                 else
                 {
+                    mainScreen.setLastOpenedIndex(lbComponents.SelectedIndex);
                     mainScreen.openCalendarScreen(mainScreen.getGoogleEventById(selectedWork.getId()), this);
                 }
             }
@@ -734,6 +737,17 @@ namespace JugaAgenda_v2.Screens
                     mainScreen.openCalendarScreen(mainScreen.getGoogleEventById(selectedWork.getId()), this);
                 }
             }
+        }
+
+        private void lbComponents_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            String text = lbComponents.Items[e.Index].ToString();
+            if (e.Index.Equals(mainScreen.getLastOpenedIndex()))
+                text = "-> " + text;
+
+            e.DrawBackground();
+            e.Graphics.DrawString(text, e.Font, Brushes.Black, e.Bounds);
+            e.DrawFocusRectangle();
         }
     }
 
