@@ -228,6 +228,7 @@
             // 
             // nuWorkToPlanHours
             // 
+            this.nuWorkToPlanHours.DecimalPlaces = 1;
             this.nuWorkToPlanHours.Increment = new decimal(new int[] {
             5,
             0,
@@ -240,7 +241,7 @@
             0,
             0});
             this.nuWorkToPlanHours.Name = "nuWorkToPlanHours";
-            this.nuWorkToPlanHours.Size = new System.Drawing.Size(90, 35);
+            this.nuWorkToPlanHours.Size = new System.Drawing.Size(127, 35);
             this.nuWorkToPlanHours.TabIndex = 10;
             // 
             // btReset
@@ -264,7 +265,10 @@
             this.lbTechAvailable.TabIndex = 8;
             this.lbTechAvailable.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbTechAvailable_DragDrop);
             this.lbTechAvailable.DragOver += new System.Windows.Forms.DragEventHandler(this.lbTechAvailable_DragOver);
+            this.lbTechAvailable.DoubleClick += new System.EventHandler(this.lbTechAvailable_DoubleClick);
             this.lbTechAvailable.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbTechAvailable_MouseDown);
+            this.lbTechAvailable.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbTechAvailable_MouseMove);
+            this.lbTechAvailable.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lbTechAvailable_MouseUp);
             // 
             // lbWorkToPlan
             // 
@@ -278,7 +282,10 @@
             this.lbWorkToPlan.SelectedIndexChanged += new System.EventHandler(this.lbWorkToPlan_SelectedIndexChanged);
             this.lbWorkToPlan.DragDrop += new System.Windows.Forms.DragEventHandler(this.lbWorkToPlan_DragDrop);
             this.lbWorkToPlan.DragOver += new System.Windows.Forms.DragEventHandler(this.lbWorkToPlan_DragOver);
+            this.lbWorkToPlan.DoubleClick += new System.EventHandler(this.lbWorkToPlan_DoubleClick);
             this.lbWorkToPlan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbWorkToPlan_MouseDown);
+            this.lbWorkToPlan.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbWorkToPlan_MouseMove);
+            this.lbWorkToPlan.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lbWorkToPlan_MouseUp);
             // 
             // label3
             // 
@@ -332,6 +339,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "fPlanning";
             this.Text = "Planning";
+            this.Shown += new System.EventHandler(this.fPlanning_Shown);
             this.Resize += new System.EventHandler(this.fPlanning_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.nuWeeks)).EndInit();
             this.tabControl1.ResumeLayout(false);

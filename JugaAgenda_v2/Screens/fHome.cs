@@ -144,8 +144,8 @@ namespace JugaAgenda_v2
         {
             testConnection();
             loadTechniciansWorkWeek();
-            loadTechnicianLeave();
             loadWork();
+            loadTechnicianLeave();
         }
 
         private void refreshTimer_Tick(object sender, EventArgs e)
@@ -314,6 +314,17 @@ namespace JugaAgenda_v2
             if (technicianLeaveList == null) technicianLeaveList = new List<CustomDay>();
             technicianLeaveList.Clear();
 
+            if (workList != null)
+            {
+                foreach (CustomDay day in workList)
+                {
+                    foreach (Technician tech in day.getTechnicianList())
+                    {
+                        tech.setHasLeave(false);
+                    }
+                }
+            }
+
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getLeaveEvents().Items)
             {
 
@@ -326,8 +337,6 @@ namespace JugaAgenda_v2
 
                 if (checkTitleWithRegex(item, "^[a-zA-Z ]+ verlof$", false, askForTitleChange))
                 {
-
-                    //DateTime date = Convert.ToDateTime(item.Start.Date);
 
                     DateTime date;
                     if (item.Start.DateTime != null)
@@ -357,8 +366,45 @@ namespace JugaAgenda_v2
                         technicianLeaveList.Add(day);
                     }
 
-                    //day.addTechnicianList(new Technician(item.Summary.Remove(item.Summary.Length - 7), 0));
-                    day.addTechnicianList(new Technician(item));
+                    Technician tech = new Technician(item);
+                    day.addTechnicianList(tech);
+
+                    if (workList != null)
+                    {
+
+                        DateTime endDate;
+                        if (item.End.DateTime != null)
+                        {
+                            endDate = (DateTime)item.End.DateTime;
+                            endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 0, 0, 0, 0);
+                        }
+                        else
+                        {
+                            endDate = Convert.ToDateTime(item.End.Date).AddDays(-1);
+                        }
+                        if (endDate.Date < date.Date)
+                            endDate = date.Date;
+
+                        IEnumerable<CustomDay> works = workList.Where(x => x.getDate().Date >= date.Date && x.getDate().Date <= endDate.Date);
+
+                        //MessageBox.Show(tech.getName() + " = " + date.customToString() + " - " + endDate.customToString(), works.Count().ToString());
+
+                        if (works.Count() > 0)
+                        {
+                            foreach (CustomDay work in works)
+                            {
+                                IEnumerable<Technician> techs = work.getTechnicianList().Where(x => x.getName().Equals(tech.getName()));
+
+                                if (techs.Count() > 0)
+                                {
+                                    Technician techqsdf = techs.First();
+                                    techqsdf.setHasLeave(true);
+                                    if (work.getDate().Date.Equals(new DateTime(2022, 9, 12, 0, 0, 0).Date))
+                                        MessageBox.Show("Hupse", techqsdf.getName());
+                                }
+                            }
+                        }
+                    }
                 }
 
             }
@@ -444,7 +490,7 @@ namespace JugaAgenda_v2
                 foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeekStartingMonday()].getTechnicianList())
                 {
                     bool tech_has_leave = false;
-                    foreach (CustomDay leave_day in technicianLeaveList)
+                    /*foreach (CustomDay leave_day in technicianLeaveList)
                     {
                         if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
                         {
@@ -454,9 +500,10 @@ namespace JugaAgenda_v2
                             }
                             // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
                         }
-                    }
+                    }*/
 
-                    if (!tech_has_leave) day.addTechnicianList(tech);
+                    tech.setHasLeave(tech_has_leave);
+                    day.addTechnicianList(tech);
                 }
 
                 workList.Add(day);
@@ -643,7 +690,7 @@ namespace JugaAgenda_v2
         {
             if ((mvLeave.SelectionEnd - mvLeave.SelectionStart).Days > -1 && (mvLeave.SelectionEnd - mvLeave.SelectionStart).Days < calLeave.MaximumViewDays)
             {
-                int days = Math.Max((mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday) - calLeave.ViewStart).Days, (calLeave.ViewEnd - mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday)).Days);
+                int days = Math.Max((mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday) - calLeave.ViewStart).Days, Math.Max((calLeave.ViewEnd - mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday)).Days, (mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday) - mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday)).Days));
                 days = (int)Math.Ceiling((double)(days / 7)) * 7 + 7;
                 calLeave.MaximumViewDays = days;
 
@@ -1175,6 +1222,12 @@ namespace JugaAgenda_v2
             newLoc.X = this.Width - gbWrongTitlesControl.Width - 50;
             newLoc.Y = gbWrongTitlesControl.Location.Y;
             gbWrongTitlesControl.Location = newLoc;
+
+            if (this.Width <= Screen.FromControl(this).WorkingArea.Width / 2)
+                mvHome.Visible = false;
+            else
+                mvHome.Visible = true;
+
         }
 
         private void updateNUTechHours()

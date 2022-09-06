@@ -12,6 +12,7 @@ namespace JugaAgenda_v2.Classes
     {
         private String name;
         private Decimal hours;
+        private Boolean hasLeave = false;
         private Google.Apis.Calendar.v3.Data.Event calendarEvent = null;
 
         public Technician(String input, Boolean title = false)
@@ -43,6 +44,8 @@ namespace JugaAgenda_v2.Classes
         }
         public Decimal getHours()
         {
+            if (this.hasLeave)
+                return 0;
             return this.hours;
         }
         public Google.Apis.Calendar.v3.Data.Event createCalendarEvent(int dayOfWeek, string eventID = null)
@@ -98,6 +101,10 @@ namespace JugaAgenda_v2.Classes
         public void setHours(Decimal hours)
         {
             this.hours = hours;
+        }
+        public void setHasLeave(Boolean hasLeave)
+        {
+            this.hasLeave = hasLeave;
         }
         #endregion
 

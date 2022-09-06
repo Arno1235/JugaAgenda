@@ -21,6 +21,11 @@ namespace JugaAgenda_v2.Screens
 
         private fHome mainScreen;
 
+        private bool DraggingFromGrid = false;
+        private System.Drawing.Point DraggingStartPoint = new System.Drawing.Point();
+
+        //Verlof
+
         public fPlanning(fHome mainScreen)
         {
             InitializeComponent();
@@ -45,6 +50,7 @@ namespace JugaAgenda_v2.Screens
         private void fAvailability_Closed(object sender, EventArgs e)
         {
             this.mainScreen.clearPlanningScreen();
+            this.mainScreen.WindowState = FormWindowState.Maximized;
         }
 
         public void loadComponents()
@@ -529,13 +535,18 @@ namespace JugaAgenda_v2.Screens
                 {
                     CustomDayItem customDayItem = new CustomDayItem(day.getDate());
                     lbWorkToPlan.Items.Add(customDayItem);
-                    foreach(Work work in works) lbWorkToPlan.Items.Add(new CustomWork(work, customDayItem));
+                    foreach(Work work in works)
+                        lbWorkToPlan.Items.Add(new CustomWork(work, customDayItem));
                 }
 
                 if (techs.Count > 0)
                 {
                     lbTechAvailable.Items.Add(new CustomDayItem(day.getDate()));
-                    foreach (Technician tech in techs) lbTechAvailable.Items.Add(new CustomTech(tech));
+                    foreach (Technician tech in techs)
+                    {
+                        //MessageBox.Show(tech.getName());
+                        lbTechAvailable.Items.Add(new CustomTech(tech));
+                    }
                 }
 
             }
@@ -555,8 +566,8 @@ namespace JugaAgenda_v2.Screens
                 nuWorkToPlanHours.Maximum = 0;
             } else
             {
-                nuWorkToPlanHours.Maximum = ((CustomWork)lbWorkToPlan.SelectedItem).getWork().getDuration();
-                nuWorkToPlanHours.Value = ((CustomWork)lbWorkToPlan.SelectedItem).getWork().getDuration(); ;
+                nuWorkToPlanHours.Maximum = ((CustomWork)lbWorkToPlan.SelectedItem).getHours();
+                nuWorkToPlanHours.Value = ((CustomWork)lbWorkToPlan.SelectedItem).getHours();
             }
 
         }
@@ -577,53 +588,91 @@ namespace JugaAgenda_v2.Screens
             }
         }
 
-
-
-
         private void lbWorkToPlan_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button != System.Windows.Forms.MouseButtons.Left)
+                return;
 
             if (lbWorkToPlan.Items.Count == 0)
                 return;
 
-            int index = lbWorkToPlan.IndexFromPoint(e.X, e.Y);
-
-            if (lbWorkToPlan.Items[index].GetType() == typeof(CustomWork))
+            if (lbWorkToPlan.SelectedItem.GetType() == typeof(CustomWork))
             {
-
-                CustomWork customWork = (CustomWork)lbWorkToPlan.Items[index];
-
-                DragDropEffects dde1 = DoDragDrop(customWork, DragDropEffects.All);
-
-                if (dde1 == DragDropEffects.All)
+                if (lbWorkToPlan.SelectedIndex != lbWorkToPlan.IndexFromPoint(DraggingStartPoint))
                 {
-                    if (nuWorkToPlanHours.Value.Equals(0) || nuWorkToPlanHours.Value.Equals(customWork.getWork().getDuration()))
-                    {
-                        lbWorkToPlan.Items.RemoveAt(index);
-                        lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, customWork);
-                    } else
-                    {
-                        CustomWork copyCustomWork = new CustomWork(customWork.getWork(), customWork.getDay(), nuWorkToPlanHours.Value);
-                        lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, copyCustomWork);
-                        nuWorkToPlanHours.Value = 0;
+                    nuWorkToPlanHours.Maximum = ((CustomWork)lbWorkToPlan.SelectedItem).getHours();
+                    nuWorkToPlanHours.Value = ((CustomWork)lbWorkToPlan.SelectedItem).getHours();
+                }
 
-                        int currentIndex = lbTechAvailable.SelectedIndex + 1;
 
-                        while (currentIndex > 0)
-                        {
-                            if (lbTechAvailable.Items[currentIndex].GetType() == typeof(CustomTech))
-                            {
-                                copyCustomWork.assignTech((CustomTech)lbTechAvailable.Items[currentIndex]);
-                                break;
-                            }
-                            currentIndex--;
-                        }
-                    }
-                    
-                } else if (dde1 == DragDropEffects.None)
-                    lbWorkToPlan_SelectedIndexChanged(null, null);
+                DraggingFromGrid = true;
+                DraggingStartPoint = new System.Drawing.Point(e.X, e.Y);
             }
 
+        }
+
+        private void lbWorkToPlan_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (DraggingFromGrid)
+            {
+                DraggingFromGrid = false;
+            }
+        }
+
+        private void lbWorkToPlan_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (DraggingFromGrid)
+            {
+                if (System.Math.Abs(e.X - DraggingStartPoint.X) > 10 ||
+                    System.Math.Abs(e.Y - DraggingStartPoint.Y) > 10)
+                {
+                    int index = lbWorkToPlan.IndexFromPoint(DraggingStartPoint.X, DraggingStartPoint.Y);
+                    lbWorkToPlan_StartDragging(index);
+                }
+            }
+        }
+
+        private void lbWorkToPlan_StartDragging(int index)
+        {
+            DraggingFromGrid = false;
+
+            CustomWork customWork = (CustomWork)lbWorkToPlan.Items[index];
+
+            DragDropEffects dde1 = DoDragDrop(customWork, DragDropEffects.All);
+
+            if (dde1 == DragDropEffects.All)
+            {
+                if (nuWorkToPlanHours.Value.Equals(0) || nuWorkToPlanHours.Value.Equals(customWork.getWork().getDuration()))
+                {
+                    lbWorkToPlan.Items.RemoveAt(index);
+                    lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, customWork);
+                }
+                else
+                {
+                    CustomWork copyCustomWork = new CustomWork(customWork, nuWorkToPlanHours.Value);
+
+                    lbWorkToPlan.Items.RemoveAt(index);
+                    lbWorkToPlan.Items.Insert(index, customWork);
+
+                    int currentIndex = lbTechAvailable.SelectedIndex + 1;
+
+                    while (currentIndex > 0)
+                    {
+                        if (lbTechAvailable.Items[currentIndex].GetType() == typeof(CustomTech))
+                        {
+                            copyCustomWork.assignTech((CustomTech)lbTechAvailable.Items[currentIndex]);
+                            break;
+                        }
+                        currentIndex--;
+                    }
+
+                    lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, copyCustomWork);
+                    nuWorkToPlanHours.Value = 0;
+                }
+
+            }
+            else if (dde1 == DragDropEffects.None)
+                lbWorkToPlan_SelectedIndexChanged(null, null);
         }
 
         private void lbTechAvailable_DragOver(object sender, DragEventArgs e)
@@ -654,18 +703,23 @@ namespace JugaAgenda_v2.Screens
                 }
 
                 CustomWork customWork = (CustomWork)e.Data
-                    .GetData(typeof(CustomWork));
+                        .GetData(typeof(CustomWork));
 
-                int currentIndex = index;
-                
-                while(currentIndex > 0)
+                if (nuWorkToPlanHours.Value.Equals(0) || nuWorkToPlanHours.Value.Equals(customWork.getWork().getDuration()))
                 {
-                    if (lbTechAvailable.Items[currentIndex].GetType() == typeof(CustomTech))
+
+                    int currentIndex = index;
+                
+                    while(currentIndex > 0)
                     {
-                        customWork.assignTech((CustomTech)lbTechAvailable.Items[currentIndex]);
-                        break;
+                        if (lbTechAvailable.Items[currentIndex].GetType() == typeof(CustomTech))
+                        {
+                            customWork.assignTech((CustomTech)lbTechAvailable.Items[currentIndex]);
+                            break;
+                        }
+                        currentIndex--;
                     }
-                    currentIndex--;
+
                 }
 
                 //lbTechAvailable.Items.Insert(index + 1, customWork);
@@ -677,25 +731,55 @@ namespace JugaAgenda_v2.Screens
 
         private void lbTechAvailable_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button != System.Windows.Forms.MouseButtons.Left)
+                return;
+
             if (lbTechAvailable.Items.Count == 0)
                 return;
 
-            int index = lbTechAvailable.IndexFromPoint(e.X, e.Y);
-
-            if (lbTechAvailable.Items[index].GetType() == typeof(CustomWork))
+            if (lbTechAvailable.SelectedItem.GetType() == typeof(CustomWork))
             {
-
-                CustomWork customWork = (CustomWork)lbTechAvailable.Items[index];
-
-                DragDropEffects dde2 = DoDragDrop(customWork, DragDropEffects.All);
-
-                if (dde2 == DragDropEffects.All && index != lbTechAvailable.SelectedIndex)
-                {
-                    lbTechAvailable.Items.RemoveAt(index);
-                    lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, customWork);
-                } else if (dde2 == DragDropEffects.Move)
-                    lbTechAvailable.Items.RemoveAt(index);
+                DraggingFromGrid = true;
+                DraggingStartPoint = new System.Drawing.Point(e.X, e.Y);
             }
+        }
+
+        private void lbTechAvailable_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (DraggingFromGrid)
+            {
+                DraggingFromGrid = false;
+            }
+        }
+
+        private void lbTechAvailable_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (DraggingFromGrid)
+            {
+                if (System.Math.Abs(e.X - DraggingStartPoint.X) > 10 ||
+                    System.Math.Abs(e.Y - DraggingStartPoint.Y) > 10)
+                {
+                    int index = lbTechAvailable.IndexFromPoint(DraggingStartPoint.X, DraggingStartPoint.Y);
+                    lbTechAvailable_StartDragging(index);
+                }
+            }
+        }
+
+        private void lbTechAvailable_StartDragging(int index)
+        {
+            DraggingFromGrid = false;
+
+            CustomWork customWork = (CustomWork)lbTechAvailable.Items[index];
+
+            DragDropEffects dde2 = DoDragDrop(customWork, DragDropEffects.All);
+
+            if (dde2 == DragDropEffects.All && index != lbTechAvailable.SelectedIndex)
+            {
+                lbTechAvailable.Items.RemoveAt(index);
+                lbTechAvailable.Items.Insert(lbTechAvailable.SelectedIndex + 1, customWork);
+            }
+            else if (dde2 == DragDropEffects.Move)
+                lbTechAvailable.Items.RemoveAt(index);
         }
 
         private void lbWorkToPlan_DragOver(object sender, DragEventArgs e)
@@ -714,11 +798,24 @@ namespace JugaAgenda_v2.Screens
                 CustomWork customWork = (CustomWork)e.Data
                     .GetData(typeof(CustomWork));
 
-                customWork.unAssignTech();
+                if (customWork.isCopy())
+                {
+                    CustomWork originalWork = customWork.clearThisCopy();
 
-                int index = lbWorkToPlan.Items.IndexOf(customWork.getDay()) + 1;
-                lbWorkToPlan.Items.Insert(index, customWork);
-                lbWorkToPlan.SelectedIndex = index;
+                    int index = lbWorkToPlan.Items.IndexOf(originalWork);
+
+                    lbWorkToPlan.Items.RemoveAt(index);
+                    lbWorkToPlan.Items.Insert(index, originalWork);
+
+                    lbWorkToPlan.SelectedIndex = index;
+                } else
+                {
+                    customWork.unAssignTech();
+
+                    int index = lbWorkToPlan.Items.IndexOf(customWork.getDay()) + 1;
+                    lbWorkToPlan.Items.Insert(index, customWork);
+                    lbWorkToPlan.SelectedIndex = index;
+                }
 
             }
         }
@@ -749,6 +846,36 @@ namespace JugaAgenda_v2.Screens
             e.Graphics.DrawString(text, e.Font, Brushes.Black, e.Bounds);
             e.DrawFocusRectangle();
         }
+
+        private void fPlanning_Shown(object sender, EventArgs e)
+        {
+            this.Height = Screen.FromControl(mainScreen).WorkingArea.Height;
+            this.Width = Screen.FromControl(mainScreen).WorkingArea.Width/2;
+            this.Location = new System.Drawing.Point(0, 0);
+
+            mainScreen.Height = Screen.FromControl(mainScreen).WorkingArea.Height;
+            mainScreen.Width = Screen.FromControl(mainScreen).WorkingArea.Width * 1 / 2;
+            mainScreen.Location = new System.Drawing.Point(this.Width, 0);
+            mainScreen.WindowState = FormWindowState.Normal;
+        }
+
+        private void lbWorkToPlan_DoubleClick(object sender, EventArgs e)
+        {
+            if (lbWorkToPlan.SelectedItem.GetType() == typeof(CustomWork))
+                openWork((CustomWork)lbWorkToPlan.SelectedItem);
+        }
+
+        private void lbTechAvailable_DoubleClick(object sender, EventArgs e)
+        {
+            if (lbTechAvailable.SelectedItem.GetType() == typeof(CustomWork))
+                openWork((CustomWork)lbTechAvailable.SelectedItem);
+        }
+
+        private void openWork(CustomWork work)
+        {
+            this.mainScreen.openCalendarScreen(work.getWork().getCalendarEvent());
+        }
+
     }
 
     public class CustomDayItem
@@ -778,6 +905,8 @@ namespace JugaAgenda_v2.Screens
         CustomDayItem day;
         Decimal hours;
 
+        CustomWork copyFrom;
+
         public CustomWork(Work work, CustomDayItem day, Decimal hours = -1)
         {
             this.work = work;
@@ -786,16 +915,45 @@ namespace JugaAgenda_v2.Screens
             this.hours = hours;
         }
 
+        public CustomWork(CustomWork copyFrom, Decimal hours)
+        {
+            this.copyFrom = copyFrom;
+            this.hours = hours;
+            copyFrom.decreaseHours(hours);
+        }
+
         public void assignTech(CustomTech tech)
         {
             this.assignedTech = tech;
-            assignedTech.decreaseHoursAvailable(work.getDuration());
+            if (this.isCopy())
+                assignedTech.decreaseHoursAvailable(copyFrom.getWork().getDuration());
+            else
+                assignedTech.decreaseHoursAvailable(work.getDuration());
         }
 
         public void unAssignTech()
         {
             assignedTech.increaseHoursAvailable(work.getDuration());
             this.assignedTech = null;
+        }
+
+        public void decreaseHours(Decimal hoursToDecrease)
+        {
+            if (this.hours == -1)
+                this.hours = work.getDuration();
+
+            this.hours -= hoursToDecrease;
+        }
+
+        public void increaseHours(Decimal hoursToIncrease)
+        {
+            this.hours += hoursToIncrease;
+        }
+
+        public CustomWork clearThisCopy()
+        {
+            copyFrom.increaseHours(this.hours);
+            return copyFrom;
         }
 
         public CustomTech getTech()
@@ -805,6 +963,8 @@ namespace JugaAgenda_v2.Screens
 
         public Work getWork()
         {
+            if (this.isCopy())
+                return copyFrom.getWork();
             return work;
         }
 
@@ -813,25 +973,49 @@ namespace JugaAgenda_v2.Screens
             return day;
         }
 
+        public Decimal getHours()
+        {
+            if (hours == -1)
+                return getWork().getDuration();
+            else
+                return hours;
+        }
+
+        public CustomWork getCopyFrom()
+        {
+            return copyFrom;
+        }
+
+        public Boolean isCopy()
+        {
+            return this.copyFrom != null;
+        }
+
         public override string ToString()
         {
+            Work workToPrint;
+            if (this.isCopy())
+                workToPrint = copyFrom.getWork();
+            else
+                workToPrint = work;
+
             String output;
             if (hours == -1)
-                output = work.getDuration().ToString();
+                output = workToPrint.getDuration().ToString();
             else
                 output = hours.ToString();
 
-            output += "u " + work.getClientName();
+            output += "u " + workToPrint.getClientName();
 
-            for (int i = 0; i < work.getTechnicianList().Count; i++)
+            for (int i = 0; i < workToPrint.getTechnicianList().Count; i++)
             {
                 if (i == 0)
                     output += " (";
 
-                Technician tech = work.getTechnicianList()[i];
+                Technician tech = workToPrint.getTechnicianList()[i];
                 output += tech.getName() + " " + tech.getHours().ToString() + "u";
 
-                if (i < work.getTechnicianList().Count - 1)
+                if (i < workToPrint.getTechnicianList().Count - 1)
                     output += "; ";
                 else
                     output += ")";
@@ -840,6 +1024,7 @@ namespace JugaAgenda_v2.Screens
             if (assignedTech != null)
                 return "   -> " + output;
             return output;
+
         }
     }
 
