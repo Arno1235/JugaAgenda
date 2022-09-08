@@ -250,8 +250,8 @@ namespace JugaAgenda_v2
                             (Work.Status)cbStatus.SelectedItem,
                             Decimal.Parse(nuHoursDone.Value.ToString().Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," }),
                             (IList<Technician>)lbTechnicians.Items.Cast<Technician>().ToList(),
-                            dtpStart.Value.ToString("yyyy-MM-dd"),
-                            dtpEnd.Value.AddDays(1).ToString("yyyy-MM-dd")
+                            dtpStart.Value.Date.ToString("yyyy-MM-dd"),
+                            dtpEnd.Value.Date.AddDays(1).ToString("yyyy-MM-dd")
                             );
 
                         if (new_work.getCalendarEvent() != null)

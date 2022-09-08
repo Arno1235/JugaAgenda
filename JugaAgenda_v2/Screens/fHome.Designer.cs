@@ -102,6 +102,7 @@ namespace JugaAgenda_v2
             this.tpSettings = new System.Windows.Forms.TabPage();
             this.tcSettings = new System.Windows.Forms.TabControl();
             this.tpCalendarSettings = new System.Windows.Forms.TabPage();
+            this.s = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cbCalendarPerspective = new System.Windows.Forms.ComboBox();
@@ -112,7 +113,6 @@ namespace JugaAgenda_v2
             this.btTestGoogleConnection = new System.Windows.Forms.Button();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.newDayTimer = new System.Windows.Forms.Timer(this.components);
-            this.s = new System.Windows.Forms.Button();
             this.msHome.SuspendLayout();
             this.tcHome.SuspendLayout();
             this.tpCalendar.SuspendLayout();
@@ -274,7 +274,6 @@ namespace JugaAgenda_v2
             // 
             // calHome
             // 
-            this.calHome.AllowItemEdit = false;
             this.calHome.AllowItemResize = false;
             this.calHome.AllowNew = false;
             this.calHome.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -294,7 +293,7 @@ namespace JugaAgenda_v2
             calendarHighlightRange4.StartTime = System.TimeSpan.Parse("09:00:00");
             calendarHighlightRange5.DayOfWeek = System.DayOfWeek.Saturday;
             calendarHighlightRange5.EndTime = System.TimeSpan.Parse("17:00:00");
-            calendarHighlightRange5.StartTime = System.TimeSpan.Parse("09:00:00");
+            calendarHighlightRange5.StartTime = System.TimeSpan.Parse("10:00:00");
             this.calHome.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
         calendarHighlightRange1,
         calendarHighlightRange2,
@@ -309,6 +308,7 @@ namespace JugaAgenda_v2
             this.calHome.TabIndex = 1;
             this.calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
             this.calHome.ItemCreating += new System.Windows.Forms.Calendar.Calendar.CalendarItemCancelEventHandler(this.calHome_ItemCreating);
+            this.calHome.ItemDatesChanged += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calHome_ItemDatesChanged);
             this.calHome.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calHome_ItemDoubleClick);
             // 
             // mvHome
@@ -769,6 +769,16 @@ namespace JugaAgenda_v2
             this.tpCalendarSettings.Text = "Calendar";
             this.tpCalendarSettings.UseVisualStyleBackColor = true;
             // 
+            // s
+            // 
+            this.s.Location = new System.Drawing.Point(6, 342);
+            this.s.Name = "s";
+            this.s.Size = new System.Drawing.Size(358, 40);
+            this.s.TabIndex = 6;
+            this.s.Text = "Corrigeer foute verlof agenda titels";
+            this.s.UseVisualStyleBackColor = true;
+            this.s.Click += new System.EventHandler(this.s_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -851,16 +861,6 @@ namespace JugaAgenda_v2
             // newDayTimer
             // 
             this.newDayTimer.Tick += new System.EventHandler(this.newDayTimer_Tick);
-            // 
-            // s
-            // 
-            this.s.Location = new System.Drawing.Point(6, 342);
-            this.s.Name = "s";
-            this.s.Size = new System.Drawing.Size(358, 40);
-            this.s.TabIndex = 6;
-            this.s.Text = "Corrigeer foute verlof agenda titels";
-            this.s.UseVisualStyleBackColor = true;
-            this.s.Click += new System.EventHandler(this.s_Click);
             // 
             // fHome
             // 

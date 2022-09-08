@@ -36,10 +36,12 @@ namespace JugaAgenda_v2
 
         #region TODO
 
-        // - Add extra support in calendar screen
-        // - Add/Edit/Remove/Show tech leave
-        // - Add/Edit/Remove/Show tech schedule
         // - Translate
+        // - Close shop (festivities)
+        // - Planning creation
+        // - Info calendar
+        // - scroll
+        // - form in form ? (https://www.codeproject.com/Articles/3553/Introduction-to-MDI-Forms-with-C)
 
         #endregion
 
@@ -618,7 +620,7 @@ namespace JugaAgenda_v2
 
                                     newItem = new CalendarItem(calHome,
                                             dates.Item1,
-                                            dates.Item2.AddDays(-1).AddSeconds(-1),
+                                            dates.Item2.AddSeconds(-1),
                                             work.getTitle());
                                     newItem.ApplyColor(work.getColor());
                                     newItem.setCalendarEvent(work.getCalendarEvent());
@@ -1639,6 +1641,17 @@ namespace JugaAgenda_v2
         {
             loadTechnicianLeave(true);
             mvLeave_SelectionChanged(null, null);
+        }
+
+        private void calHome_ItemDatesChanged(object sender, CalendarItemEventArgs e)
+        {
+            Google.Apis.Calendar.v3.Data.Event calendarEvent = e.Item.getCalendarEvent();
+            calendarEvent.Start.Date = e.Item.StartDate.ToString();
+            calendarEvent.End.Date = e.Item.EndDate.AddDays(1).AddSeconds(-1).ToString();
+
+            MessageBox.Show(e.Item.StartDate.ToString() + " - " + e.Item.EndDate.AddDays(1).AddSeconds(-1).ToString());
+
+            googleCalendar.editWorkEvent(calendarEvent);
         }
     }
 
