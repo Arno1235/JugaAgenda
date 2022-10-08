@@ -33,7 +33,11 @@ namespace JugaAgenda_v2
         private int unfocusCounter = 0;
         private int lastOpenedIndex = 0;
         private Boolean mvHomeSelectionChanging = false;
+        private Boolean mvLeaveSelectionChanging = false;
         ToolTip calendarToolTip;
+        private System.Drawing.Point prevMouseCoo;
+        private Boolean mouseMoved = false;
+        private Boolean mouseDown = false;
 
         #region TODO
 
@@ -43,6 +47,7 @@ namespace JugaAgenda_v2
         // - Info calendar
         // - custom 2 week screen?
         // - form in form ? (https://www.codeproject.com/Articles/3553/Introduction-to-MDI-Forms-with-C)
+        // - double click multiple day item
 
         #endregion
 
@@ -63,6 +68,7 @@ namespace JugaAgenda_v2
 
             mvHome.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             mvHome.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            calHome.MaximumViewDays = 70;
             mvHome.MaxSelectionCount = calHome.MaximumViewDays;
 
             mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
@@ -89,6 +95,16 @@ namespace JugaAgenda_v2
             loadStyleComponents();
 
             loadEverything();
+
+            foreach(CalendarDay calDay in calHome.Days)
+                if (calDay.Date == new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day))
+                {
+                    calHome.SelectedElementStart = calDay;
+                    calHome.SelectedElementEnd = calDay;
+                    break;
+                }
+
+            calHome_MouseUp(null, null);
 
         }
 
@@ -720,6 +736,7 @@ namespace JugaAgenda_v2
 
         private void mvLeave_SelectionChanged(object sender, EventArgs e)
         {
+            mvLeaveSelectionChanging = true;
             if ((mvLeave.SelectionEnd - mvLeave.SelectionStart).Days > -1 && (mvLeave.SelectionEnd - mvLeave.SelectionStart).Days < calLeave.MaximumViewDays)
             {
                 int days = Math.Max((mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday) - calLeave.ViewStart).Days, Math.Max((calLeave.ViewEnd - mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday)).Days, (mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday) - mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday)).Days));
@@ -788,6 +805,8 @@ namespace JugaAgenda_v2
             {
                 MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days.");
             }
+
+            mvLeaveSelectionChanging = false;
         }
 
         public bool deleteWorkItem(String eventId)
@@ -1073,7 +1092,7 @@ namespace JugaAgenda_v2
                         {
                             foreach (CustomDay techDay in techLeaveList)
                             {
-                                techDay.getTechnicianList().Where(x => x.getCalendarEvent())
+                                //techDay.getTechnicianList().Where(x => x.getCalendarEvent());
                             }
                         }
                     }
@@ -1266,6 +1285,12 @@ namespace JugaAgenda_v2
 
         private void fHome_Resize(object sender, EventArgs e)
         {
+            int margin = 5;
+            calHome.Width = tpCalendar.Width - mvHome.Width - margin;
+            mvHome.Height = tpCalendar.Height/2 - margin;
+            calDetail.Height = tpCalendar.Height/2 - margin;
+            calDetail.Location = new System.Drawing.Point(calDetail.Location.X, mvHome.Height + margin);
+
             lbWrongTitles.Height = this.Height - 200;
             lbWrongTitles.Width = this.Width - gbWrongTitlesControl.Width - 75;
 
@@ -1694,22 +1719,108 @@ namespace JugaAgenda_v2
 
         private void calHome_ItemDatesChanged(object sender, CalendarItemEventArgs e)
         {
-            Google.Apis.Calendar.v3.Data.Event calendarEvent = e.Item.getCalendarEvent();
-            calendarEvent.Start.Date = e.Item.StartDate.ToString();
-            calendarEvent.End.Date = e.Item.EndDate.AddDays(1).AddSeconds(-1).ToString();
 
-            MessageBox.Show(e.Item.StartDate.ToString() + " - " + e.Item.EndDate.AddDays(1).AddSeconds(-1).ToString());
+            if (!mouseMoved)
+            {
+
+                return;
+            }
+
+            MessageBox.Show("qsdf");
+
+            Google.Apis.Calendar.v3.Data.Event calendarEvent = e.Item.getCalendarEvent();
+
+            if (calendarEvent.Start.Date.Equals(e.Item.StartDate.ToString("yyyy-MM-dd")) &&
+                calendarEvent.End.Date.Equals(e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd")))
+                return;
+
+            calendarEvent.Start.Date = e.Item.StartDate.ToString("yyyy-MM-dd");
+            calendarEvent.End.Date = e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+
+            calendarEvent.Start.DateTime = null;
+            calendarEvent.End.DateTime = null;
+
+            //MessageBox.Show(calendarEvent.Start.Date + " - " + calendarEvent.End.Date);
 
             googleCalendar.editWorkEvent(calendarEvent);
         }
 
         private void calHome_MouseMove(object sender, MouseEventArgs e)
         {
+
+            if (!mouseMoved && mouseDown &&
+                Math.Sqrt((Math.Pow(prevMouseCoo.X - e.X, 2) + Math.Pow(prevMouseCoo.Y - e.Y, 2))) > 20)
+                mouseMoved = true;
+
             CalendarItem calItem = calHome.ItemAt(new System.Drawing.Point(e.X, e.Y));
             if (calItem == null)
                 calendarToolTip.SetToolTip(calHome, null);
             else
                 calendarToolTip.SetToolTip(calHome, calItem.Text + "\n" + calItem.getCalendarEvent().Description);
+
+        }
+
+        private void calHome_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+
+            if (calHome.SelectedElementStart == null)
+                return;
+
+            DateTime newDate = calHome.SelectedElementStart.Date;
+
+            if (newDate < calDetail.ViewStart)
+            {
+                calDetail.MaximumViewDays = (int)Math.Ceiling((double)((calDetail.ViewEnd - newDate).Days / 7)) * 7 + 7;
+                calDetail.ViewStart = newDate;
+                calDetail.ViewEnd = newDate;
+            }
+            else if (newDate > calDetail.ViewEnd)
+            {
+                calDetail.MaximumViewDays = (int)Math.Ceiling((double)((newDate - calDetail.ViewStart).Days / 7)) * 7 + 7;
+                calDetail.ViewEnd = newDate;
+                calDetail.ViewStart = newDate;
+            }
+            else
+            {
+                calDetail.ViewStart = newDate;
+                calDetail.ViewEnd = newDate;
+            }
+
+            calDetail.Items.Clear();
+
+            foreach (CalendarItem calItem in calHome.Items)
+            {
+                if (calItem.StartDate <= newDate && calItem.EndDate >= newDate)
+                {
+                    calDetail.Items.Add(new CalendarItem(calDetail, calItem.StartDate, calItem.EndDate, calItem.Text));
+                }
+            }
+
+        }
+
+        private void fHome_Shown(object sender, EventArgs e)
+        {
+            fHome_Resize(sender, e);
+        }
+
+        private void calLeave_LoadItems(object sender, CalendarLoadEventArgs e)
+        {
+            if (mvLeaveSelectionChanging)
+                return;
+
+            DateTime start = calLeave.ViewStart;
+            DateTime end = calLeave.ViewEnd;
+
+            mvLeave.SelectionStart = start;
+            mvLeave.SelectionEnd = end;
+        }
+
+        private void calHome_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            mouseMoved = false;
+            prevMouseCoo = e.Location;
         }
     }
 
