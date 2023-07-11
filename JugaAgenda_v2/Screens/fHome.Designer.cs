@@ -29,7 +29,7 @@ namespace JugaAgenda_v2
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange1 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange2 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange3 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
@@ -50,239 +50,248 @@ namespace JugaAgenda_v2
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange18 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange19 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
             System.Windows.Forms.Calendar.CalendarHighlightRange calendarHighlightRange20 = new System.Windows.Forms.Calendar.CalendarHighlightRange();
-            this.msHome = new System.Windows.Forms.MenuStrip();
-            this.addWorkEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.planningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fiveMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sixMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tenMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fifteenMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.thirtyMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sixtyMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oneMonthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.twoMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.threeMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fourMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sixMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.workweekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.weekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.monthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tcHome = new System.Windows.Forms.TabControl();
-            this.tpCalendar = new System.Windows.Forms.TabPage();
-            this.calDetail = new System.Windows.Forms.Calendar.Calendar();
-            this.calHome = new System.Windows.Forms.Calendar.Calendar();
-            this.mvHome = new System.Windows.Forms.Calendar.MonthView();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.calLeave = new System.Windows.Forms.Calendar.Calendar();
-            this.mvLeave = new System.Windows.Forms.Calendar.MonthView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.calWorkSchedule = new System.Windows.Forms.Calendar.Calendar();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.gbWrongTitlesControl = new System.Windows.Forms.GroupBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.tbOldTitle = new System.Windows.Forms.TextBox();
-            this.btDelete = new System.Windows.Forms.Button();
-            this.btSave = new System.Windows.Forms.Button();
-            this.btCancel = new System.Windows.Forms.Button();
-            this.nuHoursDone = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cbStatus = new System.Windows.Forms.ComboBox();
-            this.tbPhoneNumber = new System.Windows.Forms.TextBox();
-            this.tbOrderNumber = new System.Windows.Forms.TextBox();
-            this.nuHours = new System.Windows.Forms.NumericUpDown();
-            this.tbClientName = new System.Windows.Forms.TextBox();
-            this.rtbDescription = new System.Windows.Forms.RichTextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.lbWrongTitles = new System.Windows.Forms.ListBox();
-            this.nuWrongTitles = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tpSettings = new System.Windows.Forms.TabPage();
-            this.tcSettings = new System.Windows.Forms.TabControl();
-            this.tpCalendarSettings = new System.Windows.Forms.TabPage();
-            this.s = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbCalendarPerspective = new System.Windows.Forms.ComboBox();
-            this.cbCalendarTimeScale = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbCalendarSelectionMode = new System.Windows.Forms.ComboBox();
-            this.tpGoogleSettings = new System.Windows.Forms.TabPage();
-            this.btTestGoogleConnection = new System.Windows.Forms.Button();
-            this.refreshTimer = new System.Windows.Forms.Timer(this.components);
-            this.newDayTimer = new System.Windows.Forms.Timer(this.components);
-            this.msHome.SuspendLayout();
-            this.tcHome.SuspendLayout();
-            this.tpCalendar.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.gbWrongTitlesControl.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nuHoursDone)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nuHours)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nuWrongTitles)).BeginInit();
-            this.tpSettings.SuspendLayout();
-            this.tcSettings.SuspendLayout();
-            this.tpCalendarSettings.SuspendLayout();
-            this.tpGoogleSettings.SuspendLayout();
-            this.SuspendLayout();
+            msHome = new System.Windows.Forms.MenuStrip();
+            addWorkEventToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            planningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fiveMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            sixMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            tenMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fifteenMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            thirtyMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            sixtyMinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            oneMonthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            twoMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            threeMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fourMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            sixMonthsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            dayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            workweekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            weekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            monthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            tcHome = new System.Windows.Forms.TabControl();
+            tpCalendar = new System.Windows.Forms.TabPage();
+            btWorkToday = new System.Windows.Forms.Button();
+            calDetail = new System.Windows.Forms.Calendar.Calendar();
+            calHome = new System.Windows.Forms.Calendar.Calendar();
+            mvHome = new System.Windows.Forms.Calendar.MonthView();
+            tabPage3 = new System.Windows.Forms.TabPage();
+            calLeave = new System.Windows.Forms.Calendar.Calendar();
+            mvLeave = new System.Windows.Forms.Calendar.MonthView();
+            tabPage2 = new System.Windows.Forms.TabPage();
+            calWorkSchedule = new System.Windows.Forms.Calendar.Calendar();
+            tabPage1 = new System.Windows.Forms.TabPage();
+            gbWrongTitlesControl = new System.Windows.Forms.GroupBox();
+            label13 = new System.Windows.Forms.Label();
+            tbOldTitle = new System.Windows.Forms.TextBox();
+            btDelete = new System.Windows.Forms.Button();
+            btSave = new System.Windows.Forms.Button();
+            btCancel = new System.Windows.Forms.Button();
+            nuHoursDone = new System.Windows.Forms.NumericUpDown();
+            label10 = new System.Windows.Forms.Label();
+            label6 = new System.Windows.Forms.Label();
+            cbStatus = new System.Windows.Forms.ComboBox();
+            tbPhoneNumber = new System.Windows.Forms.TextBox();
+            tbOrderNumber = new System.Windows.Forms.TextBox();
+            nuHours = new System.Windows.Forms.NumericUpDown();
+            tbClientName = new System.Windows.Forms.TextBox();
+            rtbDescription = new System.Windows.Forms.RichTextBox();
+            label7 = new System.Windows.Forms.Label();
+            label12 = new System.Windows.Forms.Label();
+            label8 = new System.Windows.Forms.Label();
+            label11 = new System.Windows.Forms.Label();
+            label9 = new System.Windows.Forms.Label();
+            lbWrongTitles = new System.Windows.Forms.ListBox();
+            nuWrongTitles = new System.Windows.Forms.NumericUpDown();
+            label5 = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            tpSettings = new System.Windows.Forms.TabPage();
+            tcSettings = new System.Windows.Forms.TabControl();
+            tpCalendarSettings = new System.Windows.Forms.TabPage();
+            s = new System.Windows.Forms.Button();
+            label3 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            cbCalendarPerspective = new System.Windows.Forms.ComboBox();
+            cbCalendarTimeScale = new System.Windows.Forms.ComboBox();
+            label1 = new System.Windows.Forms.Label();
+            cbCalendarSelectionMode = new System.Windows.Forms.ComboBox();
+            tpGoogleSettings = new System.Windows.Forms.TabPage();
+            btTestGoogleConnection = new System.Windows.Forms.Button();
+            refreshTimer = new System.Windows.Forms.Timer(components);
+            newDayTimer = new System.Windows.Forms.Timer(components);
+            msHome.SuspendLayout();
+            tcHome.SuspendLayout();
+            tpCalendar.SuspendLayout();
+            tabPage3.SuspendLayout();
+            tabPage2.SuspendLayout();
+            tabPage1.SuspendLayout();
+            gbWrongTitlesControl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nuHoursDone).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nuHours).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nuWrongTitles).BeginInit();
+            tpSettings.SuspendLayout();
+            tcSettings.SuspendLayout();
+            tpCalendarSettings.SuspendLayout();
+            tpGoogleSettings.SuspendLayout();
+            SuspendLayout();
             // 
             // msHome
             // 
-            this.msHome.ImageScalingSize = new System.Drawing.Size(28, 28);
-            this.msHome.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addWorkEventToolStripMenuItem,
-            this.searchToolStripMenuItem,
-            this.planningToolStripMenuItem});
-            this.msHome.Location = new System.Drawing.Point(0, 0);
-            this.msHome.Name = "msHome";
-            this.msHome.Padding = new System.Windows.Forms.Padding(10, 4, 0, 4);
-            this.msHome.Size = new System.Drawing.Size(2057, 42);
-            this.msHome.TabIndex = 0;
-            this.msHome.Text = "menuStrip1";
+            msHome.ImageScalingSize = new System.Drawing.Size(28, 28);
+            msHome.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { addWorkEventToolStripMenuItem, searchToolStripMenuItem, planningToolStripMenuItem });
+            msHome.Location = new System.Drawing.Point(0, 0);
+            msHome.Name = "msHome";
+            msHome.Padding = new System.Windows.Forms.Padding(8, 3, 0, 3);
+            msHome.Size = new System.Drawing.Size(1714, 35);
+            msHome.TabIndex = 0;
+            msHome.Text = "menuStrip1";
             // 
             // addWorkEventToolStripMenuItem
             // 
-            this.addWorkEventToolStripMenuItem.Name = "addWorkEventToolStripMenuItem";
-            this.addWorkEventToolStripMenuItem.Size = new System.Drawing.Size(143, 34);
-            this.addWorkEventToolStripMenuItem.Text = "Nieuw Werk";
-            this.addWorkEventToolStripMenuItem.Click += new System.EventHandler(this.addWorkEventToolStripMenuItem_Click);
+            addWorkEventToolStripMenuItem.Name = "addWorkEventToolStripMenuItem";
+            addWorkEventToolStripMenuItem.Size = new System.Drawing.Size(122, 29);
+            addWorkEventToolStripMenuItem.Text = "Nieuw Werk";
+            addWorkEventToolStripMenuItem.Click += addWorkEventToolStripMenuItem_Click;
             // 
             // searchToolStripMenuItem
             // 
-            this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(99, 34);
-            this.searchToolStripMenuItem.Text = "Zoeken";
-            this.searchToolStripMenuItem.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
+            searchToolStripMenuItem.Name = "searchToolStripMenuItem";
+            searchToolStripMenuItem.Size = new System.Drawing.Size(86, 29);
+            searchToolStripMenuItem.Text = "Zoeken";
+            searchToolStripMenuItem.Click += searchToolStripMenuItem_Click;
             // 
             // planningToolStripMenuItem
             // 
-            this.planningToolStripMenuItem.Name = "planningToolStripMenuItem";
-            this.planningToolStripMenuItem.Size = new System.Drawing.Size(112, 34);
-            this.planningToolStripMenuItem.Text = "Planning";
-            this.planningToolStripMenuItem.Click += new System.EventHandler(this.planningToolStripMenuItem_Click);
+            planningToolStripMenuItem.Name = "planningToolStripMenuItem";
+            planningToolStripMenuItem.Size = new System.Drawing.Size(96, 29);
+            planningToolStripMenuItem.Text = "Planning";
+            planningToolStripMenuItem.Click += planningToolStripMenuItem_Click;
             // 
             // fiveMinutesToolStripMenuItem
             // 
-            this.fiveMinutesToolStripMenuItem.Name = "fiveMinutesToolStripMenuItem";
-            this.fiveMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            fiveMinutesToolStripMenuItem.Name = "fiveMinutesToolStripMenuItem";
+            fiveMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // sixMinutesToolStripMenuItem
             // 
-            this.sixMinutesToolStripMenuItem.Name = "sixMinutesToolStripMenuItem";
-            this.sixMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            sixMinutesToolStripMenuItem.Name = "sixMinutesToolStripMenuItem";
+            sixMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // tenMinutesToolStripMenuItem
             // 
-            this.tenMinutesToolStripMenuItem.Name = "tenMinutesToolStripMenuItem";
-            this.tenMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            tenMinutesToolStripMenuItem.Name = "tenMinutesToolStripMenuItem";
+            tenMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // fifteenMinutesToolStripMenuItem
             // 
-            this.fifteenMinutesToolStripMenuItem.Name = "fifteenMinutesToolStripMenuItem";
-            this.fifteenMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            fifteenMinutesToolStripMenuItem.Name = "fifteenMinutesToolStripMenuItem";
+            fifteenMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // thirtyMinutesToolStripMenuItem
             // 
-            this.thirtyMinutesToolStripMenuItem.Name = "thirtyMinutesToolStripMenuItem";
-            this.thirtyMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            thirtyMinutesToolStripMenuItem.Name = "thirtyMinutesToolStripMenuItem";
+            thirtyMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // sixtyMinutesToolStripMenuItem
             // 
-            this.sixtyMinutesToolStripMenuItem.Name = "sixtyMinutesToolStripMenuItem";
-            this.sixtyMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            sixtyMinutesToolStripMenuItem.Name = "sixtyMinutesToolStripMenuItem";
+            sixtyMinutesToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // oneMonthToolStripMenuItem
             // 
-            this.oneMonthToolStripMenuItem.Name = "oneMonthToolStripMenuItem";
-            this.oneMonthToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            oneMonthToolStripMenuItem.Name = "oneMonthToolStripMenuItem";
+            oneMonthToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // twoMonthsToolStripMenuItem
             // 
-            this.twoMonthsToolStripMenuItem.Name = "twoMonthsToolStripMenuItem";
-            this.twoMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            twoMonthsToolStripMenuItem.Name = "twoMonthsToolStripMenuItem";
+            twoMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // threeMonthsToolStripMenuItem
             // 
-            this.threeMonthsToolStripMenuItem.Name = "threeMonthsToolStripMenuItem";
-            this.threeMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            threeMonthsToolStripMenuItem.Name = "threeMonthsToolStripMenuItem";
+            threeMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // fourMonthsToolStripMenuItem
             // 
-            this.fourMonthsToolStripMenuItem.Name = "fourMonthsToolStripMenuItem";
-            this.fourMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            fourMonthsToolStripMenuItem.Name = "fourMonthsToolStripMenuItem";
+            fourMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // sixMonthsToolStripMenuItem
             // 
-            this.sixMonthsToolStripMenuItem.Name = "sixMonthsToolStripMenuItem";
-            this.sixMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            sixMonthsToolStripMenuItem.Name = "sixMonthsToolStripMenuItem";
+            sixMonthsToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // manualToolStripMenuItem
             // 
-            this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            manualToolStripMenuItem.Name = "manualToolStripMenuItem";
+            manualToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // dayToolStripMenuItem
             // 
-            this.dayToolStripMenuItem.Name = "dayToolStripMenuItem";
-            this.dayToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            dayToolStripMenuItem.Name = "dayToolStripMenuItem";
+            dayToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // workweekToolStripMenuItem
             // 
-            this.workweekToolStripMenuItem.Name = "workweekToolStripMenuItem";
-            this.workweekToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            workweekToolStripMenuItem.Name = "workweekToolStripMenuItem";
+            workweekToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // weekToolStripMenuItem
             // 
-            this.weekToolStripMenuItem.Name = "weekToolStripMenuItem";
-            this.weekToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            weekToolStripMenuItem.Name = "weekToolStripMenuItem";
+            weekToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // monthToolStripMenuItem
             // 
-            this.monthToolStripMenuItem.Name = "monthToolStripMenuItem";
-            this.monthToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            monthToolStripMenuItem.Name = "monthToolStripMenuItem";
+            monthToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // tcHome
             // 
-            this.tcHome.Controls.Add(this.tpCalendar);
-            this.tcHome.Controls.Add(this.tabPage3);
-            this.tcHome.Controls.Add(this.tabPage2);
-            this.tcHome.Controls.Add(this.tabPage1);
-            this.tcHome.Controls.Add(this.tpSettings);
-            this.tcHome.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcHome.Location = new System.Drawing.Point(0, 42);
-            this.tcHome.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tcHome.Name = "tcHome";
-            this.tcHome.SelectedIndex = 0;
-            this.tcHome.Size = new System.Drawing.Size(2057, 1192);
-            this.tcHome.TabIndex = 1;
+            tcHome.Controls.Add(tpCalendar);
+            tcHome.Controls.Add(tabPage3);
+            tcHome.Controls.Add(tabPage2);
+            tcHome.Controls.Add(tabPage1);
+            tcHome.Controls.Add(tpSettings);
+            tcHome.Dock = System.Windows.Forms.DockStyle.Fill;
+            tcHome.Location = new System.Drawing.Point(0, 35);
+            tcHome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tcHome.Name = "tcHome";
+            tcHome.SelectedIndex = 0;
+            tcHome.Size = new System.Drawing.Size(1714, 993);
+            tcHome.TabIndex = 1;
             // 
             // tpCalendar
             // 
-            this.tpCalendar.Controls.Add(this.calDetail);
-            this.tpCalendar.Controls.Add(this.calHome);
-            this.tpCalendar.Controls.Add(this.mvHome);
-            this.tpCalendar.Location = new System.Drawing.Point(4, 39);
-            this.tpCalendar.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpCalendar.Name = "tpCalendar";
-            this.tpCalendar.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpCalendar.Size = new System.Drawing.Size(2049, 1149);
-            this.tpCalendar.TabIndex = 0;
-            this.tpCalendar.Text = "Werk Agenda";
-            this.tpCalendar.UseVisualStyleBackColor = true;
+            tpCalendar.Controls.Add(btWorkToday);
+            tpCalendar.Controls.Add(calDetail);
+            tpCalendar.Controls.Add(calHome);
+            tpCalendar.Controls.Add(mvHome);
+            tpCalendar.Location = new System.Drawing.Point(4, 34);
+            tpCalendar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tpCalendar.Name = "tpCalendar";
+            tpCalendar.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tpCalendar.Size = new System.Drawing.Size(1706, 955);
+            tpCalendar.TabIndex = 0;
+            tpCalendar.Text = "Werk Agenda";
+            tpCalendar.UseVisualStyleBackColor = true;
+            // 
+            // btWorkToday
+            // 
+            btWorkToday.Location = new System.Drawing.Point(8, 8);
+            btWorkToday.Name = "btWorkToday";
+            btWorkToday.Size = new System.Drawing.Size(319, 34);
+            btWorkToday.TabIndex = 2;
+            btWorkToday.Text = "Vandaag";
+            btWorkToday.UseVisualStyleBackColor = true;
+            btWorkToday.Click += btWorkToday_Click;
             // 
             // calDetail
             // 
-            this.calDetail.FirstDayOfWeek = System.DayOfWeek.Monday;
-            this.calDetail.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            calDetail.FirstDayOfWeek = System.DayOfWeek.Monday;
+            calDetail.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             calendarHighlightRange1.DayOfWeek = System.DayOfWeek.Monday;
             calendarHighlightRange1.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange1.StartTime = System.TimeSpan.Parse("08:00:00");
@@ -298,25 +307,21 @@ namespace JugaAgenda_v2
             calendarHighlightRange5.DayOfWeek = System.DayOfWeek.Friday;
             calendarHighlightRange5.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange5.StartTime = System.TimeSpan.Parse("08:00:00");
-            this.calDetail.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
-        calendarHighlightRange1,
-        calendarHighlightRange2,
-        calendarHighlightRange3,
-        calendarHighlightRange4,
-        calendarHighlightRange5};
-            this.calDetail.Location = new System.Drawing.Point(10, 598);
-            this.calDetail.Name = "calDetail";
-            this.calDetail.Size = new System.Drawing.Size(383, 536);
-            this.calDetail.TabIndex = 0;
-            this.calDetail.Text = "calendar1";
+            calDetail.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] { calendarHighlightRange1, calendarHighlightRange2, calendarHighlightRange3, calendarHighlightRange4, calendarHighlightRange5 };
+            calDetail.Location = new System.Drawing.Point(8, 498);
+            calDetail.Margin = new System.Windows.Forms.Padding(2);
+            calDetail.Name = "calDetail";
+            calDetail.Size = new System.Drawing.Size(319, 447);
+            calDetail.TabIndex = 0;
+            calDetail.Text = "calendar1";
             // 
             // calHome
             // 
-            this.calHome.AllowItemResize = false;
-            this.calHome.AllowNew = false;
-            this.calHome.Dock = System.Windows.Forms.DockStyle.Right;
-            this.calHome.FirstDayOfWeek = System.DayOfWeek.Monday;
-            this.calHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            calHome.AllowItemResize = false;
+            calHome.AllowNew = false;
+            calHome.Dock = System.Windows.Forms.DockStyle.Right;
+            calHome.FirstDayOfWeek = System.DayOfWeek.Monday;
+            calHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             calendarHighlightRange6.DayOfWeek = System.DayOfWeek.Tuesday;
             calendarHighlightRange6.EndTime = System.TimeSpan.Parse("18:00:00");
             calendarHighlightRange6.StartTime = System.TimeSpan.Parse("09:00:00");
@@ -332,68 +337,64 @@ namespace JugaAgenda_v2
             calendarHighlightRange10.DayOfWeek = System.DayOfWeek.Saturday;
             calendarHighlightRange10.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange10.StartTime = System.TimeSpan.Parse("10:00:00");
-            this.calHome.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
-        calendarHighlightRange6,
-        calendarHighlightRange7,
-        calendarHighlightRange8,
-        calendarHighlightRange9,
-        calendarHighlightRange10};
-            this.calHome.Location = new System.Drawing.Point(531, 6);
-            this.calHome.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.calHome.MaximumFullDays = 7;
-            this.calHome.Name = "calHome";
-            this.calHome.Size = new System.Drawing.Size(1513, 1137);
-            this.calHome.TabIndex = 1;
-            this.calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
-            this.calHome.LoadItems += new System.Windows.Forms.Calendar.Calendar.CalendarLoadEventHandler(this.calHome_LoadItems);
-            this.calHome.ItemCreating += new System.Windows.Forms.Calendar.Calendar.CalendarItemCancelEventHandler(this.calHome_ItemCreating);
-            this.calHome.ItemDatesChanged += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calHome_ItemDatesChanged);
-            this.calHome.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calHome_ItemDoubleClick);
-            this.calHome.MouseDown += new System.Windows.Forms.MouseEventHandler(this.calHome_MouseDown);
-            this.calHome.MouseMove += new System.Windows.Forms.MouseEventHandler(this.calHome_MouseMove);
-            this.calHome.MouseUp += new System.Windows.Forms.MouseEventHandler(this.calHome_MouseUp);
+            calHome.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] { calendarHighlightRange6, calendarHighlightRange7, calendarHighlightRange8, calendarHighlightRange9, calendarHighlightRange10 };
+            calHome.Location = new System.Drawing.Point(441, 5);
+            calHome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            calHome.MaximumFullDays = 7;
+            calHome.Name = "calHome";
+            calHome.Size = new System.Drawing.Size(1261, 945);
+            calHome.TabIndex = 1;
+            calHome.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            calHome.LoadItems += calHome_LoadItems;
+            calHome.ItemCreating += calHome_ItemCreating;
+            calHome.ItemDatesChanged += calHome_ItemDatesChanged;
+            calHome.ItemDoubleClick += calHome_ItemDoubleClick;
+            calHome.MouseDown += calHome_MouseDown;
+            calHome.MouseMove += calHome_MouseMove;
+            calHome.MouseUp += calHome_MouseUp;
             // 
             // mvHome
             // 
-            this.mvHome.ArrowsColor = System.Drawing.SystemColors.Window;
-            this.mvHome.ArrowsSelectedColor = System.Drawing.Color.Gold;
-            this.mvHome.DayBackgroundColor = System.Drawing.Color.Empty;
-            this.mvHome.DayGrayedText = System.Drawing.SystemColors.GrayText;
-            this.mvHome.DaySelectedBackgroundColor = System.Drawing.SystemColors.Highlight;
-            this.mvHome.DaySelectedColor = System.Drawing.SystemColors.WindowText;
-            this.mvHome.DaySelectedTextColor = System.Drawing.SystemColors.HighlightText;
-            this.mvHome.FirstDayOfWeek = System.DayOfWeek.Monday;
-            this.mvHome.ItemPadding = new System.Windows.Forms.Padding(2);
-            this.mvHome.Location = new System.Drawing.Point(10, 12);
-            this.mvHome.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.mvHome.MonthTitleColor = System.Drawing.SystemColors.ActiveCaption;
-            this.mvHome.MonthTitleColorInactive = System.Drawing.SystemColors.InactiveCaption;
-            this.mvHome.MonthTitleTextColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.mvHome.MonthTitleTextColorInactive = System.Drawing.SystemColors.InactiveCaptionText;
-            this.mvHome.Name = "mvHome";
-            this.mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Week;
-            this.mvHome.Size = new System.Drawing.Size(383, 577);
-            this.mvHome.TabIndex = 0;
-            this.mvHome.Text = "monthView1";
-            this.mvHome.TodayBorderColor = System.Drawing.Color.Maroon;
+            mvHome.ArrowsColor = System.Drawing.SystemColors.Window;
+            mvHome.ArrowsSelectedColor = System.Drawing.Color.Gold;
+            mvHome.DayBackgroundColor = System.Drawing.Color.Empty;
+            mvHome.DayGrayedText = System.Drawing.SystemColors.GrayText;
+            mvHome.DaySelectedBackgroundColor = System.Drawing.SystemColors.Highlight;
+            mvHome.DaySelectedColor = System.Drawing.SystemColors.WindowText;
+            mvHome.DaySelectedTextColor = System.Drawing.SystemColors.HighlightText;
+            mvHome.FirstDayOfWeek = System.DayOfWeek.Monday;
+            mvHome.ItemPadding = new System.Windows.Forms.Padding(2);
+            mvHome.Location = new System.Drawing.Point(8, 50);
+            mvHome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            mvHome.MonthTitleColor = System.Drawing.SystemColors.ActiveCaption;
+            mvHome.MonthTitleColorInactive = System.Drawing.SystemColors.InactiveCaption;
+            mvHome.MonthTitleTextColor = System.Drawing.SystemColors.ActiveCaptionText;
+            mvHome.MonthTitleTextColorInactive = System.Drawing.SystemColors.InactiveCaptionText;
+            mvHome.Name = "mvHome";
+            mvHome.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Week;
+            mvHome.Size = new System.Drawing.Size(319, 269);
+            mvHome.TabIndex = 0;
+            mvHome.Text = "monthView1";
+            mvHome.TodayBorderColor = System.Drawing.Color.Maroon;
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.calLeave);
-            this.tabPage3.Controls.Add(this.mvLeave);
-            this.tabPage3.Location = new System.Drawing.Point(4, 39);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(2049, 1149);
-            this.tabPage3.TabIndex = 4;
-            this.tabPage3.Text = "Verlof Agenda";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            tabPage3.Controls.Add(calLeave);
+            tabPage3.Controls.Add(mvLeave);
+            tabPage3.Location = new System.Drawing.Point(4, 34);
+            tabPage3.Margin = new System.Windows.Forms.Padding(2);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new System.Windows.Forms.Padding(2);
+            tabPage3.Size = new System.Drawing.Size(1706, 955);
+            tabPage3.TabIndex = 4;
+            tabPage3.Text = "Verlof Agenda";
+            tabPage3.UseVisualStyleBackColor = true;
             // 
             // calLeave
             // 
-            this.calLeave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.calLeave.FirstDayOfWeek = System.DayOfWeek.Monday;
-            this.calLeave.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            calLeave.Dock = System.Windows.Forms.DockStyle.Fill;
+            calLeave.FirstDayOfWeek = System.DayOfWeek.Monday;
+            calLeave.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             calendarHighlightRange11.DayOfWeek = System.DayOfWeek.Monday;
             calendarHighlightRange11.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange11.StartTime = System.TimeSpan.Parse("08:00:00");
@@ -409,62 +410,60 @@ namespace JugaAgenda_v2
             calendarHighlightRange15.DayOfWeek = System.DayOfWeek.Friday;
             calendarHighlightRange15.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange15.StartTime = System.TimeSpan.Parse("08:00:00");
-            this.calLeave.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
-        calendarHighlightRange11,
-        calendarHighlightRange12,
-        calendarHighlightRange13,
-        calendarHighlightRange14,
-        calendarHighlightRange15};
-            this.calLeave.Location = new System.Drawing.Point(392, 3);
-            this.calLeave.Name = "calLeave";
-            this.calLeave.Size = new System.Drawing.Size(1654, 1143);
-            this.calLeave.TabIndex = 3;
-            this.calLeave.Text = "calendar1";
-            this.calLeave.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
-            this.calLeave.LoadItems += new System.Windows.Forms.Calendar.Calendar.CalendarLoadEventHandler(this.calLeave_LoadItems);
-            this.calLeave.ItemCreating += new System.Windows.Forms.Calendar.Calendar.CalendarItemCancelEventHandler(this.calLeave_ItemCreating);
-            this.calLeave.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calLeave_ItemDoubleClick);
+            calLeave.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] { calendarHighlightRange11, calendarHighlightRange12, calendarHighlightRange13, calendarHighlightRange14, calendarHighlightRange15 };
+            calLeave.Location = new System.Drawing.Point(326, 2);
+            calLeave.Margin = new System.Windows.Forms.Padding(2);
+            calLeave.Name = "calLeave";
+            calLeave.Size = new System.Drawing.Size(1378, 951);
+            calLeave.TabIndex = 3;
+            calLeave.Text = "calendar1";
+            calLeave.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            calLeave.LoadItems += calLeave_LoadItems;
+            calLeave.ItemCreating += calLeave_ItemCreating;
+            calLeave.ItemDoubleClick += calLeave_ItemDoubleClick;
             // 
             // mvLeave
             // 
-            this.mvLeave.ArrowsColor = System.Drawing.SystemColors.Window;
-            this.mvLeave.ArrowsSelectedColor = System.Drawing.Color.Gold;
-            this.mvLeave.DayBackgroundColor = System.Drawing.Color.Empty;
-            this.mvLeave.DayGrayedText = System.Drawing.SystemColors.GrayText;
-            this.mvLeave.DaySelectedBackgroundColor = System.Drawing.SystemColors.Highlight;
-            this.mvLeave.DaySelectedColor = System.Drawing.SystemColors.WindowText;
-            this.mvLeave.DaySelectedTextColor = System.Drawing.SystemColors.HighlightText;
-            this.mvLeave.Dock = System.Windows.Forms.DockStyle.Left;
-            this.mvLeave.FirstDayOfWeek = System.DayOfWeek.Monday;
-            this.mvLeave.ItemPadding = new System.Windows.Forms.Padding(2);
-            this.mvLeave.Location = new System.Drawing.Point(3, 3);
-            this.mvLeave.MonthTitleColor = System.Drawing.SystemColors.ActiveCaption;
-            this.mvLeave.MonthTitleColorInactive = System.Drawing.SystemColors.InactiveCaption;
-            this.mvLeave.MonthTitleTextColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.mvLeave.MonthTitleTextColorInactive = System.Drawing.SystemColors.InactiveCaptionText;
-            this.mvLeave.Name = "mvLeave";
-            this.mvLeave.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month;
-            this.mvLeave.Size = new System.Drawing.Size(389, 1143);
-            this.mvLeave.TabIndex = 2;
-            this.mvLeave.Text = "monthView1";
-            this.mvLeave.TodayBorderColor = System.Drawing.Color.Maroon;
+            mvLeave.ArrowsColor = System.Drawing.SystemColors.Window;
+            mvLeave.ArrowsSelectedColor = System.Drawing.Color.Gold;
+            mvLeave.DayBackgroundColor = System.Drawing.Color.Empty;
+            mvLeave.DayGrayedText = System.Drawing.SystemColors.GrayText;
+            mvLeave.DaySelectedBackgroundColor = System.Drawing.SystemColors.Highlight;
+            mvLeave.DaySelectedColor = System.Drawing.SystemColors.WindowText;
+            mvLeave.DaySelectedTextColor = System.Drawing.SystemColors.HighlightText;
+            mvLeave.Dock = System.Windows.Forms.DockStyle.Left;
+            mvLeave.FirstDayOfWeek = System.DayOfWeek.Monday;
+            mvLeave.ItemPadding = new System.Windows.Forms.Padding(2);
+            mvLeave.Location = new System.Drawing.Point(2, 2);
+            mvLeave.Margin = new System.Windows.Forms.Padding(2);
+            mvLeave.MonthTitleColor = System.Drawing.SystemColors.ActiveCaption;
+            mvLeave.MonthTitleColorInactive = System.Drawing.SystemColors.InactiveCaption;
+            mvLeave.MonthTitleTextColor = System.Drawing.SystemColors.ActiveCaptionText;
+            mvLeave.MonthTitleTextColorInactive = System.Drawing.SystemColors.InactiveCaptionText;
+            mvLeave.Name = "mvLeave";
+            mvLeave.SelectionMode = System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month;
+            mvLeave.Size = new System.Drawing.Size(324, 951);
+            mvLeave.TabIndex = 2;
+            mvLeave.Text = "monthView1";
+            mvLeave.TodayBorderColor = System.Drawing.Color.Maroon;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.calWorkSchedule);
-            this.tabPage2.Location = new System.Drawing.Point(4, 39);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(2049, 1149);
-            this.tabPage2.TabIndex = 3;
-            this.tabPage2.Text = "Techniekers Werkschema";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Controls.Add(calWorkSchedule);
+            tabPage2.Location = new System.Drawing.Point(4, 34);
+            tabPage2.Margin = new System.Windows.Forms.Padding(2);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            tabPage2.Size = new System.Drawing.Size(1706, 955);
+            tabPage2.TabIndex = 3;
+            tabPage2.Text = "Techniekers Werkschema";
+            tabPage2.UseVisualStyleBackColor = true;
             // 
             // calWorkSchedule
             // 
-            this.calWorkSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.calWorkSchedule.FirstDayOfWeek = System.DayOfWeek.Monday;
-            this.calWorkSchedule.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            calWorkSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
+            calWorkSchedule.FirstDayOfWeek = System.DayOfWeek.Monday;
+            calWorkSchedule.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             calendarHighlightRange16.DayOfWeek = System.DayOfWeek.Monday;
             calendarHighlightRange16.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange16.StartTime = System.TimeSpan.Parse("08:00:00");
@@ -480,467 +479,468 @@ namespace JugaAgenda_v2
             calendarHighlightRange20.DayOfWeek = System.DayOfWeek.Friday;
             calendarHighlightRange20.EndTime = System.TimeSpan.Parse("17:00:00");
             calendarHighlightRange20.StartTime = System.TimeSpan.Parse("08:00:00");
-            this.calWorkSchedule.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] {
-        calendarHighlightRange16,
-        calendarHighlightRange17,
-        calendarHighlightRange18,
-        calendarHighlightRange19,
-        calendarHighlightRange20};
-            this.calWorkSchedule.Location = new System.Drawing.Point(3, 3);
-            this.calWorkSchedule.Name = "calWorkSchedule";
-            this.calWorkSchedule.Size = new System.Drawing.Size(2043, 1143);
-            this.calWorkSchedule.TabIndex = 0;
-            this.calWorkSchedule.Text = "calWorkSchedule";
-            this.calWorkSchedule.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
-            this.calWorkSchedule.ItemCreating += new System.Windows.Forms.Calendar.Calendar.CalendarItemCancelEventHandler(this.calWorkSchedule_ItemCreating);
-            this.calWorkSchedule.ItemDoubleClick += new System.Windows.Forms.Calendar.Calendar.CalendarItemEventHandler(this.calWorkSchedule_ItemDoubleClick);
+            calWorkSchedule.HighlightRanges = new System.Windows.Forms.Calendar.CalendarHighlightRange[] { calendarHighlightRange16, calendarHighlightRange17, calendarHighlightRange18, calendarHighlightRange19, calendarHighlightRange20 };
+            calWorkSchedule.Location = new System.Drawing.Point(2, 2);
+            calWorkSchedule.Margin = new System.Windows.Forms.Padding(2);
+            calWorkSchedule.Name = "calWorkSchedule";
+            calWorkSchedule.Size = new System.Drawing.Size(1702, 951);
+            calWorkSchedule.TabIndex = 0;
+            calWorkSchedule.Text = "calWorkSchedule";
+            calWorkSchedule.TimeScale = System.Windows.Forms.Calendar.CalendarTimeScale.SixtyMinutes;
+            calWorkSchedule.ItemCreating += calWorkSchedule_ItemCreating;
+            calWorkSchedule.ItemDoubleClick += calWorkSchedule_ItemDoubleClick;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.gbWrongTitlesControl);
-            this.tabPage1.Controls.Add(this.lbWrongTitles);
-            this.tabPage1.Controls.Add(this.nuWrongTitles);
-            this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Location = new System.Drawing.Point(4, 39);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(2049, 1149);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Foute werk agenda titels";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            tabPage1.Controls.Add(gbWrongTitlesControl);
+            tabPage1.Controls.Add(lbWrongTitles);
+            tabPage1.Controls.Add(nuWrongTitles);
+            tabPage1.Controls.Add(label5);
+            tabPage1.Controls.Add(label4);
+            tabPage1.Location = new System.Drawing.Point(4, 34);
+            tabPage1.Margin = new System.Windows.Forms.Padding(2);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new System.Windows.Forms.Padding(2);
+            tabPage1.Size = new System.Drawing.Size(1706, 955);
+            tabPage1.TabIndex = 2;
+            tabPage1.Text = "Foute werk agenda titels";
+            tabPage1.UseVisualStyleBackColor = true;
             // 
             // gbWrongTitlesControl
             // 
-            this.gbWrongTitlesControl.Controls.Add(this.label13);
-            this.gbWrongTitlesControl.Controls.Add(this.tbOldTitle);
-            this.gbWrongTitlesControl.Controls.Add(this.btDelete);
-            this.gbWrongTitlesControl.Controls.Add(this.btSave);
-            this.gbWrongTitlesControl.Controls.Add(this.btCancel);
-            this.gbWrongTitlesControl.Controls.Add(this.nuHoursDone);
-            this.gbWrongTitlesControl.Controls.Add(this.label10);
-            this.gbWrongTitlesControl.Controls.Add(this.label6);
-            this.gbWrongTitlesControl.Controls.Add(this.cbStatus);
-            this.gbWrongTitlesControl.Controls.Add(this.tbPhoneNumber);
-            this.gbWrongTitlesControl.Controls.Add(this.tbOrderNumber);
-            this.gbWrongTitlesControl.Controls.Add(this.nuHours);
-            this.gbWrongTitlesControl.Controls.Add(this.tbClientName);
-            this.gbWrongTitlesControl.Controls.Add(this.rtbDescription);
-            this.gbWrongTitlesControl.Controls.Add(this.label7);
-            this.gbWrongTitlesControl.Controls.Add(this.label12);
-            this.gbWrongTitlesControl.Controls.Add(this.label8);
-            this.gbWrongTitlesControl.Controls.Add(this.label11);
-            this.gbWrongTitlesControl.Controls.Add(this.label9);
-            this.gbWrongTitlesControl.Location = new System.Drawing.Point(1126, 40);
-            this.gbWrongTitlesControl.Name = "gbWrongTitlesControl";
-            this.gbWrongTitlesControl.Size = new System.Drawing.Size(604, 668);
-            this.gbWrongTitlesControl.TabIndex = 5;
-            this.gbWrongTitlesControl.TabStop = false;
-            this.gbWrongTitlesControl.Text = "Foute Titel Control";
+            gbWrongTitlesControl.Controls.Add(label13);
+            gbWrongTitlesControl.Controls.Add(tbOldTitle);
+            gbWrongTitlesControl.Controls.Add(btDelete);
+            gbWrongTitlesControl.Controls.Add(btSave);
+            gbWrongTitlesControl.Controls.Add(btCancel);
+            gbWrongTitlesControl.Controls.Add(nuHoursDone);
+            gbWrongTitlesControl.Controls.Add(label10);
+            gbWrongTitlesControl.Controls.Add(label6);
+            gbWrongTitlesControl.Controls.Add(cbStatus);
+            gbWrongTitlesControl.Controls.Add(tbPhoneNumber);
+            gbWrongTitlesControl.Controls.Add(tbOrderNumber);
+            gbWrongTitlesControl.Controls.Add(nuHours);
+            gbWrongTitlesControl.Controls.Add(tbClientName);
+            gbWrongTitlesControl.Controls.Add(rtbDescription);
+            gbWrongTitlesControl.Controls.Add(label7);
+            gbWrongTitlesControl.Controls.Add(label12);
+            gbWrongTitlesControl.Controls.Add(label8);
+            gbWrongTitlesControl.Controls.Add(label11);
+            gbWrongTitlesControl.Controls.Add(label9);
+            gbWrongTitlesControl.Location = new System.Drawing.Point(938, 33);
+            gbWrongTitlesControl.Margin = new System.Windows.Forms.Padding(2);
+            gbWrongTitlesControl.Name = "gbWrongTitlesControl";
+            gbWrongTitlesControl.Padding = new System.Windows.Forms.Padding(2);
+            gbWrongTitlesControl.Size = new System.Drawing.Size(503, 557);
+            gbWrongTitlesControl.TabIndex = 5;
+            gbWrongTitlesControl.TabStop = false;
+            gbWrongTitlesControl.Text = "Foute Titel Control";
             // 
             // label13
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(12, 53);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(92, 30);
-            this.label13.TabIndex = 29;
-            this.label13.Text = "Old title:";
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(10, 44);
+            label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(79, 25);
+            label13.TabIndex = 29;
+            label13.Text = "Old title:";
             // 
             // tbOldTitle
             // 
-            this.tbOldTitle.Location = new System.Drawing.Point(12, 86);
-            this.tbOldTitle.Name = "tbOldTitle";
-            this.tbOldTitle.ReadOnly = true;
-            this.tbOldTitle.Size = new System.Drawing.Size(570, 35);
-            this.tbOldTitle.TabIndex = 28;
+            tbOldTitle.Location = new System.Drawing.Point(10, 72);
+            tbOldTitle.Margin = new System.Windows.Forms.Padding(2);
+            tbOldTitle.Name = "tbOldTitle";
+            tbOldTitle.ReadOnly = true;
+            tbOldTitle.Size = new System.Drawing.Size(476, 31);
+            tbOldTitle.TabIndex = 28;
             // 
             // btDelete
             // 
-            this.btDelete.ForeColor = System.Drawing.Color.Red;
-            this.btDelete.Location = new System.Drawing.Point(12, 599);
-            this.btDelete.Name = "btDelete";
-            this.btDelete.Size = new System.Drawing.Size(131, 40);
-            this.btDelete.TabIndex = 27;
-            this.btDelete.Text = "DELETE";
-            this.btDelete.UseVisualStyleBackColor = true;
-            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
+            btDelete.ForeColor = System.Drawing.Color.Red;
+            btDelete.Location = new System.Drawing.Point(10, 499);
+            btDelete.Margin = new System.Windows.Forms.Padding(2);
+            btDelete.Name = "btDelete";
+            btDelete.Size = new System.Drawing.Size(109, 33);
+            btDelete.TabIndex = 27;
+            btDelete.Text = "DELETE";
+            btDelete.UseVisualStyleBackColor = true;
+            btDelete.Click += btDelete_Click;
             // 
             // btSave
             // 
-            this.btSave.Location = new System.Drawing.Point(453, 596);
-            this.btSave.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btSave.Name = "btSave";
-            this.btSave.Size = new System.Drawing.Size(129, 46);
-            this.btSave.TabIndex = 26;
-            this.btSave.Text = "Save";
-            this.btSave.UseVisualStyleBackColor = true;
-            this.btSave.Click += new System.EventHandler(this.btSave_Click);
+            btSave.Location = new System.Drawing.Point(378, 497);
+            btSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            btSave.Name = "btSave";
+            btSave.Size = new System.Drawing.Size(108, 38);
+            btSave.TabIndex = 26;
+            btSave.Text = "Save";
+            btSave.UseVisualStyleBackColor = true;
+            btSave.Click += btSave_Click;
             // 
             // btCancel
             // 
-            this.btCancel.Location = new System.Drawing.Point(314, 596);
-            this.btCancel.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btCancel.Name = "btCancel";
-            this.btCancel.Size = new System.Drawing.Size(129, 46);
-            this.btCancel.TabIndex = 25;
-            this.btCancel.Text = "Cancel";
-            this.btCancel.UseVisualStyleBackColor = true;
-            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
+            btCancel.Location = new System.Drawing.Point(262, 497);
+            btCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            btCancel.Name = "btCancel";
+            btCancel.Size = new System.Drawing.Size(108, 38);
+            btCancel.TabIndex = 25;
+            btCancel.Text = "Cancel";
+            btCancel.UseVisualStyleBackColor = true;
+            btCancel.Click += btCancel_Click;
             // 
             // nuHoursDone
             // 
-            this.nuHoursDone.DecimalPlaces = 1;
-            this.nuHoursDone.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.nuHoursDone.Location = new System.Drawing.Point(501, 178);
-            this.nuHoursDone.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.nuHoursDone.Name = "nuHoursDone";
-            this.nuHoursDone.Size = new System.Drawing.Size(81, 35);
-            this.nuHoursDone.TabIndex = 23;
+            nuHoursDone.DecimalPlaces = 1;
+            nuHoursDone.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            nuHoursDone.Location = new System.Drawing.Point(418, 148);
+            nuHoursDone.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            nuHoursDone.Name = "nuHoursDone";
+            nuHoursDone.Size = new System.Drawing.Size(68, 31);
+            nuHoursDone.TabIndex = 23;
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(370, 180);
-            this.label10.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(121, 30);
-            this.label10.TabIndex = 24;
-            this.label10.Text = "Hours done";
+            label10.AutoSize = true;
+            label10.Location = new System.Drawing.Point(308, 150);
+            label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(106, 25);
+            label10.TabIndex = 24;
+            label10.Text = "Hours done";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 133);
-            this.label6.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(69, 30);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Status";
+            label6.AutoSize = true;
+            label6.Location = new System.Drawing.Point(7, 111);
+            label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(60, 25);
+            label6.TabIndex = 13;
+            label6.Text = "Status";
             // 
             // cbStatus
             // 
-            this.cbStatus.FormattingEnabled = true;
-            this.cbStatus.Location = new System.Drawing.Point(87, 130);
-            this.cbStatus.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.cbStatus.Name = "cbStatus";
-            this.cbStatus.Size = new System.Drawing.Size(495, 38);
-            this.cbStatus.TabIndex = 5;
+            cbStatus.FormattingEnabled = true;
+            cbStatus.Location = new System.Drawing.Point(72, 108);
+            cbStatus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            cbStatus.Name = "cbStatus";
+            cbStatus.Size = new System.Drawing.Size(413, 33);
+            cbStatus.TabIndex = 5;
             // 
             // tbPhoneNumber
             // 
-            this.tbPhoneNumber.Location = new System.Drawing.Point(175, 502);
-            this.tbPhoneNumber.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tbPhoneNumber.Name = "tbPhoneNumber";
-            this.tbPhoneNumber.Size = new System.Drawing.Size(407, 35);
-            this.tbPhoneNumber.TabIndex = 8;
+            tbPhoneNumber.Location = new System.Drawing.Point(146, 418);
+            tbPhoneNumber.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tbPhoneNumber.Name = "tbPhoneNumber";
+            tbPhoneNumber.Size = new System.Drawing.Size(340, 31);
+            tbPhoneNumber.TabIndex = 8;
             // 
             // tbOrderNumber
             // 
-            this.tbOrderNumber.Location = new System.Drawing.Point(175, 549);
-            this.tbOrderNumber.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tbOrderNumber.Name = "tbOrderNumber";
-            this.tbOrderNumber.Size = new System.Drawing.Size(407, 35);
-            this.tbOrderNumber.TabIndex = 9;
+            tbOrderNumber.Location = new System.Drawing.Point(146, 458);
+            tbOrderNumber.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tbOrderNumber.Name = "tbOrderNumber";
+            tbOrderNumber.Size = new System.Drawing.Size(340, 31);
+            tbOrderNumber.TabIndex = 9;
             // 
             // nuHours
             // 
-            this.nuHours.DecimalPlaces = 1;
-            this.nuHours.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            65536});
-            this.nuHours.Location = new System.Drawing.Point(86, 178);
-            this.nuHours.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.nuHours.Name = "nuHours";
-            this.nuHours.Size = new System.Drawing.Size(81, 35);
-            this.nuHours.TabIndex = 11;
-            this.nuHours.ValueChanged += new System.EventHandler(this.nuHours_ValueChanged);
+            nuHours.DecimalPlaces = 1;
+            nuHours.Increment = new decimal(new int[] { 5, 0, 0, 65536 });
+            nuHours.Location = new System.Drawing.Point(72, 148);
+            nuHours.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            nuHours.Name = "nuHours";
+            nuHours.Size = new System.Drawing.Size(68, 31);
+            nuHours.TabIndex = 11;
+            nuHours.ValueChanged += nuHours_ValueChanged;
             // 
             // tbClientName
             // 
-            this.tbClientName.Location = new System.Drawing.Point(175, 455);
-            this.tbClientName.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tbClientName.Name = "tbClientName";
-            this.tbClientName.Size = new System.Drawing.Size(407, 35);
-            this.tbClientName.TabIndex = 7;
+            tbClientName.Location = new System.Drawing.Point(146, 379);
+            tbClientName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tbClientName.Name = "tbClientName";
+            tbClientName.Size = new System.Drawing.Size(340, 31);
+            tbClientName.TabIndex = 7;
             // 
             // rtbDescription
             // 
-            this.rtbDescription.Location = new System.Drawing.Point(12, 255);
-            this.rtbDescription.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.rtbDescription.Name = "rtbDescription";
-            this.rtbDescription.Size = new System.Drawing.Size(570, 188);
-            this.rtbDescription.TabIndex = 6;
-            this.rtbDescription.Text = "";
+            rtbDescription.Location = new System.Drawing.Point(10, 212);
+            rtbDescription.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            rtbDescription.Name = "rtbDescription";
+            rtbDescription.Size = new System.Drawing.Size(476, 157);
+            rtbDescription.TabIndex = 6;
+            rtbDescription.Text = "";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 552);
-            this.label7.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(144, 30);
-            this.label7.TabIndex = 18;
-            this.label7.Text = "Order number";
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(7, 460);
+            label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(125, 25);
+            label7.TabIndex = 18;
+            label7.Text = "Order number";
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 458);
-            this.label12.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(124, 30);
-            this.label12.TabIndex = 15;
-            this.label12.Text = "Client name";
+            label12.AutoSize = true;
+            label12.Location = new System.Drawing.Point(7, 382);
+            label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label12.Name = "label12";
+            label12.Size = new System.Drawing.Size(105, 25);
+            label12.TabIndex = 15;
+            label12.Text = "Client name";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 180);
-            this.label8.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(68, 30);
-            this.label8.TabIndex = 17;
-            this.label8.Text = "Hours";
+            label8.AutoSize = true;
+            label8.Location = new System.Drawing.Point(7, 150);
+            label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(60, 25);
+            label8.TabIndex = 17;
+            label8.Text = "Hours";
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(8, 219);
-            this.label11.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(118, 30);
-            this.label11.TabIndex = 14;
-            this.label11.Text = "Description";
+            label11.AutoSize = true;
+            label11.Location = new System.Drawing.Point(7, 182);
+            label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(102, 25);
+            label11.TabIndex = 14;
+            label11.Text = "Description";
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 505);
-            this.label9.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(150, 30);
-            this.label9.TabIndex = 16;
-            this.label9.Text = "Phone number";
+            label9.AutoSize = true;
+            label9.Location = new System.Drawing.Point(7, 421);
+            label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(129, 25);
+            label9.TabIndex = 16;
+            label9.Text = "Phone number";
             // 
             // lbWrongTitles
             // 
-            this.lbWrongTitles.FormattingEnabled = true;
-            this.lbWrongTitles.ItemHeight = 30;
-            this.lbWrongTitles.Location = new System.Drawing.Point(8, 47);
-            this.lbWrongTitles.Name = "lbWrongTitles";
-            this.lbWrongTitles.Size = new System.Drawing.Size(1074, 784);
-            this.lbWrongTitles.TabIndex = 4;
-            this.lbWrongTitles.SelectedIndexChanged += new System.EventHandler(this.lbWrongTitles_SelectedIndexChanged);
+            lbWrongTitles.FormattingEnabled = true;
+            lbWrongTitles.ItemHeight = 25;
+            lbWrongTitles.Location = new System.Drawing.Point(7, 39);
+            lbWrongTitles.Margin = new System.Windows.Forms.Padding(2);
+            lbWrongTitles.Name = "lbWrongTitles";
+            lbWrongTitles.Size = new System.Drawing.Size(896, 654);
+            lbWrongTitles.TabIndex = 4;
+            lbWrongTitles.SelectedIndexChanged += lbWrongTitles_SelectedIndexChanged;
             // 
             // nuWrongTitles
             // 
-            this.nuWrongTitles.Enabled = false;
-            this.nuWrongTitles.Location = new System.Drawing.Point(83, 6);
-            this.nuWrongTitles.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.nuWrongTitles.Name = "nuWrongTitles";
-            this.nuWrongTitles.Size = new System.Drawing.Size(86, 35);
-            this.nuWrongTitles.TabIndex = 2;
+            nuWrongTitles.Enabled = false;
+            nuWrongTitles.Location = new System.Drawing.Point(69, 5);
+            nuWrongTitles.Margin = new System.Windows.Forms.Padding(2);
+            nuWrongTitles.Maximum = new decimal(new int[] { 999, 0, 0, 0 });
+            nuWrongTitles.Name = "nuWrongTitles";
+            nuWrongTitles.Size = new System.Drawing.Size(72, 31);
+            nuWrongTitles.TabIndex = 2;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(175, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(241, 30);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "foute werk agenda titels.";
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(146, 7);
+            label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(206, 25);
+            label5.TabIndex = 1;
+            label5.Text = "foute werk agenda titels.";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 8);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 30);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Er zijn";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(7, 7);
+            label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(58, 25);
+            label4.TabIndex = 0;
+            label4.Text = "Er zijn";
             // 
             // tpSettings
             // 
-            this.tpSettings.Controls.Add(this.tcSettings);
-            this.tpSettings.Location = new System.Drawing.Point(4, 39);
-            this.tpSettings.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpSettings.Name = "tpSettings";
-            this.tpSettings.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpSettings.Size = new System.Drawing.Size(2049, 1149);
-            this.tpSettings.TabIndex = 1;
-            this.tpSettings.Text = "Instellingen";
-            this.tpSettings.UseVisualStyleBackColor = true;
+            tpSettings.Controls.Add(tcSettings);
+            tpSettings.Location = new System.Drawing.Point(4, 34);
+            tpSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tpSettings.Name = "tpSettings";
+            tpSettings.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tpSettings.Size = new System.Drawing.Size(1706, 955);
+            tpSettings.TabIndex = 1;
+            tpSettings.Text = "Instellingen";
+            tpSettings.UseVisualStyleBackColor = true;
             // 
             // tcSettings
             // 
-            this.tcSettings.Controls.Add(this.tpCalendarSettings);
-            this.tcSettings.Controls.Add(this.tpGoogleSettings);
-            this.tcSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcSettings.Location = new System.Drawing.Point(5, 6);
-            this.tcSettings.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tcSettings.Name = "tcSettings";
-            this.tcSettings.SelectedIndex = 0;
-            this.tcSettings.Size = new System.Drawing.Size(2039, 1137);
-            this.tcSettings.TabIndex = 0;
+            tcSettings.Controls.Add(tpCalendarSettings);
+            tcSettings.Controls.Add(tpGoogleSettings);
+            tcSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            tcSettings.Location = new System.Drawing.Point(4, 5);
+            tcSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tcSettings.Name = "tcSettings";
+            tcSettings.SelectedIndex = 0;
+            tcSettings.Size = new System.Drawing.Size(1698, 945);
+            tcSettings.TabIndex = 0;
             // 
             // tpCalendarSettings
             // 
-            this.tpCalendarSettings.Controls.Add(this.s);
-            this.tpCalendarSettings.Controls.Add(this.label3);
-            this.tpCalendarSettings.Controls.Add(this.label2);
-            this.tpCalendarSettings.Controls.Add(this.cbCalendarPerspective);
-            this.tpCalendarSettings.Controls.Add(this.cbCalendarTimeScale);
-            this.tpCalendarSettings.Controls.Add(this.label1);
-            this.tpCalendarSettings.Controls.Add(this.cbCalendarSelectionMode);
-            this.tpCalendarSettings.Location = new System.Drawing.Point(4, 39);
-            this.tpCalendarSettings.Name = "tpCalendarSettings";
-            this.tpCalendarSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCalendarSettings.Size = new System.Drawing.Size(2031, 1094);
-            this.tpCalendarSettings.TabIndex = 1;
-            this.tpCalendarSettings.Text = "Calendar";
-            this.tpCalendarSettings.UseVisualStyleBackColor = true;
+            tpCalendarSettings.Controls.Add(s);
+            tpCalendarSettings.Controls.Add(label3);
+            tpCalendarSettings.Controls.Add(label2);
+            tpCalendarSettings.Controls.Add(cbCalendarPerspective);
+            tpCalendarSettings.Controls.Add(cbCalendarTimeScale);
+            tpCalendarSettings.Controls.Add(label1);
+            tpCalendarSettings.Controls.Add(cbCalendarSelectionMode);
+            tpCalendarSettings.Location = new System.Drawing.Point(4, 34);
+            tpCalendarSettings.Margin = new System.Windows.Forms.Padding(2);
+            tpCalendarSettings.Name = "tpCalendarSettings";
+            tpCalendarSettings.Padding = new System.Windows.Forms.Padding(2);
+            tpCalendarSettings.Size = new System.Drawing.Size(1690, 907);
+            tpCalendarSettings.TabIndex = 1;
+            tpCalendarSettings.Text = "Calendar";
+            tpCalendarSettings.UseVisualStyleBackColor = true;
             // 
             // s
             // 
-            this.s.Location = new System.Drawing.Point(6, 342);
-            this.s.Name = "s";
-            this.s.Size = new System.Drawing.Size(358, 40);
-            this.s.TabIndex = 6;
-            this.s.Text = "Corrigeer foute verlof agenda titels";
-            this.s.UseVisualStyleBackColor = true;
-            this.s.Click += new System.EventHandler(this.s_Click);
+            s.Location = new System.Drawing.Point(5, 285);
+            s.Margin = new System.Windows.Forms.Padding(2);
+            s.Name = "s";
+            s.Size = new System.Drawing.Size(298, 33);
+            s.TabIndex = 6;
+            s.Text = "Corrigeer foute verlof agenda titels";
+            s.UseVisualStyleBackColor = true;
+            s.Click += s_Click;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 151);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(205, 30);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Calendar Perspective";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(5, 126);
+            label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(174, 25);
+            label3.TabIndex = 5;
+            label3.Text = "Calendar Perspective";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 77);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(200, 30);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Calendar Time Scale";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(5, 64);
+            label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(169, 25);
+            label2.TabIndex = 4;
+            label2.Text = "Calendar Time Scale";
             // 
             // cbCalendarPerspective
             // 
-            this.cbCalendarPerspective.Location = new System.Drawing.Point(6, 184);
-            this.cbCalendarPerspective.Name = "cbCalendarPerspective";
-            this.cbCalendarPerspective.Size = new System.Drawing.Size(245, 38);
-            this.cbCalendarPerspective.TabIndex = 3;
-            this.cbCalendarPerspective.SelectedIndexChanged += new System.EventHandler(this.cbCalendarPerspective_SelectedIndexChanged);
+            cbCalendarPerspective.Location = new System.Drawing.Point(5, 153);
+            cbCalendarPerspective.Margin = new System.Windows.Forms.Padding(2);
+            cbCalendarPerspective.Name = "cbCalendarPerspective";
+            cbCalendarPerspective.Size = new System.Drawing.Size(205, 33);
+            cbCalendarPerspective.TabIndex = 3;
+            cbCalendarPerspective.SelectedIndexChanged += cbCalendarPerspective_SelectedIndexChanged;
             // 
             // cbCalendarTimeScale
             // 
-            this.cbCalendarTimeScale.Location = new System.Drawing.Point(6, 110);
-            this.cbCalendarTimeScale.Name = "cbCalendarTimeScale";
-            this.cbCalendarTimeScale.Size = new System.Drawing.Size(245, 38);
-            this.cbCalendarTimeScale.TabIndex = 2;
-            this.cbCalendarTimeScale.SelectedIndexChanged += new System.EventHandler(this.cbCalendarTimeScale_SelectedIndexChanged);
+            cbCalendarTimeScale.Location = new System.Drawing.Point(5, 92);
+            cbCalendarTimeScale.Margin = new System.Windows.Forms.Padding(2);
+            cbCalendarTimeScale.Name = "cbCalendarTimeScale";
+            cbCalendarTimeScale.Size = new System.Drawing.Size(205, 33);
+            cbCalendarTimeScale.TabIndex = 2;
+            cbCalendarTimeScale.SelectedIndexChanged += cbCalendarTimeScale_SelectedIndexChanged;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(254, 30);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Calendar Selection Modes";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(5, 2);
+            label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(217, 25);
+            label1.TabIndex = 1;
+            label1.Text = "Calendar Selection Modes";
             // 
             // cbCalendarSelectionMode
             // 
-            this.cbCalendarSelectionMode.Location = new System.Drawing.Point(6, 36);
-            this.cbCalendarSelectionMode.Name = "cbCalendarSelectionMode";
-            this.cbCalendarSelectionMode.Size = new System.Drawing.Size(245, 38);
-            this.cbCalendarSelectionMode.TabIndex = 0;
-            this.cbCalendarSelectionMode.SelectedIndexChanged += new System.EventHandler(this.cbCalendarSelectionMode_SelectedIndexChanged);
+            cbCalendarSelectionMode.Location = new System.Drawing.Point(5, 30);
+            cbCalendarSelectionMode.Margin = new System.Windows.Forms.Padding(2);
+            cbCalendarSelectionMode.Name = "cbCalendarSelectionMode";
+            cbCalendarSelectionMode.Size = new System.Drawing.Size(205, 33);
+            cbCalendarSelectionMode.TabIndex = 0;
+            cbCalendarSelectionMode.SelectedIndexChanged += cbCalendarSelectionMode_SelectedIndexChanged;
             // 
             // tpGoogleSettings
             // 
-            this.tpGoogleSettings.Controls.Add(this.btTestGoogleConnection);
-            this.tpGoogleSettings.Location = new System.Drawing.Point(4, 39);
-            this.tpGoogleSettings.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpGoogleSettings.Name = "tpGoogleSettings";
-            this.tpGoogleSettings.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tpGoogleSettings.Size = new System.Drawing.Size(2031, 1094);
-            this.tpGoogleSettings.TabIndex = 0;
-            this.tpGoogleSettings.Text = "Google";
-            this.tpGoogleSettings.UseVisualStyleBackColor = true;
+            tpGoogleSettings.Controls.Add(btTestGoogleConnection);
+            tpGoogleSettings.Location = new System.Drawing.Point(4, 34);
+            tpGoogleSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tpGoogleSettings.Name = "tpGoogleSettings";
+            tpGoogleSettings.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tpGoogleSettings.Size = new System.Drawing.Size(1690, 907);
+            tpGoogleSettings.TabIndex = 0;
+            tpGoogleSettings.Text = "Google";
+            tpGoogleSettings.UseVisualStyleBackColor = true;
             // 
             // btTestGoogleConnection
             // 
-            this.btTestGoogleConnection.Location = new System.Drawing.Point(12, 14);
-            this.btTestGoogleConnection.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btTestGoogleConnection.Name = "btTestGoogleConnection";
-            this.btTestGoogleConnection.Size = new System.Drawing.Size(183, 46);
-            this.btTestGoogleConnection.TabIndex = 0;
-            this.btTestGoogleConnection.Text = "Test Connection";
-            this.btTestGoogleConnection.UseVisualStyleBackColor = true;
-            this.btTestGoogleConnection.Click += new System.EventHandler(this.btTestGoogleConnection_Click);
+            btTestGoogleConnection.Location = new System.Drawing.Point(10, 12);
+            btTestGoogleConnection.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            btTestGoogleConnection.Name = "btTestGoogleConnection";
+            btTestGoogleConnection.Size = new System.Drawing.Size(152, 38);
+            btTestGoogleConnection.TabIndex = 0;
+            btTestGoogleConnection.Text = "Test Connection";
+            btTestGoogleConnection.UseVisualStyleBackColor = true;
+            btTestGoogleConnection.Click += btTestGoogleConnection_Click;
             // 
             // refreshTimer
             // 
-            this.refreshTimer.Interval = 1000;
-            this.refreshTimer.Tick += new System.EventHandler(this.refreshTimer_Tick);
+            refreshTimer.Interval = 1000;
+            refreshTimer.Tick += refreshTimer_Tick;
             // 
             // newDayTimer
             // 
-            this.newDayTimer.Tick += new System.EventHandler(this.newDayTimer_Tick);
+            newDayTimer.Tick += newDayTimer_Tick;
             // 
             // fHome
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2057, 1234);
-            this.Controls.Add(this.tcHome);
-            this.Controls.Add(this.msHome);
-            this.MainMenuStrip = this.msHome;
-            this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.Name = "fHome";
-            this.Text = "Juga Agenda v2";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Activated += new System.EventHandler(this.fHome_Activated);
-            this.Deactivate += new System.EventHandler(this.fHome_Deactivate);
-            this.Shown += new System.EventHandler(this.fHome_Shown);
-            this.Resize += new System.EventHandler(this.fHome_Resize);
-            this.msHome.ResumeLayout(false);
-            this.msHome.PerformLayout();
-            this.tcHome.ResumeLayout(false);
-            this.tpCalendar.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.gbWrongTitlesControl.ResumeLayout(false);
-            this.gbWrongTitlesControl.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nuHoursDone)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nuHours)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nuWrongTitles)).EndInit();
-            this.tpSettings.ResumeLayout(false);
-            this.tcSettings.ResumeLayout(false);
-            this.tpCalendarSettings.ResumeLayout(false);
-            this.tpCalendarSettings.PerformLayout();
-            this.tpGoogleSettings.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1714, 1028);
+            Controls.Add(tcHome);
+            Controls.Add(msHome);
+            MainMenuStrip = msHome;
+            Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            Name = "fHome";
+            Text = "Juga Agenda v2";
+            WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            Activated += fHome_Activated;
+            Deactivate += fHome_Deactivate;
+            Shown += fHome_Shown;
+            Resize += fHome_Resize;
+            msHome.ResumeLayout(false);
+            msHome.PerformLayout();
+            tcHome.ResumeLayout(false);
+            tpCalendar.ResumeLayout(false);
+            tabPage3.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
+            gbWrongTitlesControl.ResumeLayout(false);
+            gbWrongTitlesControl.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nuHoursDone).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nuHours).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nuWrongTitles).EndInit();
+            tpSettings.ResumeLayout(false);
+            tcSettings.ResumeLayout(false);
+            tpCalendarSettings.ResumeLayout(false);
+            tpCalendarSettings.PerformLayout();
+            tpGoogleSettings.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -1014,5 +1014,6 @@ namespace JugaAgenda_v2
         private System.Windows.Forms.Calendar.Calendar calLeave;
         private System.Windows.Forms.Button s;
         private System.Windows.Forms.Calendar.Calendar calDetail;
+        private System.Windows.Forms.Button btWorkToday;
     }
 }

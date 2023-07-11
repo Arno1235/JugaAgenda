@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Calendar;
 using System.Text.RegularExpressions;
-using System.Globalization;
 
 namespace JugaAgenda_v2
 {
@@ -45,9 +44,14 @@ namespace JugaAgenda_v2
         // - Close shop (festivities)
         // - Planning creation
         // - Info calendar
-        // - custom 2 week screen?
+        // - custom 2 week screen? (automatisch grote aanpassen als het niet op 1 dag past)
+        // - change size of detailed view of day zodat alles er juist op past
         // - form in form ? (https://www.codeproject.com/Articles/3553/Introduction-to-MDI-Forms-with-C)
         // - double click multiple day item
+        // - scrolling in verlof agenda bug
+        // - write managing code to easily add new calendars (word, leave, holidays, info, ...) have it all look the same
+        // - test different screen sizes (change all resizing code)
+        // - double click cal detail
 
         #endregion
 
@@ -64,6 +68,7 @@ namespace JugaAgenda_v2
             {
                 MessageBox.Show(googleCalendar.getSuccess(), "Error");
                 this.Close();
+                return;
             }
 
             mvHome.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
@@ -96,7 +101,7 @@ namespace JugaAgenda_v2
 
             loadEverything();
 
-            foreach(CalendarDay calDay in calHome.Days)
+            foreach (CalendarDay calDay in calHome.Days)
                 if (calDay.Date == new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day))
                 {
                     calHome.SelectedElementStart = calDay;
@@ -431,7 +436,7 @@ namespace JugaAgenda_v2
                             }
                         }
                     }*/
-                
+
                 }
 
             }
@@ -459,7 +464,10 @@ namespace JugaAgenda_v2
                 addWorkItem(item);
             }
 
-            MessageBox.Show("There are " + nuWrongTitles.Value.ToString() + " titles wrong.");
+            if (nuWrongTitles.Value > 0)
+            {
+                MessageBox.Show("Er zijn " + nuWrongTitles.Value.ToString() + " titels fout.");
+            }
 
             /*foreach (CustomDay day in workList)
             {
@@ -617,9 +625,8 @@ namespace JugaAgenda_v2
             }
             else
             {
-                MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days.");
+                MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days. It is " + (mvHome.SelectionEnd - mvHome.SelectionStart).Days.ToString() + " days.");
             }
-
             mvHomeSelectionChanging = false;
 
         }
@@ -1285,24 +1292,20 @@ namespace JugaAgenda_v2
 
         private void fHome_Resize(object sender, EventArgs e)
         {
-            int margin = 5;
-            calHome.Width = tpCalendar.Width - mvHome.Width - margin;
-            mvHome.Height = tpCalendar.Height/2 - margin;
-            calDetail.Height = tpCalendar.Height/2 - margin;
-            calDetail.Location = new System.Drawing.Point(calDetail.Location.X, mvHome.Height + margin);
+            calHome.Width = tpCalendar.Width - mvHome.Width - convert_pixel_coordinates(20, false);
 
-            lbWrongTitles.Height = this.Height - 200;
-            lbWrongTitles.Width = this.Width - gbWrongTitlesControl.Width - 75;
+            update_calDetail_height();
 
-            System.Drawing.Point newLoc = new System.Drawing.Point();
-            newLoc.X = this.Width - gbWrongTitlesControl.Width - 50;
-            newLoc.Y = gbWrongTitlesControl.Location.Y;
-            gbWrongTitlesControl.Location = newLoc;
+            lbWrongTitles.Height = this.Height - convert_pixel_coordinates(162, true);
+            lbWrongTitles.Width = this.Width - gbWrongTitlesControl.Width - convert_pixel_coordinates(66, false);
 
-            if (this.Width <= Screen.FromControl(this).WorkingArea.Width / 2)
-                mvHome.Visible = false;
-            else
-                mvHome.Visible = true;
+            gbWrongTitlesControl.Location = new System.Drawing.Point(this.Width - gbWrongTitlesControl.Width - convert_pixel_coordinates(40, false), gbWrongTitlesControl.Location.Y);
+
+            // TODO
+            //if (this.Width <= Screen.FromControl(this).WorkingArea.Width / 2)
+            //    mvHome.Visible = false;
+            //else
+            //    mvHome.Visible = true;
 
         }
 
@@ -1553,6 +1556,64 @@ namespace JugaAgenda_v2
             clearWrongTitlesControl();
         }
 
+        private void btWorkToday_Click(object sender, EventArgs e)
+        {
+            DateTime newSelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime newSelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+
+            int oldMaxSelectionCount = mvHome.MaxSelectionCount;
+            int oldMaxViewDays = calHome.MaximumViewDays;
+            DateTime end;
+            DateTime start;
+
+            if (mvHome.SelectionEnd > newSelectionEnd)
+            {
+                end = mvHome.SelectionEnd;
+            }
+            else
+            {
+                end = newSelectionEnd;
+            }
+            if (mvHome.SelectionStart < newSelectionStart)
+            {
+                start = mvHome.SelectionStart;
+            }
+            else
+            {
+                start = newSelectionStart;
+            }
+
+            mvHome.MaxSelectionCount = (end - start).Days + 7 - ((end - start).Days % 7);
+            calHome.MaximumViewDays = (end - start).Days + 7 - ((end - start).Days % 7);
+
+            if (mvHome.SelectionEnd < newSelectionEnd)
+            {
+                mvHome.SelectionEnd = newSelectionEnd;
+                mvHome.SelectionStart = newSelectionStart;
+            }
+            else
+            {
+                mvHome.SelectionStart = newSelectionStart;
+                mvHome.SelectionEnd = newSelectionEnd;
+            }
+
+            mvHome.ViewStart = newSelectionStart;
+
+            mvHome.MaxSelectionCount = oldMaxSelectionCount;
+            calHome.MaximumViewDays = oldMaxViewDays;
+
+
+            foreach (CalendarDay calDay in calHome.Days)
+                if (calDay.Date == new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day))
+                {
+                    calHome.SelectedElementStart = calDay;
+                    calHome.SelectedElementEnd = calDay;
+                    break;
+                }
+
+            calHome_MouseUp(null, null);
+        }
+
         #endregion
 
         #region Getters
@@ -1722,11 +1783,8 @@ namespace JugaAgenda_v2
 
             if (!mouseMoved)
             {
-
                 return;
             }
-
-            MessageBox.Show("qsdf");
 
             Google.Apis.Calendar.v3.Data.Event calendarEvent = e.Item.getCalendarEvent();
 
@@ -1739,8 +1797,6 @@ namespace JugaAgenda_v2
 
             calendarEvent.Start.DateTime = null;
             calendarEvent.End.DateTime = null;
-
-            //MessageBox.Show(calendarEvent.Start.Date + " - " + calendarEvent.End.Date);
 
             googleCalendar.editWorkEvent(calendarEvent);
         }
@@ -1797,7 +1853,19 @@ namespace JugaAgenda_v2
                 }
             }
 
+            update_calDetail_height();
+
         }
+
+        private void update_calDetail_height()
+        {
+            calDetail.Width = mvHome.Width;
+            calDetail.Height = (int)Math.Max(((calDetail.Items.Count() + 1) * convert_pixel_coordinates(32, true)), convert_pixel_coordinates(300, true));
+            calDetail.Location = new System.Drawing.Point(calDetail.Location.X, this.Height - calDetail.Height - convert_pixel_coordinates(128, true));
+
+            mvHome.Height = this.Height - calDetail.Height - convert_pixel_coordinates(192, true);
+        }
+
 
         private void fHome_Shown(object sender, EventArgs e)
         {
@@ -1822,6 +1890,18 @@ namespace JugaAgenda_v2
             mouseMoved = false;
             prevMouseCoo = e.Location;
         }
+
+        private int convert_pixel_coordinates(int pixel_coordinate_144px, bool is_height = false)
+        {
+            if (is_height)
+                return (int)(pixel_coordinate_144px * this.CreateGraphics().DpiY / 144);
+            else
+                return (int)(pixel_coordinate_144px * this.CreateGraphics().DpiX / 144);
+        }
+
+        
+
+
     }
 
     #region ExtraObjects
@@ -1906,7 +1986,7 @@ namespace JugaAgenda_v2
 
     }
 
-    
+
 
     #endregion
 
