@@ -8,7 +8,6 @@ namespace JugaAgenda_v2.Classes
     public class CustomCalendarScreen
     {
 
-        protected TabPage encapsulatingTabPage;
         protected Calendar mainCalendarView;
         protected MonthView monthView;
         protected Calendar detailCalendarView;
@@ -26,9 +25,8 @@ namespace JugaAgenda_v2.Classes
 
         private bool monthViewSelectionChanging = false;
 
-        public CustomCalendarScreen(TabPage encapsulatingTabPage, Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm) {
+        public CustomCalendarScreen(Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm) {
 
-            this.encapsulatingTabPage = encapsulatingTabPage;
             this.mainCalendarView = mainCalendarView;
             this.monthView = monthView;
             this.detailCalendarView = detailCalendarView;
@@ -59,6 +57,15 @@ namespace JugaAgenda_v2.Classes
         private void initialize_style()
         {
 
+            int left_width = 320;
+            this.todayButton.Width = left_width;
+            this.monthView.Width = left_width;
+            this.detailCalendarView.Width = left_width;
+
+            this.todayButton.Location = new System.Drawing.Point(convert_pixel_coordinates(8, false), convert_pixel_coordinates(8, true));
+            this.monthView.Location = new System.Drawing.Point(convert_pixel_coordinates(8, false), convert_pixel_coordinates(48, true));
+            this.mainCalendarView.Location = new System.Drawing.Point(left_width + convert_pixel_coordinates(18, false), convert_pixel_coordinates(8, true));
+
             this.monthView.FirstDayOfWeek = DayOfWeek.Monday;
             this.mainCalendarView.FirstDayOfWeek = DayOfWeek.Monday;
 
@@ -80,7 +87,7 @@ namespace JugaAgenda_v2.Classes
                     break;
                 }
 
-            // TODO: load calendar data
+            this.loadCalendarData();
 
             this.updateDetailCalendarItems();
 
@@ -91,23 +98,24 @@ namespace JugaAgenda_v2.Classes
             calendarToolTip.ShowAlways = true;
             calendarToolTip.SetToolTip(this.mainCalendarView, null);
 
+            this.resize();
+
         }
 
         public void resize()
         {
+            this.mainCalendarView.Width = this.homeForm.Width - this.monthView.Width - convert_pixel_coordinates(64, false);
+            this.mainCalendarView.Height = this.homeForm.Height - convert_pixel_coordinates(148, true);
 
-            this.mainCalendarView.Width = this.encapsulatingTabPage.Width - this.monthView.Width - convert_pixel_coordinates(20, false);
-            this.mainCalendarView.Height = this.encapsulatingTabPage.Height - convert_pixel_coordinates(20, true);
             this.update_calDetail_monthView_height();
-
         }
 
         private void update_calDetail_monthView_height()
         {
             this.detailCalendarView.Height = (int)Math.Max(((this.detailCalendarView.Items.Count() + 1) * convert_pixel_coordinates(32, true)), convert_pixel_coordinates(300, true));
-            this.detailCalendarView.Location = new System.Drawing.Point(this.detailCalendarView.Location.X, this.encapsulatingTabPage.Height - this.detailCalendarView.Height - convert_pixel_coordinates(12, true));
+            this.detailCalendarView.Location = new System.Drawing.Point(this.detailCalendarView.Location.X, this.homeForm.Height - this.detailCalendarView.Height - convert_pixel_coordinates(142, true));
 
-            this.monthView.Height = this.encapsulatingTabPage.Height - this.detailCalendarView.Height - convert_pixel_coordinates(76, true);
+            this.monthView.Height = this.homeForm.Height - this.detailCalendarView.Height - convert_pixel_coordinates(200, true);
         }
 
         public void loadCalendarData()
@@ -115,7 +123,6 @@ namespace JugaAgenda_v2.Classes
             monthView_SelectionChanged(null, null);
         }
 
-        // Has to be overriden by subclasses
         public virtual void loadCalendarData(DateTime start, DateTime end)
         {
             MessageBox.Show("Something went wrong. You have to override the loadCalendarData function!");
@@ -347,8 +354,8 @@ namespace JugaAgenda_v2.Classes
 
     public class WorkCalendarScreen : CustomCalendarScreen
     {
-        public WorkCalendarScreen(TabPage encapsulatingTabPage, Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm)
-            : base(encapsulatingTabPage, mainCalendarView, monthView, detailCalendarView, todayButton, homeForm)
+        public WorkCalendarScreen(Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm)
+            : base(mainCalendarView, monthView, detailCalendarView, todayButton, homeForm)
         {
 
         }
@@ -440,8 +447,8 @@ namespace JugaAgenda_v2.Classes
 
     public class LeaveCalendarScreen : CustomCalendarScreen
     {
-        public LeaveCalendarScreen(TabPage encapsulatingTabPage, Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm)
-            : base(encapsulatingTabPage, mainCalendarView, monthView, detailCalendarView, todayButton, homeForm)
+        public LeaveCalendarScreen(Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm)
+            : base(mainCalendarView, monthView, detailCalendarView, todayButton, homeForm)
         {
 
         }

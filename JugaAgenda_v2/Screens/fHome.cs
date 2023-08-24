@@ -15,8 +15,9 @@ namespace JugaAgenda_v2
 
         public GoogleCalendar googleCalendar;
         private List<CustomDay> techniciansWorkWeekList;
-        public List<CustomDay> technicianLeaveList;
+        public List<CustomDay> technicianLeaveList { get; private set; }
         public List<CustomDay> workList { get; private set; }
+
         private List<Tuple<DateTime, String, Decimal>> openWorkHoursList;
         private List<Technician> technicianList;
 
@@ -31,16 +32,10 @@ namespace JugaAgenda_v2
         private Boolean focussed = true;
         private int unfocusCounter = 0;
         private int lastOpenedIndex = 0;
-        private Boolean mvHomeSelectionChanging = false;
-        private Boolean mvLeaveSelectionChanging = false;
-        ToolTip calendarToolTip;
-        private System.Drawing.Point prevMouseCoo;
-        private Boolean mouseMoved = false;
-        private Boolean mouseDown = false;
 
         private CustomCalendarScreen homeCustomCalendarScreen;
-
-        // BACKUP
+        private CustomCalendarScreen workCustomCalendarScreen;
+        private CustomCalendarScreen leaveCustomCalendarScreen;
 
         #region TODO
 
@@ -56,6 +51,7 @@ namespace JugaAgenda_v2
         // - write managing code to easily add new calendars (word, leave, holidays, info, ...) have it all look the same
         // - test different screen sizes (change all resizing code)
         // - double click cal detail
+        // - set width of detail calendar that you can read whole title
 
         #endregion
 
@@ -79,16 +75,11 @@ namespace JugaAgenda_v2
 
             // Load the calendar views
 
-            homeCustomCalendarScreen = new LeaveCalendarScreen(tpHome, calMain, mvMain, calDetailMain, btTodayMain, this);
+            homeCustomCalendarScreen = new WorkCalendarScreen(calMain, mvMain, calDetailMain, btTodayMain, this);
+            workCustomCalendarScreen = new WorkCalendarScreen(calHome, mvHome, calDetail, btWorkToday, this);
+            leaveCustomCalendarScreen = new LeaveCalendarScreen(calLeave, mvLeave, calDetailLeave, btLeaveToday, this);
 
             // -----
-
-            mvHome.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            mvHome.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
-            calHome.MaximumViewDays = 70;
-            mvHome.MaxSelectionCount = calHome.MaximumViewDays;
-
-            mvHome.SelectionChanged += new System.EventHandler(mvHome_SelectionChanged);
 
             DateTime now = DateTime.Now;
             newDayTimer.Interval = 1000 - now.Millisecond + (59 - now.Second) * 1000 + (59 - now.Minute) * 1000 * 60 + (23 - now.Hour) * 1000 * 60 * 60 + 1 * 60 * 1000;
@@ -103,25 +94,9 @@ namespace JugaAgenda_v2
             calWorkSchedule.ViewStart = new DateTime(2021, 2, 1);
             calWorkSchedule.ViewEnd = new DateTime(2021, 2, 7);
 
-            mvLeave.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            mvLeave.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
-            mvLeave.MaxSelectionCount = calLeave.MaximumViewDays;
-
-            mvLeave.SelectionChanged += new System.EventHandler(mvLeave_SelectionChanged);
-
             loadStyleComponents();
 
             loadEverything();
-
-            foreach (CalendarDay calDay in calHome.Days)
-                if (calDay.Date == new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day))
-                {
-                    calHome.SelectedElementStart = calDay;
-                    calHome.SelectedElementEnd = calDay;
-                    break;
-                }
-
-            calHome_MouseUp(null, null);
 
         }
 
@@ -129,11 +104,11 @@ namespace JugaAgenda_v2
         {
             refresh();
 
-            mvHome_SelectionChanged(null, null);
-            mvLeave_SelectionChanged(null, null);
+            homeCustomCalendarScreen.loadCalendarData();
+            workCustomCalendarScreen.loadCalendarData();
+            leaveCustomCalendarScreen.loadCalendarData();
 
             refreshTimer.Enabled = true;
-
         }
 
         private void loadStyleComponents()
@@ -169,13 +144,6 @@ namespace JugaAgenda_v2
             cbStatus.SelectedIndex = 0;
 
             nuHoursDone.Maximum = 0;
-
-            calendarToolTip = new ToolTip();
-            calendarToolTip.AutoPopDelay = 5000;
-            calendarToolTip.InitialDelay = 1000;
-            calendarToolTip.ReshowDelay = 500;
-            calendarToolTip.ShowAlways = true;
-            calendarToolTip.SetToolTip(calHome, null);
 
         }
 
@@ -282,9 +250,11 @@ namespace JugaAgenda_v2
                     }
 
                 }
+                // TODO!!!!
                 // Can be more efficient
-                mvHome_SelectionChanged(null, null);
                 homeCustomCalendarScreen.loadCalendarData();
+                workCustomCalendarScreen.loadCalendarData();
+                leaveCustomCalendarScreen.loadCalendarData();
             }
         }
 
@@ -310,20 +280,9 @@ namespace JugaAgenda_v2
                 DateTime date = Convert.ToDateTime(item.Start.Date);
                 if (date.Day > 7) continue;
 
-                /*Regex regex = new Regex("[a-zA-Z ]+ [0-9,.]+u", RegexOptions.IgnoreCase);
-                if (!regex.IsMatch(item.Summary))
-                {
-                    MessageBox.Show("There seems to be something wrong in the technician schedule.", "Error");
-                    continue;
-                }*/
-
                 if (checkTitleWithRegex(item, "^[a-zA-Z ]+ [0-9,.]+u$", true))
                 {
                     CustomDay day = techniciansWorkWeekList[date.Day - 1];
-
-                    /*String name = item.Summary.Remove(item.Summary.Length - item.Summary.Split(' ').Last().Length - 1);
-                    Decimal hours = Decimal.Parse(item.Summary.Split(' ').Last().Split('u')[0].Replace('.', ','), new NumberFormatInfo() { NumberDecimalSeparator = "," });
-                    Technician tech = new Technician(name, hours);*/
 
                     Technician tech = new Technician(item.Summary, true);
                     day.addTechnicianList(tech);
@@ -340,17 +299,8 @@ namespace JugaAgenda_v2
                     Technician technician = new Technician(tech.getName());
                     if (!technicianList.Contains(technician)) technicianList.Add(technician);
                 }
-
-
             }
 
-            /*foreach (CustomDay day in techniciansWorkWeekList)
-            {
-                foreach (Technician tech in day.getTechnicianList())
-                {
-                    MessageBox.Show(day.getDate().customToString() + " " + tech.getName() + " " + tech.getHours().ToString());
-                }
-            }*/
         }
 
         private void loadTechnicianLeave(Boolean askForTitleChange = false)
@@ -371,13 +321,6 @@ namespace JugaAgenda_v2
 
             foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getLeaveEvents().Items)
             {
-
-                /*Regex regex = new Regex("[a-zA-Z ]+ verlof", RegexOptions.IgnoreCase);
-                if (!regex.IsMatch(item.Summary))
-                {
-                    MessageBox.Show("There seems to be something wrong in the technician leave schedule.", "Error");
-                    continue;
-                }*/
 
                 if (checkTitleWithRegex(item, "^[a-zA-Z ]+ verlof$", false, askForTitleChange))
                 {
@@ -413,54 +356,9 @@ namespace JugaAgenda_v2
                     Technician tech = new Technician(item);
                     day.addTechnicianList(tech);
 
-                    /*if (workList != null)
-                    {
-
-                        DateTime endDate;
-                        if (item.End.DateTime != null)
-                        {
-                            endDate = (DateTime)item.End.DateTime;
-                            endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 0, 0, 0, 0);
-                        }
-                        else
-                        {
-                            endDate = Convert.ToDateTime(item.End.Date).AddDays(-1);
-                        }
-                        if (endDate.Date < date.Date)
-                            endDate = date.Date;
-
-                        IEnumerable<CustomDay> works = workList.Where(x => x.getDate().Date >= date.Date && x.getDate().Date <= endDate.Date);
-
-                        //MessageBox.Show(tech.getName() + " = " + date.customToString() + " - " + endDate.customToString(), works.Count().ToString());
-
-                        if (works.Count() > 0)
-                        {
-                            foreach (CustomDay work in works)
-                            {
-                                IEnumerable<Technician> techs = work.getTechnicianList().Where(x => x.getName().Equals(tech.getName()));
-
-                                if (techs.Count() > 0)
-                                {
-                                    Technician techqsdf = techs.First();
-                                    //techqsdf.setHasLeave(true);
-                                    //if (work.getDate().Date.Equals(new DateTime(2022, 9, 12, 0, 0, 0).Date))
-                                    //    MessageBox.Show("Hupse", techqsdf.getName());
-                                }
-                            }
-                        }
-                    }*/
-
                 }
-
             }
 
-            /*foreach (CustomDay day in technicianLeaveList)
-            {
-                foreach (Technician tech in day.getTechnicianList())
-                {
-                    MessageBox.Show(day.getDate().ToString() + " " + tech.getName() + " " + tech.getHours().ToString());
-                }
-            }*/
         }
 
         // No support for non all-day and multiple days events yet
@@ -482,24 +380,6 @@ namespace JugaAgenda_v2
                 MessageBox.Show("Er zijn " + nuWrongTitles.Value.ToString() + " titels fout.");
             }
 
-            /*foreach (CustomDay day in workList)
-            {
-                MessageBox.Show(day.getDate().ToString(), "Date");
-                foreach (Work work in day.getWorkList())
-                {
-                    MessageBox.Show(work.getClientName() + " " + work.getDescription() + " " + work.getDuration().ToString() + " " + work.getOrderNumber() + " " + work.getPhoneNumber() + " " + work.getStatus().ToString());
-                    *//*MessageBox.Show(work.getClientName(), "Client name");
-                    MessageBox.Show(work.getDescription(), "Description");
-                    MessageBox.Show(work.getDuration().ToString(), "Duration");
-                    MessageBox.Show(work.getOrderNumber(), "Order number");
-                    MessageBox.Show(work.getPhoneNumber(), "Phone number");
-                    MessageBox.Show(work.getStatus().ToString(), "Status");*//*
-                }
-                foreach (Technician tech in day.getTechnicianList())
-                {
-                    MessageBox.Show(day.getDate().ToString() + " " + tech.getName() + " " + tech.getHours().ToString());
-                }
-            }*/
         }
 
         // Work.Status.onderdelen_niet_op_tijd ook voor availability?
@@ -531,29 +411,6 @@ namespace JugaAgenda_v2
             {
                 day = new CustomDay(date);
 
-                //if ((int)date.DayOfWeek - 1 < 0) MessageBox.Show(date.customToString());
-
-                //MessageBox.Show(((int)date.DayOfWeek - 1).ToString(), techniciansWorkWeekList.Count.ToString());
-
-                /*foreach (Technician tech in techniciansWorkWeekList[(int)date.DayOfWeekStartingMonday()].getTechnicianList())
-                {
-                    bool tech_has_leave = false;
-                    *//*foreach (CustomDay leave_day in technicianLeaveList)
-                    {
-                        if (DateTime.Compare(day.getDate(), leave_day.getDate()) == 0)
-                        {
-                            foreach (Technician leave_tech in leave_day.getTechnicianList())
-                            {
-                                if (tech.getName().Equals(leave_tech.getName())) tech_has_leave = true;
-                            }
-                            // if (!tech_has_leave) MessageBox.Show("There seems to be a wrong name or date in the technician leave schedule", "Error");
-                        }
-                    }*//*
-
-                    tech.setHasLeave(tech_has_leave);
-                    day.addTechnicianList(tech);
-                }*/
-
                 workList.Add(day);
             }
 
@@ -577,257 +434,6 @@ namespace JugaAgenda_v2
 
         // TODO
         #region ExtraPrimaryFunctions
-
-        // TODO: Multiple days and not full days events
-        private void mvHome_SelectionChanged(object sender, EventArgs e)
-        {
-            mvHomeSelectionChanging = true;
-            if ((mvHome.SelectionEnd - mvHome.SelectionStart).Days > -1 && (mvHome.SelectionEnd - mvHome.SelectionStart).Days < calHome.MaximumViewDays)
-            {
-                int oldMaximumViewDays = calHome.MaximumViewDays;
-                DateTime end;
-                DateTime start;
-                if (mvHome.SelectionEnd > calHome.ViewEnd)
-                {
-                    end = mvHome.SelectionEnd;
-                }
-                else
-                {
-                    end = calHome.ViewEnd;
-                }
-                if (mvHome.SelectionStart < calHome.ViewStart)
-                {
-                    start = mvHome.SelectionStart;
-                }
-                else
-                {
-                    start = calHome.ViewStart;
-                }
-                calHome.MaximumViewDays = (int)Math.Ceiling((double)(end - start).Days / 7) * 7 + 7;
-                if (mvHome.SelectionStart <= calHome.ViewEnd)
-                {
-                    if (mvHome.SelectionMode == System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month)
-                    {
-                        calHome.ViewStart = mvHome.SelectionStart.StartOfWeek(DayOfWeek.Monday);
-                        calHome.ViewEnd = mvHome.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
-                    }
-                    else
-                    {
-                        calHome.ViewStart = mvHome.SelectionStart;
-                        calHome.ViewEnd = mvHome.SelectionEnd;
-                    }
-
-                }
-                else
-                {
-                    if (mvHome.SelectionMode == System.Windows.Forms.Calendar.MonthView.MonthViewSelection.Month)
-                    {
-                        calHome.ViewEnd = mvHome.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
-                        calHome.ViewStart = mvHome.SelectionStart.StartOfWeek(DayOfWeek.Monday);
-                    }
-                    else
-                    {
-                        calHome.ViewEnd = mvHome.SelectionEnd;
-                        calHome.ViewStart = mvHome.SelectionStart;
-                    }
-                }
-                calHome.MaximumViewDays = oldMaximumViewDays;
-
-                loadWorkItemsInCalendar(start, end);
-
-            }
-            else
-            {
-                MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days. It is " + (mvHome.SelectionEnd - mvHome.SelectionStart).Days.ToString() + " days.");
-            }
-            mvHomeSelectionChanging = false;
-
-        }
-
-        private void calHome_LoadItems(object sender, CalendarLoadEventArgs e)
-        {
-            if (mvHomeSelectionChanging)
-                return;
-
-            DateTime start = calHome.ViewStart;
-            DateTime end = calHome.ViewEnd;
-
-            mvHome.SelectionStart = start;
-            mvHome.SelectionEnd = end;
-        }
-
-        private void loadWorkItemsInCalendar(DateTime start, DateTime end)
-        {
-
-            if (workList != null)
-            {
-                foreach (CustomDay day in workList)
-                {
-                    DateTime date = day.getDate();
-
-                    //if (date >= calHome.ViewStart && date < calHome.ViewEnd)
-                    if (date < calHome.ViewEnd)
-                    {
-                        foreach (Work work in day.getWorkList())
-                        {
-                            CalendarItem newItem;
-
-                            if (work.isMultipleDays())
-                            {
-                                Tuple<DateTime, DateTime> dates = work.getMultipleDaysDates();
-
-                                if (dates.Item2 < calHome.ViewStart)
-                                    continue;
-
-                                /*for (DateTime datesDate = dates.Item1; datesDate < dates.Item2; datesDate = datesDate.AddDays(1))
-                                {
-                                    newItem = new CalendarItem(calHome,
-                                        datesDate,
-                                        datesDate.AddDays(1).AddSeconds(-1),
-                                        work.getTitle());
-                                    newItem.ApplyColor(work.getColor());
-                                    newItem.setCalendarEvent(work.getCalendarEvent());
-
-                                    calHome.Items.Add(newItem);
-                                }*/
-
-                                newItem = new CalendarItem(calHome,
-                                        dates.Item1,
-                                        dates.Item2.AddSeconds(-1),
-                                        work.getTitle());
-                                newItem.ApplyColor(work.getColor());
-                                newItem.setCalendarEvent(work.getCalendarEvent());
-
-                                calHome.Items.Add(newItem);
-
-                            }
-                            else if (date >= calHome.ViewStart)
-                            {
-                                newItem = new CalendarItem(calHome,
-                                    date,
-                                    date.AddDays(1).AddSeconds(-1),
-                                    work.getTitle());
-
-                                newItem.ApplyColor(work.getColor());
-                                newItem.setCalendarEvent(work.getCalendarEvent());
-
-                                calHome.Items.Add(newItem);
-                            }
-
-
-                        }
-                    }
-                }
-            }
-
-
-            /*foreach (Google.Apis.Calendar.v3.Data.Event eventItem in googleCalendar.getWorkEvents().Items)
-            {
-                if (eventItem.Start.DateTime != null)
-                {
-                    if ((eventItem.Start.DateTime > calHome.ViewStart && eventItem.Start.DateTime < calHome.ViewEnd) ||
-                        (eventItem.End.DateTime < calHome.ViewEnd && eventItem.End.DateTime > calHome.ViewStart))
-                    {
-                        CalendarItem newItem = new CalendarItem(calHome,
-                            (DateTime)eventItem.Start.DateTime,
-                            (DateTime)eventItem.End.DateTime,
-                            eventItem.Summary);
-
-                        calHome.Items.Add(newItem);
-                    }
-                }
-                else
-                {
-                    DateTime startDate = Convert.ToDateTime(eventItem.Start.Date);
-                    DateTime endDate = Convert.ToDateTime(eventItem.End.Date);
-                    if ((startDate > calHome.ViewStart && startDate < calHome.ViewEnd) ||
-                        (endDate < calHome.ViewEnd && endDate > calHome.ViewStart))
-                    {
-                        CalendarItem newItem = new CalendarItem(calHome,
-                            startDate,
-                            endDate.AddSeconds(-1),
-                            eventItem.Summary);
-
-                        calHome.Items.Add(newItem);
-                    }
-                }
-            }*/
-        }
-
-        private void mvLeave_SelectionChanged(object sender, EventArgs e)
-        {
-            mvLeaveSelectionChanging = true;
-            if ((mvLeave.SelectionEnd - mvLeave.SelectionStart).Days > -1 && (mvLeave.SelectionEnd - mvLeave.SelectionStart).Days < calLeave.MaximumViewDays)
-            {
-                int days = Math.Max((mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday) - calLeave.ViewStart).Days, Math.Max((calLeave.ViewEnd - mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday)).Days, (mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday) - mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday)).Days));
-                days = (int)Math.Ceiling((double)(days / 7)) * 7 + 7;
-                calLeave.MaximumViewDays = days;
-
-                if (mvLeave.SelectionStart <= calLeave.ViewEnd)
-                {
-                    calLeave.ViewStart = mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday);
-                    calLeave.ViewEnd = mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
-                }
-                else
-                {
-                    calLeave.ViewEnd = mvLeave.SelectionEnd.EndOfWeek(DayOfWeek.Sunday);
-                    calLeave.ViewStart = mvLeave.SelectionStart.StartOfWeek(DayOfWeek.Monday);
-                }
-
-                if (technicianLeaveList != null)
-                {
-                    foreach (CustomDay day in technicianLeaveList)
-                    {
-                        DateTime date = day.getDate();
-
-                        //if (date >= calLeave.ViewStart && date < calLeave.ViewEnd)
-                        if (date < calLeave.ViewEnd)
-                        {
-                            foreach (Technician tech in day.getTechnicianList())
-                            {
-
-                                DateTime endDate;
-                                if (tech.getCalendarEvent().End.DateTime != null)
-                                {
-                                    endDate = (DateTime)tech.getCalendarEvent().End.DateTime;
-                                    endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day + 1, 0, 0, 0, 0);
-                                }
-                                else
-                                {
-                                    endDate = Convert.ToDateTime(tech.getCalendarEvent().End.Date);
-                                }
-
-                                if (endDate < calLeave.ViewStart)
-                                    continue;
-
-                                if (endDate.Equals(date))
-                                    endDate = endDate.AddDays(1);
-
-                                CalendarItem newItem;
-
-                                newItem = new CalendarItem(calLeave,
-                                    date,
-                                    endDate.AddSeconds(-1),
-                                    tech.getName());
-
-                                newItem.setCalendarEvent(tech.getCalendarEvent());
-
-                                calLeave.Items.Add(newItem);
-
-                            }
-
-                        }
-                    }
-                }
-
-            }
-            else
-            {
-                MessageBox.Show("The selection has to be at least 1 day and can't be more than " + calHome.MaximumViewDays.ToString() + " days.");
-            }
-
-            mvLeaveSelectionChanging = false;
-        }
 
         public bool deleteWorkItem(String eventId)
         {
@@ -1313,7 +919,6 @@ namespace JugaAgenda_v2
             }
         }
 
-
         public void openLeaveScreen_editItem(Google.Apis.Calendar.v3.Data.Event item)
         {
 
@@ -1347,21 +952,15 @@ namespace JugaAgenda_v2
         {
             if (homeCustomCalendarScreen != null)
                 homeCustomCalendarScreen.resize();
-
-            calHome.Width = tpCalendar.Width - mvHome.Width - convert_pixel_coordinates(20, false);
-
-            update_calDetail_height();
+            if (workCustomCalendarScreen != null)
+                workCustomCalendarScreen.resize();
+            if (leaveCustomCalendarScreen != null)
+                leaveCustomCalendarScreen.resize();
 
             lbWrongTitles.Height = this.Height - convert_pixel_coordinates(162, true);
             lbWrongTitles.Width = this.Width - gbWrongTitlesControl.Width - convert_pixel_coordinates(66, false);
 
             gbWrongTitlesControl.Location = new System.Drawing.Point(this.Width - gbWrongTitlesControl.Width - convert_pixel_coordinates(40, false), gbWrongTitlesControl.Location.Y);
-
-            // TODO
-            //if (this.Width <= Screen.FromControl(this).WorkingArea.Width / 2)
-            //    mvHome.Visible = false;
-            //else
-            //    mvHome.Visible = true;
 
         }
 
@@ -1577,17 +1176,6 @@ namespace JugaAgenda_v2
             openSearchScreen();
         }
 
-        private void calHome_ItemDoubleClick(object sender, EventArgs e)
-        {
-
-            if (calendarEventScreen == null)
-            {
-                calendarEventScreen = new fCalendarEvent(this, calHome.GetSelectedItems().First().getCalendarEvent());
-                calendarEventScreen.Show();
-            }
-
-        }
-
         private void planningToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (planningScreen == null)
@@ -1611,65 +1199,7 @@ namespace JugaAgenda_v2
         {
             clearWrongTitlesControl();
         }
-
-        private void btWorkToday_Click(object sender, EventArgs e)
-        {
-            DateTime newSelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            DateTime newSelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
-
-            int oldMaxSelectionCount = mvHome.MaxSelectionCount;
-            int oldMaxViewDays = calHome.MaximumViewDays;
-            DateTime end;
-            DateTime start;
-
-            if (mvHome.SelectionEnd > newSelectionEnd)
-            {
-                end = mvHome.SelectionEnd;
-            }
-            else
-            {
-                end = newSelectionEnd;
-            }
-            if (mvHome.SelectionStart < newSelectionStart)
-            {
-                start = mvHome.SelectionStart;
-            }
-            else
-            {
-                start = newSelectionStart;
-            }
-
-            mvHome.MaxSelectionCount = (end - start).Days + 7 - ((end - start).Days % 7);
-            calHome.MaximumViewDays = (end - start).Days + 7 - ((end - start).Days % 7);
-
-            if (mvHome.SelectionEnd < newSelectionEnd)
-            {
-                mvHome.SelectionEnd = newSelectionEnd;
-                mvHome.SelectionStart = newSelectionStart;
-            }
-            else
-            {
-                mvHome.SelectionStart = newSelectionStart;
-                mvHome.SelectionEnd = newSelectionEnd;
-            }
-
-            mvHome.ViewStart = newSelectionStart;
-
-            mvHome.MaxSelectionCount = oldMaxSelectionCount;
-            calHome.MaximumViewDays = oldMaxViewDays;
-
-
-            foreach (CalendarDay calDay in calHome.Days)
-                if (calDay.Date == new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day))
-                {
-                    calHome.SelectedElementStart = calDay;
-                    calHome.SelectedElementEnd = calDay;
-                    break;
-                }
-
-            calHome_MouseUp(null, null);
-        }
-
+*/
         #endregion
 
         #region Getters
@@ -1694,19 +1224,6 @@ namespace JugaAgenda_v2
         }
 
         #endregion
-
-        private void calHome_ItemCreating(object sender, CalendarItemCancelEventArgs e)
-        {
-
-            if (calendarEventScreen == null)
-            {
-                calendarEventScreen = new fCalendarEvent(this, e.Item.Date);
-                calendarEventScreen.Show();
-            }
-
-            e.Cancel = true;
-
-        }
 
         private void fHome_Activated(object sender, EventArgs e)
         {
@@ -1787,20 +1304,11 @@ namespace JugaAgenda_v2
             return Tuple.Create(startDate, endDate);
         }
 
-        private void calLeave_ItemDoubleClick(object sender, CalendarItemEventArgs e)
-        {
-            if (leaveEventScreen == null)
-            {
-                leaveEventScreen = new fLeaveEvent(this, e.Item.getCalendarEvent());
-                leaveEventScreen.Show();
-            }
-        }
-
         public void closeLeaveEventScreen()
         {
             leaveEventScreen = null;
             loadTechnicianLeave(false);
-            mvLeave_SelectionChanged(null, null);
+            leaveCustomCalendarScreen.loadCalendarData();
         }
 
         public Boolean deleteLeaveEvent(string eventID)
@@ -1818,132 +1326,16 @@ namespace JugaAgenda_v2
             return googleCalendar.addLeaveEvent(newEvent);
         }
 
-        private void calLeave_ItemCreating(object sender, CalendarItemCancelEventArgs e)
-        {
-            e.Cancel = true;
-            if (leaveEventScreen == null)
-            {
-                leaveEventScreen = new fLeaveEvent(this, null, e.Item.StartDate);
-                leaveEventScreen.Show();
-            }
-        }
-
+        // TODO: wtf is s?
         private void s_Click(object sender, EventArgs e)
         {
             loadTechnicianLeave(true);
-            mvLeave_SelectionChanged(null, null);
-        }
-
-        private void calHome_ItemDatesChanged(object sender, CalendarItemEventArgs e)
-        {
-
-            if (!mouseMoved)
-            {
-                return;
-            }
-
-            Google.Apis.Calendar.v3.Data.Event calendarEvent = e.Item.getCalendarEvent();
-
-            if (calendarEvent.Start.Date.Equals(e.Item.StartDate.ToString("yyyy-MM-dd")) &&
-                calendarEvent.End.Date.Equals(e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd")))
-                return;
-
-            calendarEvent.Start.Date = e.Item.StartDate.ToString("yyyy-MM-dd");
-            calendarEvent.End.Date = e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
-
-            calendarEvent.Start.DateTime = null;
-            calendarEvent.End.DateTime = null;
-
-            googleCalendar.editWorkEvent(calendarEvent);
-        }
-
-        private void calHome_MouseMove(object sender, MouseEventArgs e)
-        {
-
-            if (!mouseMoved && mouseDown &&
-                Math.Sqrt((Math.Pow(prevMouseCoo.X - e.X, 2) + Math.Pow(prevMouseCoo.Y - e.Y, 2))) > 20)
-                mouseMoved = true;
-
-            CalendarItem calItem = calHome.ItemAt(new System.Drawing.Point(e.X, e.Y));
-            if (calItem == null)
-                calendarToolTip.SetToolTip(calHome, null);
-            else
-                calendarToolTip.SetToolTip(calHome, calItem.Text + "\n" + calItem.getCalendarEvent().Description);
-
-        }
-
-        private void calHome_MouseUp(object sender, MouseEventArgs e)
-        {
-            mouseDown = false;
-
-            if (calHome.SelectedElementStart == null)
-                return;
-
-            DateTime newDate = calHome.SelectedElementStart.Date;
-
-            if (newDate < calDetail.ViewStart)
-            {
-                calDetail.MaximumViewDays = (int)Math.Ceiling((double)((calDetail.ViewEnd - newDate).Days / 7)) * 7 + 7;
-                calDetail.ViewStart = newDate;
-                calDetail.ViewEnd = newDate;
-            }
-            else if (newDate > calDetail.ViewEnd)
-            {
-                calDetail.MaximumViewDays = (int)Math.Ceiling((double)((newDate - calDetail.ViewStart).Days / 7)) * 7 + 7;
-                calDetail.ViewEnd = newDate;
-                calDetail.ViewStart = newDate;
-            }
-            else
-            {
-                calDetail.ViewStart = newDate;
-                calDetail.ViewEnd = newDate;
-            }
-
-            calDetail.Items.Clear();
-
-            foreach (CalendarItem calItem in calHome.Items)
-            {
-                if (calItem.StartDate <= newDate && calItem.EndDate >= newDate)
-                {
-                    calDetail.Items.Add(new CalendarItem(calDetail, calItem.StartDate, calItem.EndDate, calItem.Text));
-                }
-            }
-
-            update_calDetail_height();
-
-        }
-
-        private void update_calDetail_height()
-        {
-            calDetail.Width = mvHome.Width;
-            calDetail.Height = (int)Math.Max(((calDetail.Items.Count() + 1) * convert_pixel_coordinates(32, true)), convert_pixel_coordinates(300, true));
-            calDetail.Location = new System.Drawing.Point(calDetail.Location.X, this.Height - calDetail.Height - convert_pixel_coordinates(128, true));
-
-            mvHome.Height = this.Height - calDetail.Height - convert_pixel_coordinates(192, true);
+            leaveCustomCalendarScreen.loadCalendarData();
         }
 
         private void fHome_Shown(object sender, EventArgs e)
         {
             fHome_Resize(sender, e);
-        }
-
-        private void calLeave_LoadItems(object sender, CalendarLoadEventArgs e)
-        {
-            if (mvLeaveSelectionChanging)
-                return;
-
-            DateTime start = calLeave.ViewStart;
-            DateTime end = calLeave.ViewEnd;
-
-            mvLeave.SelectionStart = start;
-            mvLeave.SelectionEnd = end;
-        }
-
-        private void calHome_MouseDown(object sender, MouseEventArgs e)
-        {
-            mouseDown = true;
-            mouseMoved = false;
-            prevMouseCoo = e.Location;
         }
 
         public int convert_pixel_coordinates(int pixel_coordinate_144px, bool is_height = false)
@@ -1953,8 +1345,6 @@ namespace JugaAgenda_v2
             else
                 return (int)(pixel_coordinate_144px * this.CreateGraphics().DpiX / 144);
         }
-
-
 
 
     }
@@ -2040,8 +1430,6 @@ namespace JugaAgenda_v2
         }
 
     }
-
-
 
     #endregion
 
