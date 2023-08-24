@@ -16,6 +16,8 @@ namespace JugaAgenda_v2.Screens
         private fHome mainScreen;
         private Google.Apis.Calendar.v3.Data.Event calendarEvent;
 
+        private DateTime prevStartDate;
+
         public fLeaveEvent(fHome mainScreen, Google.Apis.Calendar.v3.Data.Event calendarEvent = null, DateTime dateTime = default)
         {
             this.mainScreen = mainScreen;
@@ -24,6 +26,8 @@ namespace JugaAgenda_v2.Screens
             InitializeComponent();
 
             loadTechnicians();
+
+            prevStartDate = dtpStart.Value;
 
             if (this.calendarEvent != null)
             {
@@ -43,11 +47,14 @@ namespace JugaAgenda_v2.Screens
                     }
                 }
                 btDelete.Show();
-            } else
+            }
+            else
             {
                 dtpStart.Value = dateTime;
                 dtpEnd.Value = dateTime;
             }
+
+            prevStartDate = dtpStart.Value;
         }
 
         private void loadTechnicians()
@@ -93,18 +100,26 @@ namespace JugaAgenda_v2.Screens
             }
             if (calendarEvent == null)
             {
-                if (mainScreen.addLeaveEvent(new Technician(tbTechName.Text, 0).createCalendarLeaveEvent(dtpStart.Value, dtpEnd.Value)))
+                if (mainScreen.addLeaveEvent(new Technician(tbTechName.Text, 0).createCalendarLeaveEvent(dtpStart.Value, dtpEnd.Value.AddDays(1))))
                     this.Close();
                 else
                     MessageBox.Show("Er is iets fout gelopen.");
             }
             else
             {
-                if (mainScreen.updateLeaveEvent(new Technician(tbTechName.Text, 0).createCalendarLeaveEvent(dtpStart.Value, dtpEnd.Value, calendarEvent.Id)))
+                if (mainScreen.updateLeaveEvent(new Technician(tbTechName.Text, 0).createCalendarLeaveEvent(dtpStart.Value, dtpEnd.Value.AddDays(1), calendarEvent.Id)))
                     this.Close();
                 else
                     MessageBox.Show("Er is iets fout gelopen.");
             }
         }
+
+        private void dtpStart_ValueChanged(object sender, EventArgs e)
+        {
+            dtpEnd.Value += dtpStart.Value - prevStartDate;
+
+            prevStartDate = dtpStart.Value;
+        }
+
     }
 }

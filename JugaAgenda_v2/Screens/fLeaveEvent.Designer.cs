@@ -28,136 +28,139 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dtpStart = new System.Windows.Forms.DateTimePicker();
-            this.dtpEnd = new System.Windows.Forms.DateTimePicker();
-            this.cbTechnicians = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tbTechName = new System.Windows.Forms.TextBox();
-            this.btDelete = new System.Windows.Forms.Button();
-            this.btSave = new System.Windows.Forms.Button();
-            this.btCancel = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            dtpStart = new System.Windows.Forms.DateTimePicker();
+            dtpEnd = new System.Windows.Forms.DateTimePicker();
+            cbTechnicians = new System.Windows.Forms.ComboBox();
+            label3 = new System.Windows.Forms.Label();
+            tbTechName = new System.Windows.Forms.TextBox();
+            btDelete = new System.Windows.Forms.Button();
+            btSave = new System.Windows.Forms.Button();
+            btCancel = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // dtpStart
             // 
-            this.dtpStart.Location = new System.Drawing.Point(197, 15);
-            this.dtpStart.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Size = new System.Drawing.Size(356, 35);
-            this.dtpStart.TabIndex = 3;
+            dtpStart.Location = new System.Drawing.Point(164, 12);
+            dtpStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            dtpStart.Name = "dtpStart";
+            dtpStart.Size = new System.Drawing.Size(297, 31);
+            dtpStart.TabIndex = 3;
+            dtpStart.ValueChanged += dtpStart_ValueChanged;
             // 
             // dtpEnd
             // 
-            this.dtpEnd.Location = new System.Drawing.Point(197, 62);
-            this.dtpEnd.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.dtpEnd.Name = "dtpEnd";
-            this.dtpEnd.Size = new System.Drawing.Size(358, 35);
-            this.dtpEnd.TabIndex = 4;
+            dtpEnd.Location = new System.Drawing.Point(164, 52);
+            dtpEnd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            dtpEnd.Name = "dtpEnd";
+            dtpEnd.Size = new System.Drawing.Size(299, 31);
+            dtpEnd.TabIndex = 4;
             // 
             // cbTechnicians
             // 
-            this.cbTechnicians.FormattingEnabled = true;
-            this.cbTechnicians.Location = new System.Drawing.Point(197, 153);
-            this.cbTechnicians.Name = "cbTechnicians";
-            this.cbTechnicians.Size = new System.Drawing.Size(358, 38);
-            this.cbTechnicians.TabIndex = 38;
-            this.cbTechnicians.SelectedIndexChanged += new System.EventHandler(this.cbTechnicians_SelectedIndexChanged);
+            cbTechnicians.FormattingEnabled = true;
+            cbTechnicians.Location = new System.Drawing.Point(164, 128);
+            cbTechnicians.Margin = new System.Windows.Forms.Padding(2);
+            cbTechnicians.Name = "cbTechnicians";
+            cbTechnicians.Size = new System.Drawing.Size(299, 33);
+            cbTechnicians.TabIndex = 38;
+            cbTechnicians.SelectedIndexChanged += cbTechnicians_SelectedIndexChanged;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 112);
-            this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(173, 30);
-            this.label3.TabIndex = 34;
-            this.label3.Text = "Naam Technieker";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(12, 93);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(145, 25);
+            label3.TabIndex = 34;
+            label3.Text = "Naam Technieker";
             // 
             // tbTechName
             // 
-            this.tbTechName.Location = new System.Drawing.Point(197, 109);
-            this.tbTechName.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.tbTechName.Name = "tbTechName";
-            this.tbTechName.Size = new System.Drawing.Size(358, 35);
-            this.tbTechName.TabIndex = 33;
+            tbTechName.Location = new System.Drawing.Point(164, 91);
+            tbTechName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            tbTechName.Name = "tbTechName";
+            tbTechName.Size = new System.Drawing.Size(299, 31);
+            tbTechName.TabIndex = 33;
             // 
             // btDelete
             // 
-            this.btDelete.ForeColor = System.Drawing.Color.Red;
-            this.btDelete.Location = new System.Drawing.Point(14, 209);
-            this.btDelete.Name = "btDelete";
-            this.btDelete.Size = new System.Drawing.Size(173, 40);
-            this.btDelete.TabIndex = 37;
-            this.btDelete.Text = "VERWIJDEREN";
-            this.btDelete.UseVisualStyleBackColor = true;
-            this.btDelete.Visible = false;
-            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
+            btDelete.ForeColor = System.Drawing.Color.Red;
+            btDelete.Location = new System.Drawing.Point(12, 174);
+            btDelete.Margin = new System.Windows.Forms.Padding(2);
+            btDelete.Name = "btDelete";
+            btDelete.Size = new System.Drawing.Size(144, 33);
+            btDelete.TabIndex = 37;
+            btDelete.Text = "VERWIJDEREN";
+            btDelete.UseVisualStyleBackColor = true;
+            btDelete.Visible = false;
+            btDelete.Click += btDelete_Click;
             // 
             // btSave
             // 
-            this.btSave.Location = new System.Drawing.Point(426, 203);
-            this.btSave.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btSave.Name = "btSave";
-            this.btSave.Size = new System.Drawing.Size(129, 46);
-            this.btSave.TabIndex = 36;
-            this.btSave.Text = "Opslaan";
-            this.btSave.UseVisualStyleBackColor = true;
-            this.btSave.Click += new System.EventHandler(this.btSave_Click);
+            btSave.Location = new System.Drawing.Point(355, 169);
+            btSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            btSave.Name = "btSave";
+            btSave.Size = new System.Drawing.Size(108, 38);
+            btSave.TabIndex = 36;
+            btSave.Text = "Opslaan";
+            btSave.UseVisualStyleBackColor = true;
+            btSave.Click += btSave_Click;
             // 
             // btCancel
             // 
-            this.btCancel.Location = new System.Drawing.Point(287, 203);
-            this.btCancel.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.btCancel.Name = "btCancel";
-            this.btCancel.Size = new System.Drawing.Size(129, 46);
-            this.btCancel.TabIndex = 35;
-            this.btCancel.Text = "Annuleer";
-            this.btCancel.UseVisualStyleBackColor = true;
-            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
+            btCancel.Location = new System.Drawing.Point(239, 169);
+            btCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            btCancel.Name = "btCancel";
+            btCancel.Size = new System.Drawing.Size(108, 38);
+            btCancel.TabIndex = 35;
+            btCancel.Text = "Annuleer";
+            btCancel.UseVisualStyleBackColor = true;
+            btCancel.Click += btCancel_Click;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 19);
-            this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 30);
-            this.label1.TabIndex = 39;
-            this.label1.Text = "Start dag";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(12, 16);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(84, 25);
+            label1.TabIndex = 39;
+            label1.Text = "Start dag";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 66);
-            this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(94, 30);
-            this.label2.TabIndex = 40;
-            this.label2.Text = "Eind dag";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(12, 55);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(82, 25);
+            label2.TabIndex = 40;
+            label2.Text = "Eind dag";
             // 
             // fLeaveEvent
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 263);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cbTechnicians);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.tbTechName);
-            this.Controls.Add(this.btDelete);
-            this.Controls.Add(this.btSave);
-            this.Controls.Add(this.btCancel);
-            this.Controls.Add(this.dtpStart);
-            this.Controls.Add(this.dtpEnd);
-            this.Name = "fLeaveEvent";
-            this.Text = "Verlof";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fLeaveEvent_FormClosed);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(477, 219);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(cbTechnicians);
+            Controls.Add(label3);
+            Controls.Add(tbTechName);
+            Controls.Add(btDelete);
+            Controls.Add(btSave);
+            Controls.Add(btCancel);
+            Controls.Add(dtpStart);
+            Controls.Add(dtpEnd);
+            Margin = new System.Windows.Forms.Padding(2);
+            Name = "fLeaveEvent";
+            Text = "Verlof";
+            FormClosed += fLeaveEvent_FormClosed;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

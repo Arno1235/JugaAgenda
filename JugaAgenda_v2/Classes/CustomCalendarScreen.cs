@@ -8,18 +8,18 @@ namespace JugaAgenda_v2.Classes
     public class CustomCalendarScreen
     {
 
-        private TabPage encapsulatingTabPage;
-        private Calendar mainCalendarView;
-        private MonthView monthView;
-        private Calendar detailCalendarView;
-        private Button todayButton;
+        protected TabPage encapsulatingTabPage;
+        protected Calendar mainCalendarView;
+        protected MonthView monthView;
+        protected Calendar detailCalendarView;
+        protected Button todayButton;
 
-        private fHome homeForm;
+        protected fHome homeForm;
 
-        private Func<int, bool, int> convert_pixel_coordinates;
+        protected Func<int, bool, int> convert_pixel_coordinates;
 
         private System.Drawing.Point prevMouseCoo;
-        private Boolean mouseMoved = false;
+        protected Boolean mouseMoved = false;
         private Boolean mouseDown = false;
 
         ToolTip calendarToolTip;
@@ -115,59 +115,10 @@ namespace JugaAgenda_v2.Classes
             monthView_SelectionChanged(null, null);
         }
 
-        public void loadCalendarData(DateTime start, DateTime end)
+        // Has to be overriden by subclasses
+        public virtual void loadCalendarData(DateTime start, DateTime end)
         {
-
-            if (this.homeForm.workList != null)
-            {
-                foreach (CustomDay day in this.homeForm.workList)
-                {
-                    DateTime date = day.getDate();
-
-                    if (date < this.mainCalendarView.ViewEnd)
-                    {
-                        foreach (Work work in day.getWorkList())
-                        {
-                            CalendarItem newItem;
-
-                            if (work.isMultipleDays())
-                            {
-                                Tuple<DateTime, DateTime> dates = work.getMultipleDaysDates();
-
-                                if (dates.Item2 < this.mainCalendarView.ViewStart)
-                                    continue;
-
-                                newItem = new CalendarItem(this.mainCalendarView,
-                                        dates.Item1,
-                                        dates.Item2.AddSeconds(-1),
-                                        work.getTitle());
-                                newItem.ApplyColor(work.getColor());
-                                newItem.setCalendarEvent(work.getCalendarEvent());
-
-                                this.mainCalendarView.Items.Add(newItem);
-
-                            }
-                            else if (date >= this.mainCalendarView.ViewStart)
-                            {
-                                newItem = new CalendarItem(this.mainCalendarView,
-                                    date,
-                                    date.AddDays(1).AddSeconds(-1),
-                                    work.getTitle());
-
-                                newItem.ApplyColor(work.getColor());
-                                newItem.setCalendarEvent(work.getCalendarEvent());
-
-                                this.mainCalendarView.Items.Add(newItem);
-                            }
-
-
-                        }
-                    }
-                }
-            }
-
-
-
+            MessageBox.Show("Something went wrong. You have to override the loadCalendarData function!");
         }
 
         // TODO: Multiple days and not full days events
@@ -319,11 +270,9 @@ namespace JugaAgenda_v2.Classes
 
         }
 
-        private void mainCalendarView_ItemDoubleClick(object sender, EventArgs e)
+        public virtual void mainCalendarView_ItemDoubleClick(object sender, CalendarItemEventArgs e)
         {
-
-            this.homeForm.openCalendarScreen_editItem(this.mainCalendarView.GetSelectedItems().First().getCalendarEvent());
-
+            MessageBox.Show("Something went wrong. You have to override the mainCalendarView_ItemDoubleClick function!");
         }
 
         private void todayButton_Click(object sender, EventArgs e)
@@ -384,22 +333,93 @@ namespace JugaAgenda_v2.Classes
             this.mainCalendarView_MouseUp(null, null);
         }
 
-        private void mainCalendarView_ItemCreating(object sender, CalendarItemCancelEventArgs e)
+        public virtual void mainCalendarView_ItemCreating(object sender, CalendarItemCancelEventArgs e)
         {
+            MessageBox.Show("Something went wrong. You have to override the mainCalendarView_ItemCreating function!");
+        }
 
-            this.homeForm.openCalendarScreen_createItem(e.Item.Date);
+        public virtual void maindCalendarView_ItemDatesChanged(object sender, CalendarItemEventArgs e)
+        {
+            MessageBox.Show("Something went wrong. You have to override the maindCalendarView_ItemDatesChanged function!");
+        }
 
-            e.Cancel = true;
+    }
+
+    public class WorkCalendarScreen : CustomCalendarScreen
+    {
+        public WorkCalendarScreen(TabPage encapsulatingTabPage, Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm)
+            : base(encapsulatingTabPage, mainCalendarView, monthView, detailCalendarView, todayButton, homeForm)
+        {
 
         }
 
-        private void maindCalendarView_ItemDatesChanged(object sender, CalendarItemEventArgs e)
+        public override void loadCalendarData(DateTime start, DateTime end)
         {
 
-            if (!mouseMoved)
+            if (this.homeForm.workList != null)
             {
-                return;
+                foreach (CustomDay day in this.homeForm.workList)
+                {
+                    DateTime date = day.getDate();
+
+                    if (date < this.mainCalendarView.ViewEnd)
+                    {
+                        foreach (Work work in day.getWorkList())
+                        {
+                            CalendarItem newItem;
+
+                            if (work.isMultipleDays())
+                            {
+                                Tuple<DateTime, DateTime> dates = work.getMultipleDaysDates();
+
+                                if (dates.Item2 < this.mainCalendarView.ViewStart)
+                                    continue;
+
+                                newItem = new CalendarItem(this.mainCalendarView,
+                                        dates.Item1,
+                                        dates.Item2.AddSeconds(-1),
+                                        work.getTitle());
+                                newItem.ApplyColor(work.getColor());
+                                newItem.setCalendarEvent(work.getCalendarEvent());
+
+                                this.mainCalendarView.Items.Add(newItem);
+
+                            }
+                            else if (date >= this.mainCalendarView.ViewStart)
+                            {
+                                newItem = new CalendarItem(this.mainCalendarView,
+                                    date,
+                                    date.AddDays(1).AddSeconds(-1),
+                                    work.getTitle());
+
+                                newItem.ApplyColor(work.getColor());
+                                newItem.setCalendarEvent(work.getCalendarEvent());
+
+                                this.mainCalendarView.Items.Add(newItem);
+                            }
+
+                        }
+                    }
+                }
             }
+
+        }
+
+        public override void mainCalendarView_ItemDoubleClick(object sender, CalendarItemEventArgs e)
+        {
+            this.homeForm.openCalendarScreen_editItem(e.Item.getCalendarEvent());
+        }
+
+        public override void mainCalendarView_ItemCreating(object sender, CalendarItemCancelEventArgs e)
+        {
+            this.homeForm.openCalendarScreen_createItem(e.Item.Date);
+            e.Cancel = true;
+        }
+
+        public override void maindCalendarView_ItemDatesChanged(object sender, CalendarItemEventArgs e)
+        {
+            if (!mouseMoved)
+                return;
 
             Google.Apis.Calendar.v3.Data.Event calendarEvent = e.Item.getCalendarEvent();
 
@@ -417,4 +437,96 @@ namespace JugaAgenda_v2.Classes
         }
 
     }
+
+    public class LeaveCalendarScreen : CustomCalendarScreen
+    {
+        public LeaveCalendarScreen(TabPage encapsulatingTabPage, Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm)
+            : base(encapsulatingTabPage, mainCalendarView, monthView, detailCalendarView, todayButton, homeForm)
+        {
+
+        }
+
+        public override void loadCalendarData(DateTime start, DateTime end)
+        {
+
+            if (this.homeForm.technicianLeaveList != null)
+            {
+                foreach (CustomDay day in this.homeForm.technicianLeaveList)
+                {
+                    DateTime date = day.getDate();
+
+                    if (date < this.mainCalendarView.ViewEnd)
+                    {
+                        foreach (Technician tech in day.getTechnicianList())
+                        {
+
+                            DateTime endDate;
+                            if (tech.getCalendarEvent().End.DateTime != null)
+                            {
+                                endDate = (DateTime)tech.getCalendarEvent().End.DateTime;
+                                endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day + 1, 0, 0, 0, 0);
+                            }
+                            else
+                            {
+                                endDate = Convert.ToDateTime(tech.getCalendarEvent().End.Date);
+                            }
+
+                            if (endDate < this.mainCalendarView.ViewStart)
+                                continue;
+
+                            if (endDate.Equals(date))
+                                endDate = endDate.AddDays(1);
+
+                            CalendarItem newItem;
+
+                            newItem = new CalendarItem(this.mainCalendarView,
+                                date,
+                                endDate.AddSeconds(-1),
+                                tech.getName());
+
+                            newItem.setCalendarEvent(tech.getCalendarEvent());
+
+                            this.mainCalendarView.Items.Add(newItem);
+
+                        }
+
+                    }
+                }
+            }
+
+        }
+
+        public override void mainCalendarView_ItemDoubleClick(object sender, CalendarItemEventArgs e)
+        {
+            this.homeForm.openLeaveScreen_editItem(e.Item.getCalendarEvent());
+        }
+
+        public override void mainCalendarView_ItemCreating(object sender, CalendarItemCancelEventArgs e)
+        {
+            this.homeForm.openLeaveScreen_createItem(e.Item.Date);
+            e.Cancel = true;
+        }
+
+        public override void maindCalendarView_ItemDatesChanged(object sender, CalendarItemEventArgs e)
+        {
+            if (!mouseMoved)
+                return;
+
+            Google.Apis.Calendar.v3.Data.Event calendarEvent = e.Item.getCalendarEvent();
+
+            if (calendarEvent.Start.Date.Equals(e.Item.StartDate.ToString("yyyy-MM-dd")) &&
+                calendarEvent.End.Date.Equals(e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd")))
+                return;
+
+            calendarEvent.Start.Date = e.Item.StartDate.ToString("yyyy-MM-dd");
+            calendarEvent.End.Date = e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+
+            calendarEvent.Start.DateTime = null;
+            calendarEvent.End.DateTime = null;
+
+            this.homeForm.googleCalendar.editLeaveEvent(calendarEvent);
+        }
+
+    }
+
 }

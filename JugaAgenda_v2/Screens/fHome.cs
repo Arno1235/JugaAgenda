@@ -79,7 +79,7 @@ namespace JugaAgenda_v2
 
             // Load the calendar views
 
-            homeCustomCalendarScreen = new CustomCalendarScreen(tpHome, calMain, mvMain, calDetailMain, btTodayMain, this);
+            homeCustomCalendarScreen = new LeaveCalendarScreen(tpHome, calMain, mvMain, calDetailMain, btTodayMain, this);
 
             // -----
 
@@ -1304,6 +1304,26 @@ namespace JugaAgenda_v2
             }
         }
 
+        public void openLeaveScreen_createItem(DateTime date)
+        {
+            if (leaveEventScreen == null)
+            {
+                leaveEventScreen = new fLeaveEvent(this, null, date);
+                leaveEventScreen.Show();
+            }
+        }
+
+
+        public void openLeaveScreen_editItem(Google.Apis.Calendar.v3.Data.Event item)
+        {
+
+            if (leaveEventScreen == null)
+            {
+                leaveEventScreen = new fLeaveEvent(this, item);
+                leaveEventScreen.Show();
+            }
+        }
+
         private void openSearchScreen()
         {
             if (searchScreen == null)
@@ -1901,7 +1921,6 @@ namespace JugaAgenda_v2
 
             mvHome.Height = this.Height - calDetail.Height - convert_pixel_coordinates(192, true);
         }
-
 
         private void fHome_Shown(object sender, EventArgs e)
         {
