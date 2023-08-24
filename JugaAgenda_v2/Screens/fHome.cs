@@ -15,8 +15,8 @@ namespace JugaAgenda_v2
 
         public GoogleCalendar googleCalendar;
         private List<CustomDay> techniciansWorkWeekList;
-        private List<CustomDay> technicianLeaveList;
-        private List<CustomDay> workList;
+        public List<CustomDay> technicianLeaveList;
+        public List<CustomDay> workList { get; private set; }
         private List<Tuple<DateTime, String, Decimal>> openWorkHoursList;
         private List<Technician> technicianList;
 
@@ -37,6 +37,8 @@ namespace JugaAgenda_v2
         private System.Drawing.Point prevMouseCoo;
         private Boolean mouseMoved = false;
         private Boolean mouseDown = false;
+
+        private CustomCalendarScreen homeCustomCalendarScreen;
 
         // BACKUP
 
@@ -64,6 +66,8 @@ namespace JugaAgenda_v2
 
             InitializeComponent();
 
+            // Load the google calendar connection
+
             googleCalendar = new GoogleCalendar();
 
             if (googleCalendar.getSuccess() != null)
@@ -72,6 +76,12 @@ namespace JugaAgenda_v2
                 this.Close();
                 return;
             }
+
+            // Load the calendar views
+
+            homeCustomCalendarScreen = new CustomCalendarScreen(tpHome, calMain, mvMain, calDetailMain, btTodayMain, this);
+
+            // -----
 
             mvHome.SelectionStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             mvHome.SelectionEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
@@ -274,6 +284,7 @@ namespace JugaAgenda_v2
                 }
                 // Can be more efficient
                 mvHome_SelectionChanged(null, null);
+                homeCustomCalendarScreen.loadCalendarData();
             }
         }
 
@@ -1273,6 +1284,26 @@ namespace JugaAgenda_v2
             }
         }
 
+        public void openCalendarScreen_createItem(DateTime date)
+        {
+
+            if (calendarEventScreen == null)
+            {
+                calendarEventScreen = new fCalendarEvent(this, date);
+                calendarEventScreen.Show();
+            }
+        }
+
+        public void openCalendarScreen_editItem(Google.Apis.Calendar.v3.Data.Event item)
+        {
+
+            if (calendarEventScreen == null)
+            {
+                calendarEventScreen = new fCalendarEvent(this, item);
+                calendarEventScreen.Show();
+            }
+        }
+
         private void openSearchScreen()
         {
             if (searchScreen == null)
@@ -1294,6 +1325,9 @@ namespace JugaAgenda_v2
 
         private void fHome_Resize(object sender, EventArgs e)
         {
+            if (homeCustomCalendarScreen != null)
+                homeCustomCalendarScreen.resize();
+
             calHome.Width = tpCalendar.Width - mvHome.Width - convert_pixel_coordinates(20, false);
 
             update_calDetail_height();
@@ -1893,7 +1927,7 @@ namespace JugaAgenda_v2
             prevMouseCoo = e.Location;
         }
 
-        private int convert_pixel_coordinates(int pixel_coordinate_144px, bool is_height = false)
+        public int convert_pixel_coordinates(int pixel_coordinate_144px, bool is_height = false)
         {
             if (is_height)
                 return (int)(pixel_coordinate_144px * this.CreateGraphics().DpiY / 144);
@@ -1901,7 +1935,7 @@ namespace JugaAgenda_v2
                 return (int)(pixel_coordinate_144px * this.CreateGraphics().DpiX / 144);
         }
 
-        
+
 
 
     }
