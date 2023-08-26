@@ -36,8 +36,10 @@ namespace JugaAgenda_v2.Classes
 
             this.convert_pixel_coordinates = this.homeForm.convert_pixel_coordinates;
 
-            this.add_event_handlers();
             this.initialize_style();
+            this.add_event_handlers();
+
+            this.loadCalendarData();
 
         }
 

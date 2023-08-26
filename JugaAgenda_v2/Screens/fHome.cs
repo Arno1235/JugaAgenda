@@ -13,7 +13,7 @@ namespace JugaAgenda_v2
     public partial class fHome : Form
     {
 
-        public GoogleCalendar googleCalendar;
+        public GoogleCalendar googleCalendar { get; private set; }
         private List<CustomDay> techniciansWorkWeekList;
         public List<CustomDay> technicianLeaveList { get; private set; }
         public List<CustomDay> workList { get; private set; }
@@ -79,11 +79,13 @@ namespace JugaAgenda_v2
             workCustomCalendarScreen = new WorkCalendarScreen(calHome, mvHome, calDetail, btWorkToday, this);
             leaveCustomCalendarScreen = new LeaveCalendarScreen(calLeave, mvLeave, calDetailLeave, btLeaveToday, this);
 
-            // -----
+            // ------
 
             DateTime now = DateTime.Now;
             newDayTimer.Interval = 1000 - now.Millisecond + (59 - now.Second) * 1000 + (59 - now.Minute) * 1000 * 60 + (23 - now.Hour) * 1000 * 60 * 60 + 1 * 60 * 1000;
             newDayTimer.Enabled = true;
+
+            // Initialize work schedule
 
             calWorkSchedule.TimeScale = CalendarTimeScale.SixtyMinutes;
 
@@ -94,8 +96,9 @@ namespace JugaAgenda_v2
             calWorkSchedule.ViewStart = new DateTime(2021, 2, 1);
             calWorkSchedule.ViewEnd = new DateTime(2021, 2, 7);
 
-            loadStyleComponents();
+            // ------
 
+            loadStyleComponents();
             loadEverything();
 
         }
@@ -1199,7 +1202,7 @@ namespace JugaAgenda_v2
         {
             clearWrongTitlesControl();
         }
-*/
+
         #endregion
 
         #region Getters
