@@ -120,7 +120,7 @@ namespace JugaAgenda_v2.Screens
             Work selectedWork = (Work)lbComponents.SelectedItem;
             selectedWork.setStatus(Work.Status.onderdelen_op_voorraad);
             selectedWork.updateCalendarEvent();
-            mainScreen.googleCalendar.editWorkEvent(selectedWork.getCalendarEvent());
+            mainScreen.googleCalendar.workCalendar.editEvent(selectedWork.getCalendarEvent());
             loadComponents();
         }
 

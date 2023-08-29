@@ -254,9 +254,8 @@ namespace JugaAgenda_v2
                         if (new_work.getCalendarEvent() != null)
                         {
 
-                            if (mainScreen.googleCalendar.addWorkEvent(new_work.getCalendarEvent()))
+                            if (mainScreen.googleCalendar.workCalendar.addEvent(new_work.getCalendarEvent()))
                             {
-                                mainScreen.syncCalendar();
                                 this.Close();
                             } else
                             {
@@ -285,9 +284,8 @@ namespace JugaAgenda_v2
                         if (new_work.getCalendarEvent() != null)
                         {
 
-                            if (mainScreen.googleCalendar.addWorkEvent(new_work.getCalendarEvent()))
+                            if (mainScreen.googleCalendar.workCalendar.addEvent(new_work.getCalendarEvent()))
                             {
-                                mainScreen.syncCalendar();
                                 this.Close();
                             }
                             else
@@ -321,9 +319,8 @@ namespace JugaAgenda_v2
                         if (new_work.getCalendarEvent() != null)
                         {
 
-                            if (mainScreen.googleCalendar.editWorkEvent(new_work.getCalendarEvent()))
+                            if (mainScreen.googleCalendar.workCalendar.editEvent(new_work.getCalendarEvent()))
                             {
-                                mainScreen.syncCalendar();
                                 this.Close();
                             }
                             else
@@ -353,9 +350,8 @@ namespace JugaAgenda_v2
                         if (new_work.getCalendarEvent() != null)
                         {
 
-                            if (mainScreen.googleCalendar.editWorkEvent(new_work.getCalendarEvent()))
+                            if (mainScreen.googleCalendar.workCalendar.editEvent(new_work.getCalendarEvent()))
                             {
-                                mainScreen.syncCalendar();
                                 this.Close();
                             }
                             else

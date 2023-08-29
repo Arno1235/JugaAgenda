@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Calendar;
 using System.Text.RegularExpressions;
+using System.Diagnostics.Eventing.Reader;
 
 namespace JugaAgenda_v2
 {
@@ -44,14 +45,13 @@ namespace JugaAgenda_v2
         // - Planning creation
         // - Info calendar
         // - custom 2 week screen? (automatisch grote aanpassen als het niet op 1 dag past)
-        // - change size of detailed view of day zodat alles er juist op past
         // - form in form ? (https://www.codeproject.com/Articles/3553/Introduction-to-MDI-Forms-with-C)
         // - double click multiple day item
-        // - scrolling in verlof agenda bug
-        // - write managing code to easily add new calendars (word, leave, holidays, info, ...) have it all look the same
         // - test different screen sizes (change all resizing code)
-        // - double click cal detail
+        // - double click cal detail and add tooltip to cal detail
         // - set width of detail calendar that you can read whole title
+
+        // - Code could break if the technician workweek can't be loaded in anymore because it's too old.
 
         #endregion
 
@@ -75,7 +75,7 @@ namespace JugaAgenda_v2
 
             // Load the calendar views
 
-            homeCustomCalendarScreen = new WorkCalendarScreen(calMain, mvMain, calDetailMain, btTodayMain, this);
+            homeCustomCalendarScreen = new HomeCalendarScreen(calMain, mvMain, calDetailMain, btTodayMain, this);
             workCustomCalendarScreen = new WorkCalendarScreen(calHome, mvHome, calDetail, btWorkToday, this);
             leaveCustomCalendarScreen = new LeaveCalendarScreen(calLeave, mvLeave, calDetailLeave, btLeaveToday, this);
 
@@ -110,6 +110,10 @@ namespace JugaAgenda_v2
             homeCustomCalendarScreen.loadCalendarData();
             workCustomCalendarScreen.loadCalendarData();
             leaveCustomCalendarScreen.loadCalendarData();
+
+            homeCustomCalendarScreen.updateDetailCalendarItems();
+            workCustomCalendarScreen.updateDetailCalendarItems();
+            leaveCustomCalendarScreen.updateDetailCalendarItems();
 
             refreshTimer.Enabled = true;
         }
@@ -173,7 +177,7 @@ namespace JugaAgenda_v2
             {
                 try
                 {
-                    syncCalendar();
+                    syncAllCalendars();
                 }
                 catch
                 {
@@ -187,77 +191,187 @@ namespace JugaAgenda_v2
 
         // Can be more efficient
         // TODO: Update correctly when changing dates
-        public void syncCalendar()
+        public void syncAllCalendars()
         {
-            IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.sync();
+            syncWorkCalendar();
+            syncLeaveCalendar();
+            syncTechnicianCalendar();
+        }
+
+        public void syncTechnicianCalendar()
+        {
+            IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.technicianCalendar.sync();
             if (syncList != null)
             {
+
                 foreach (Google.Apis.Calendar.v3.Data.Event item in syncList)
                 {
+                    // Can happen:
+                    // - date changed
+                    // - name (summary) changed
+                    // - delete
+                    // - create
+
+                    // Find the item
                     bool found = false;
-                    foreach (CustomDay day in workList)
+                    foreach (CustomDay day in techniciansWorkWeekList)
                     {
-                        List<Work> dayWorkList = day.getWorkList();
-                        for (int i = dayWorkList.Count - 1; i >= 0; i--)
+                        foreach (Technician tech in day.getTechnicianList())
                         {
-                            Work work = dayWorkList[i];
-
-                            if (work.getId() == item.Id)
+                            if (tech.getCalendarEvent().Id == item.Id)
                             {
+                                // Item found
+                                found = true;
 
-                                IEnumerable<Tuple<DateTime, String, Decimal>> openWorkHoursToDelete = openWorkHoursList.Where(x => x.Item2.Equals(item.Id));
-                                if (openWorkHoursToDelete.Count() > 1)
+                                if (item.Summary == null)
                                 {
-                                    foreach (Tuple<DateTime, String, Decimal> tuple in openWorkHoursToDelete)
-                                    {
-                                        openWorkHoursList.Remove(tuple);
-                                    }
+                                    // Item deleted
+                                    day.getTechnicianList().Remove(tech);
                                 }
-                                else if (openWorkHoursToDelete.Count() == 1)
-                                {
-                                    openWorkHoursList.Remove(openWorkHoursToDelete.First());
-                                }
-
-                                if (item.Summary != null && checkTitleMessageBox(item, false))
-                                {
-                                    work.updateValues(item);
-
-                                    updateWorkItemDate(day, work, item);
-
-                                    if (work.getStatus() == Work.Status.bezig ||
-                                        day.getDate() <= DateTime.Now &&
-                                        work.isWorkOpen())
-                                    {
-                                        openWorkHoursList.Add(new Tuple<DateTime, string, Decimal>(day.getDate(), work.getId(), work.getDuration() - work.getHoursDone()));
-                                    }
-                                }
-
                                 else
                                 {
-                                    day.getWorkList().RemoveAt(i);
+                                    // Item edited
+                                    day.getTechnicianList().Remove(tech);
+                                    addTechnicianWorkWeekItem(item);
                                 }
 
-                                found = true;
                                 break;
                             }
-
                         }
+
                         if (found) break;
                     }
 
                     if (!found)
                     {
-                        removeWrongTitles(item.Id);
-
-                        if (item.Summary != null) addWorkItem(item);
+                        // New item created
+                        addTechnicianWorkWeekItem(item);
                     }
 
                 }
-                // TODO!!!!
+
                 // Can be more efficient
+                loadTechnicianScheduleScreen();
                 homeCustomCalendarScreen.loadCalendarData();
+
+            }
+        }
+
+        public void syncWorkCalendar()
+        {
+            IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.workCalendar.sync();
+            if (syncList != null)
+            {
+
+                foreach (Google.Apis.Calendar.v3.Data.Event item in syncList)
+                {
+                    // Can happen:
+                    // - date changed
+                    // - name (summary) changed
+                    // - delete
+                    // - create
+
+                    // Find the item
+                    bool found = false;
+                    foreach (CustomDay day in workList)
+                    {
+                        foreach (Work work in day.getWorkList())
+                        {
+                            if (work.getCalendarEvent().Id == item.Id)
+                            {
+                                // Item found
+                                found = true;
+
+                                if (item.Summary == null)
+                                {
+                                    // Item deleted
+                                    day.getWorkList().Remove(work);
+                                }
+                                else
+                                {
+                                    // Item edited
+                                    day.getWorkList().Remove(work);
+                                    addWorkItem(item);
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (found) break;
+                    }
+
+                    if (!found)
+                    {
+                        // New item created
+                        addWorkItem(item);
+                    }
+
+                }
+
+                // Can be more efficient
                 workCustomCalendarScreen.loadCalendarData();
+                homeCustomCalendarScreen.loadCalendarData();
+
+            }
+        }
+
+        public void syncLeaveCalendar()
+        {
+            IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.leaveCalendar.sync();
+            if (syncList != null)
+            {
+
+                foreach (Google.Apis.Calendar.v3.Data.Event item in syncList)
+                {
+                    // Can happen:
+                    // - date changed
+                    // - name (summary) changed
+                    // - delete
+                    // - create
+
+                    // Find the item
+                    bool found = false;
+                    foreach (CustomDay day in technicianLeaveList)
+                    {
+                        foreach (Technician tech in day.getTechnicianList())
+                        {
+                            if (tech.getCalendarEvent().Id == item.Id)
+                            {
+                                // Item found
+                                found = true;
+
+                                if (item.Summary == null)
+                                {
+                                    // Item deleted
+                                    day.getTechnicianList().Remove(tech);
+                                }
+                                else
+                                {
+                                    // Item edited
+                                    day.getTechnicianList().Remove(tech);
+                                    addLeaveItem(item);
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (found) break;
+                    }
+
+                    if (!found)
+                    {
+                        // New item created
+                        addLeaveItem(item);
+                    }
+
+                }
+
+                // Can be more efficient
                 leaveCustomCalendarScreen.loadCalendarData();
+                homeCustomCalendarScreen.loadCalendarData();
+
             }
         }
 
@@ -276,34 +390,51 @@ namespace JugaAgenda_v2
 
             for (int i = 1; i <= 7; i++) techniciansWorkWeekList.Add(new CustomDay(new DateTime(2021, 2, i)));
 
+            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.technicianCalendar.getEvents())
+            {
+                addTechnicianWorkWeekItem(item);
+            }
+
+            loadTechnicianScheduleScreen();
+
+        }
+
+        private void loadTechnicianScheduleScreen()
+        {
             calWorkSchedule.Items.Clear();
 
-            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getTechnicianEvents().Items)
+            foreach (CustomDay day in techniciansWorkWeekList)
             {
-                DateTime date = Convert.ToDateTime(item.Start.Date);
-                if (date.Day > 7) continue;
-
-                if (checkTitleWithRegex(item, "^[a-zA-Z ]+ [0-9,.]+u$", true))
+                foreach (Technician tech in day.getTechnicianList())
                 {
-                    CustomDay day = techniciansWorkWeekList[date.Day - 1];
-
-                    Technician tech = new Technician(item.Summary, true);
-                    day.addTechnicianList(tech);
-
                     CalendarItem newItem = new CalendarItem(calWorkSchedule,
                         day.getDate(),
                         day.getDate().AddDays(1).AddSeconds(-1),
                         tech.ToString());
 
-                    newItem.setCalendarEvent(item);
+                    newItem.setCalendarEvent(tech.getCalendarEvent());
 
                     calWorkSchedule.Items.Add(newItem);
-
-                    Technician technician = new Technician(tech.getName());
-                    if (!technicianList.Contains(technician)) technicianList.Add(technician);
                 }
             }
+        }
 
+        private void addTechnicianWorkWeekItem(Google.Apis.Calendar.v3.Data.Event item)
+        {
+            DateTime date = Convert.ToDateTime(item.Start.Date);
+            if (date.Day > 7) return;
+
+            if (checkTitleWithRegex(item, "^[a-zA-Z ]+ [0-9,.]+u$", true))
+            {
+                CustomDay day = techniciansWorkWeekList[date.Day - 1];
+
+                Technician tech = new Technician(item.Summary, true);
+                tech.setCalendarEvent(item);
+                day.addTechnicianList(tech);
+
+                Technician technician = new Technician(tech.getName());
+                if (!technicianList.Contains(technician)) technicianList.Add(technician);
+            }
         }
 
         private void loadTechnicianLeave(Boolean askForTitleChange = false)
@@ -322,46 +453,46 @@ namespace JugaAgenda_v2
                 }
             }
 
-            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getLeaveEvents().Items)
+            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.leaveCalendar.getEvents())
             {
-
-                if (checkTitleWithRegex(item, "^[a-zA-Z ]+ verlof$", false, askForTitleChange))
-                {
-
-                    DateTime date;
-                    if (item.Start.DateTime != null)
-                    {
-                        date = (DateTime)item.Start.DateTime;
-                        date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
-                    }
-                    else
-                    {
-                        date = Convert.ToDateTime(item.Start.Date);
-                    }
-
-                    CustomDay day = null;
-
-                    foreach (CustomDay listday in technicianLeaveList)
-                    {
-                        if (DateTime.Compare(listday.getDate(), date) == 0)
-                        {
-                            day = listday;
-                            break;
-                        }
-                    }
-                    if (day == null)
-                    {
-                        day = new CustomDay(date);
-
-                        technicianLeaveList.Add(day);
-                    }
-
-                    Technician tech = new Technician(item);
-                    day.addTechnicianList(tech);
-
-                }
+                addLeaveItem(item);
             }
 
+        }
+
+        private void addLeaveItem(Google.Apis.Calendar.v3.Data.Event item)
+        {
+
+            DateTime date;
+            if (item.Start.DateTime != null)
+            {
+                date = (DateTime)item.Start.DateTime;
+                date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
+            }
+            else
+            {
+                date = Convert.ToDateTime(item.Start.Date);
+            }
+
+            CustomDay day = null;
+
+            foreach (CustomDay listday in technicianLeaveList)
+            {
+                if (DateTime.Compare(listday.getDate(), date) == 0)
+                {
+                    day = listday;
+                    break;
+                }
+            }
+            if (day == null)
+            {
+                day = new CustomDay(date);
+
+                technicianLeaveList.Add(day);
+            }
+
+            Technician tech = new Technician(item);
+            day.addTechnicianList(tech);
         }
 
         // No support for non all-day and multiple days events yet
@@ -373,7 +504,7 @@ namespace JugaAgenda_v2
             if (openWorkHoursList == null) openWorkHoursList = new List<Tuple<DateTime, String, Decimal>>();
             openWorkHoursList.Clear();
 
-            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents())
+            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.workCalendar.getEvents())
             {
                 addWorkItem(item);
             }
@@ -440,40 +571,7 @@ namespace JugaAgenda_v2
 
         public bool deleteWorkItem(String eventId)
         {
-            return googleCalendar.deleteWorkEvent(eventId);
-        }
-
-        public void updateWorkItemDate(CustomDay oldDay, Work work, Google.Apis.Calendar.v3.Data.Event item)
-        {
-
-            DateTime date;
-            if (item.Start.DateTime != null)
-            {
-                date = (DateTime)item.Start.DateTime;
-                date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
-            }
-            else
-            {
-                date = Convert.ToDateTime(item.Start.Date);
-            }
-
-            if (oldDay.getDate().Equals(date.Date)) return;
-
-            oldDay.removeWorkList(work);
-
-            IEnumerable<CustomDay> newDays = workList.Where(x => x.getDate().Equals(date.Date));
-            if (newDays.Count() > 0)
-            {
-                CustomDay newDay = newDays.First();
-                newDay.addWorkList(work);
-            }
-            else
-            {
-                CustomDay newDay = new CustomDay(date.Date);
-                newDay.addWorkList(work);
-                workList.Add(newDay);
-            }
-
+            return googleCalendar.workCalendar.deleteEvent(eventId);
         }
 
         public List<Work> searchWork(String clientName, String phoneNumber, String orderNumber, String description, Boolean OR = true)
@@ -756,7 +854,7 @@ namespace JugaAgenda_v2
                             continue;
                         }
                         item.Summary = new_title;
-                        if (!googleCalendar.editWorkEvent(item))
+                        if (!googleCalendar.workCalendar.editEvent(item))
                         {
                             MessageBox.Show("Something went wrong when updating event to calendar.");
                             return false;
@@ -804,7 +902,7 @@ namespace JugaAgenda_v2
                         item.Summary = new_title;
                         if (trueForScheduleFalseForLeave)
                         {
-                            if (!googleCalendar.editTechnicianEvent(item))
+                            if (!googleCalendar.technicianCalendar.editEvent(item))
                             {
                                 MessageBox.Show("Something went wrong when updating event to calendar.");
                                 return false;
@@ -813,7 +911,7 @@ namespace JugaAgenda_v2
                         }
                         else if (!trueForScheduleFalseForLeave)
                         {
-                            if (!googleCalendar.editLeaveEvent(item))
+                            if (!googleCalendar.leaveCalendar.editEvent(item))
                             {
                                 MessageBox.Show("Something went wrong when updating event to calendar.");
                                 return false;
@@ -853,7 +951,7 @@ namespace JugaAgenda_v2
         public Google.Apis.Calendar.v3.Data.Event getGoogleEventById(String id)
         {
 
-            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.getWorkEvents())
+            foreach (Google.Apis.Calendar.v3.Data.Event item in googleCalendar.workCalendar.getEvents())
             {
                 if (item.Id.Equals(id)) return item;
             }
@@ -872,6 +970,7 @@ namespace JugaAgenda_v2
         public void clear_calendar_screen()
         {
             calendarEventScreen = null;
+            syncWorkCalendar();
         }
 
         public void clear_search_screen()
@@ -1010,10 +1109,10 @@ namespace JugaAgenda_v2
 
             work.updateCalendarEvent();
 
-            if (googleCalendar.editWorkEvent(work.getCalendarEvent()))
+            if (googleCalendar.workCalendar.editEvent(work.getCalendarEvent()))
             {
                 clearWrongTitlesControl();
-                syncCalendar();
+                syncWorkCalendar();
             }
             else
             {
@@ -1243,7 +1342,7 @@ namespace JugaAgenda_v2
         public void closeScheduleScreen()
         {
             scheduleScreen = null;
-            loadTechniciansWorkWeek();
+            syncTechnicianCalendar();
         }
 
         private void calWorkSchedule_ItemDoubleClick(object sender, CalendarItemEventArgs e)
@@ -1258,17 +1357,17 @@ namespace JugaAgenda_v2
 
         public Boolean deleteTechSchedule(string eventID)
         {
-            return googleCalendar.deleteTechnicianEvent(eventID);
+            return googleCalendar.technicianCalendar.deleteEvent(eventID);
         }
 
         public Boolean updateTechSchedule(Google.Apis.Calendar.v3.Data.Event newEvent)
         {
-            return googleCalendar.editTechnicianEvent(newEvent);
+            return googleCalendar.technicianCalendar.editEvent(newEvent);
         }
 
         public Boolean createTechSchedule(Google.Apis.Calendar.v3.Data.Event newEvent)
         {
-            return googleCalendar.addTechnicianEvent(newEvent);
+            return googleCalendar.technicianCalendar.addEvent(newEvent);
         }
 
         private void calWorkSchedule_ItemCreating(object sender, CalendarItemCancelEventArgs e)
@@ -1310,23 +1409,22 @@ namespace JugaAgenda_v2
         public void closeLeaveEventScreen()
         {
             leaveEventScreen = null;
-            loadTechnicianLeave(false);
-            leaveCustomCalendarScreen.loadCalendarData();
+            syncLeaveCalendar();
         }
 
         public Boolean deleteLeaveEvent(string eventID)
         {
-            return googleCalendar.deleteLeaveEvent(eventID);
+            return googleCalendar.leaveCalendar.deleteEvent(eventID);
         }
 
         public Boolean updateLeaveEvent(Google.Apis.Calendar.v3.Data.Event newEvent)
         {
-            return googleCalendar.editLeaveEvent(newEvent);
+            return googleCalendar.leaveCalendar.editEvent(newEvent);
         }
 
         public Boolean addLeaveEvent(Google.Apis.Calendar.v3.Data.Event newEvent)
         {
-            return googleCalendar.addLeaveEvent(newEvent);
+            return googleCalendar.leaveCalendar.addEvent(newEvent);
         }
 
         // TODO: wtf is s?

@@ -25,6 +25,7 @@ namespace JugaAgenda_v2.Classes
             else
                 this.name = input;
         }
+
         public Technician(String name, Decimal hours)
         {
             this.name = name;
@@ -34,7 +35,7 @@ namespace JugaAgenda_v2.Classes
         public Technician(Google.Apis.Calendar.v3.Data.Event calendarEvent)
         {
             this.calendarEvent = calendarEvent;
-            this.name = calendarEvent.Summary.Remove(calendarEvent.Summary.Length - 7);
+            this.name = calendarEvent.Summary.Remove(calendarEvent.Summary.Length);
         }
 
         #region getters
@@ -78,7 +79,7 @@ namespace JugaAgenda_v2.Classes
             techEvent.End.Date = endDate.Year.ToString() + "-" + endDate.Month.ToString() + "-" + endDate.Day.ToString();
             techEvent.End.DateTime = null;
 
-            techEvent.Summary = getName() + " Verlof";
+            techEvent.Summary = getName();
 
             if (eventID != null)
                 techEvent.Id = eventID;
@@ -105,6 +106,10 @@ namespace JugaAgenda_v2.Classes
         public void setHasLeave(Boolean hasLeave)
         {
             this.hasLeave = hasLeave;
+        }
+        public void setCalendarEvent(Event calendarEvent)
+        {
+            this.calendarEvent = calendarEvent;
         }
         #endregion
 

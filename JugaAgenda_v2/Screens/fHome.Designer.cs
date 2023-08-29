@@ -434,8 +434,6 @@ namespace JugaAgenda_v2
             // 
             // calHome
             // 
-            calHome.AllowItemResize = false;
-            calHome.AllowNew = false;
             calHome.FirstDayOfWeek = System.DayOfWeek.Monday;
             calHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             calendarHighlightRange16.DayOfWeek = System.DayOfWeek.Tuesday;
@@ -601,6 +599,8 @@ namespace JugaAgenda_v2
             // 
             // calWorkSchedule
             // 
+            calWorkSchedule.AllowItemEdit = false;
+            calWorkSchedule.AllowItemResize = false;
             calWorkSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             calWorkSchedule.FirstDayOfWeek = System.DayOfWeek.Monday;
             calWorkSchedule.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
