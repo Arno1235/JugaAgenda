@@ -18,6 +18,7 @@ namespace JugaAgenda_v2
         private List<CustomDay> techniciansWorkWeekList;
         public List<CustomDay> technicianLeaveList { get; private set; }
         public List<CustomDay> workList { get; private set; }
+        public IList<Google.Apis.Calendar.v3.Data.Event> extraEventsList { get; private set; }
 
         private List<Tuple<DateTime, String, Decimal>> openWorkHoursList;
         private List<Technician> technicianList;
@@ -107,6 +108,8 @@ namespace JugaAgenda_v2
         {
             refresh();
 
+            loadHolidays();
+
             homeCustomCalendarScreen.loadCalendarData();
             workCustomCalendarScreen.loadCalendarData();
             leaveCustomCalendarScreen.loadCalendarData();
@@ -116,6 +119,11 @@ namespace JugaAgenda_v2
             leaveCustomCalendarScreen.updateDetailCalendarItems();
 
             refreshTimer.Enabled = true;
+        }
+
+        private void loadHolidays()
+        {
+            extraEventsList = googleCalendar.holidaysCalendar.getEvents();
         }
 
         private void loadStyleComponents()
@@ -1446,7 +1454,6 @@ namespace JugaAgenda_v2
             else
                 return (int)(pixel_coordinate_144px * this.CreateGraphics().DpiX / 144);
         }
-
 
     }
 

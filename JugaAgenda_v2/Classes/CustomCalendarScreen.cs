@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JugaAgenda_v2.Screens;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Calendar;
@@ -46,6 +47,7 @@ namespace JugaAgenda_v2.Classes
         private void add_event_handlers()
         {
             this.monthView.SelectionChanged += new EventHandler(this.monthView_SelectionChanged);
+            this.mainCalendarView.LoadItems += new Calendar.CalendarLoadEventHandler(this.mainCalendarView_LoadItems);
             this.mainCalendarView.MouseDown += new MouseEventHandler(this.mainCalendarView_MouseDown);
             this.mainCalendarView.MouseMove += new MouseEventHandler(this.mainCalendarView_MouseMove);
             this.mainCalendarView.MouseUp += new MouseEventHandler(this.mainCalendarView_MouseUp);
@@ -197,8 +199,8 @@ namespace JugaAgenda_v2.Classes
             DateTime start = this.mainCalendarView.ViewStart;
             DateTime end = this.mainCalendarView.ViewEnd;
 
-            this.mainCalendarView.SelectionStart = start;
-            this.mainCalendarView.SelectionEnd = end;
+            this.monthView.SelectionStart = start;
+            this.monthView.SelectionEnd = end;
         }
 
         public void updateDetailCalendarItems()
@@ -348,6 +350,8 @@ namespace JugaAgenda_v2.Classes
 
     public class HomeCalendarScreen : CustomCalendarScreen
     {
+        private fCustomMessageBox customMessageBox;
+
         public HomeCalendarScreen(Calendar mainCalendarView, MonthView monthView, Calendar detailCalendarView, Button todayButton, fHome homeForm)
             : base(mainCalendarView, monthView, detailCalendarView, todayButton, homeForm)
         {
@@ -359,7 +363,7 @@ namespace JugaAgenda_v2.Classes
 
             mainCalendarView.Items.Clear();
 
-            /*if (this.homeForm.workList != null)
+            if (this.homeForm.workList != null)
             {
                 foreach (CustomDay day in this.homeForm.workList)
                 {
@@ -398,6 +402,8 @@ namespace JugaAgenda_v2.Classes
                                 newItem.ApplyColor(work.getColor());
                                 newItem.setCalendarEvent(work.getCalendarEvent());
 
+                                newItem.Tag = "Work";
+
                                 this.mainCalendarView.Items.Add(newItem);
                             }
 
@@ -405,41 +411,138 @@ namespace JugaAgenda_v2.Classes
                     }
                 }
             }
-              */  
-            foreach (Google.Apis.Calendar.v3.Data.Event item in homeForm.googleCalendar.holidaysCalendar.getEvents())
+
+            if (this.homeForm.technicianLeaveList != null)
             {
-                MessageBox.Show(item.Summary);
-                CalendarItem newItem;
+                foreach (CustomDay day in this.homeForm.technicianLeaveList)
+                {
+                    DateTime date = day.getDate();
 
-                newItem = new CalendarItem(this.mainCalendarView,
-                    Convert.ToDateTime(item.Start.Date),
-                    Convert.ToDateTime(item.End.Date),
-                    item.Summary);
+                    if (date < this.mainCalendarView.ViewEnd)
+                    {
+                        foreach (Technician tech in day.getTechnicianList())
+                        {
 
-                //newItem.ApplyColor(work.getColor());
-                newItem.setCalendarEvent(item);
+                            DateTime endDate;
+                            if (tech.getCalendarEvent().End.DateTime != null)
+                            {
+                                endDate = (DateTime)tech.getCalendarEvent().End.DateTime;
+                                endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day + 1, 0, 0, 0, 0);
+                            }
+                            else
+                            {
+                                endDate = Convert.ToDateTime(tech.getCalendarEvent().End.Date);
+                            }
 
-                mainCalendarView.Items.Add(newItem);
+                            if (endDate < this.mainCalendarView.ViewStart)
+                                continue;
+
+                            if (endDate.Equals(date))
+                                endDate = endDate.AddDays(1);
+
+                            CalendarItem newItem;
+
+                            newItem = new CalendarItem(this.mainCalendarView,
+                                date,
+                                endDate.AddSeconds(-1),
+                                tech.getName());
+
+                            newItem.setCalendarEvent(tech.getCalendarEvent());
+                            newItem.ApplyColor(System.Drawing.Color.Beige);
+
+                            newItem.Tag = "Leave";
+
+                            this.mainCalendarView.Items.Add(newItem);
+
+                        }
+
+                    }
+                }
+            }
+
+            if (this.homeForm.extraEventsList != null)
+            {
+                foreach (Google.Apis.Calendar.v3.Data.Event item in this.homeForm.extraEventsList)
+                {
+                    if (Convert.ToDateTime(item.Start.Date) > mainCalendarView.ViewEnd || Convert.ToDateTime(item.End.Date) < mainCalendarView.ViewStart)
+                        continue;
+
+                    CalendarItem newItem;
+
+                    newItem = new CalendarItem(this.mainCalendarView,
+                        Convert.ToDateTime(item.Start.Date),
+                        Convert.ToDateTime(item.End.Date).AddSeconds(-1),
+                        item.Summary);
+
+                    newItem.ApplyColor(System.Drawing.Color.Black);
+                    newItem.setCalendarEvent(item);
+
+                    newItem.Tag = "Holiday";
+
+                    mainCalendarView.Items.Add(newItem);
+                }
             }
 
         }
 
+        // TODO
         public override void mainCalendarView_ItemDoubleClick(object sender, CalendarItemEventArgs e)
         {
-            // TODO
-            this.homeForm.openCalendarScreen_editItem(e.Item.getCalendarEvent());
+
+            if (e.Item.Tag == "Work")
+            {
+                this.homeForm.openCalendarScreen_editItem(e.Item.getCalendarEvent());
+            } else if (e.Item.Tag == "Leave")
+            {
+                this.homeForm.openLeaveScreen_editItem(e.Item.getCalendarEvent());
+            } else
+            {
+                MessageBox.Show("oepsie");
+            }
+
         }
 
         public override void mainCalendarView_ItemCreating(object sender, CalendarItemCancelEventArgs e)
         {
-            // TODO
-            this.homeForm.openCalendarScreen_createItem(e.Item.Date);
+
+            if (this.customMessageBox == null)
+            {
+                this.customMessageBox = new fCustomMessageBox("Creëer agenda object", "Wat type agenda object wil je creëren?", "Werk", "Afwezigheid", "Andere", this.customMessageBox_response, this.customMessageBox_closed, e.Item.Date);
+                this.customMessageBox.Show();
+            }
+
             e.Cancel = true;
+
         }
 
+        // TODO
+        private int customMessageBox_response(int response, Object date)
+        {
+            if (response == 1)
+            {
+                this.homeForm.openCalendarScreen_createItem((DateTime) date);
+            }
+            else if (response == 2)
+            {
+                this.homeForm.openLeaveScreen_createItem((DateTime) date);
+            }
+            else if (response == 3)
+            {
+                MessageBox.Show("todo");
+            }
+
+            return 0;
+        }
+
+        private int customMessageBox_closed()
+        {
+            this.customMessageBox = null;
+            return 0;
+        }
+
+        // TODO
         public override void maindCalendarView_ItemDatesChanged(object sender, CalendarItemEventArgs e)
         {
-            // TODO
             if (!mouseMoved)
                 return;
 
@@ -449,13 +552,31 @@ namespace JugaAgenda_v2.Classes
                 calendarEvent.End.Date.Equals(e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd")))
                 return;
 
-            calendarEvent.Start.Date = e.Item.StartDate.ToString("yyyy-MM-dd");
-            calendarEvent.End.Date = e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+            if (e.Item.Tag == "Work")
+            {
+                calendarEvent.Start.Date = e.Item.StartDate.ToString("yyyy-MM-dd");
+                calendarEvent.End.Date = e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
 
-            calendarEvent.Start.DateTime = null;
-            calendarEvent.End.DateTime = null;
+                calendarEvent.Start.DateTime = null;
+                calendarEvent.End.DateTime = null;
 
-            this.homeForm.googleCalendar.workCalendar.editEvent(calendarEvent);
+                this.homeForm.googleCalendar.workCalendar.editEvent(calendarEvent);
+            }
+            else if (e.Item.Tag == "Leave")
+            {
+                calendarEvent.Start.Date = e.Item.StartDate.ToString("yyyy-MM-dd");
+                calendarEvent.End.Date = e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+
+                calendarEvent.Start.DateTime = null;
+                calendarEvent.End.DateTime = null;
+
+                this.homeForm.googleCalendar.leaveCalendar.editEvent(calendarEvent);
+            }
+            else
+            {
+                this.loadCalendarData();
+            }
+
         }
 
     }
@@ -600,6 +721,7 @@ namespace JugaAgenda_v2.Classes
                                 tech.getName());
 
                             newItem.setCalendarEvent(tech.getCalendarEvent());
+                            newItem.ApplyColor(System.Drawing.Color.Beige);
 
                             this.mainCalendarView.Items.Add(newItem);
 
