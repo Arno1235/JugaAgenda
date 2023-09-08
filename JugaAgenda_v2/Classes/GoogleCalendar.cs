@@ -172,6 +172,7 @@ namespace JugaAgenda_v2
         private string calendarWorkID = "pvdr3fefd859hoau6aop4jn9p8@group.calendar.google.com";
         private string calendarLeaveID = "f0msdqpsli7f1emtmfboq8b8n4@group.calendar.google.com";
         private string calendarTechnicianID = "5q2ig7mop16pnodn500q0jm0uo@group.calendar.google.com";
+        private string calendarExtraID = "a3c33fa741c02ce959e1280adc804b3351c1a5aeac9f63c9df5dca07d6d7598b@group.calendar.google.com";
 
         // Real calendars
         //private string jsonPath = "Google Auth Files/client_secret_273543429520-3pro0k2q9j6ds6bdlle2eibj2tiraada.apps.googleusercontent.com.json";
@@ -190,6 +191,7 @@ namespace JugaAgenda_v2
         public SyncCalendar workCalendar { get; private set; }
         public SyncCalendar leaveCalendar { get; private set; }
         public SyncCalendar technicianCalendar { get; private set; }
+        public SyncCalendar extraCalendar { get; private set; }
         public SyncCalendar holidaysCalendar { get; private set; }
 
         public GoogleCalendar()
@@ -225,6 +227,7 @@ namespace JugaAgenda_v2
                 workCalendar = new SyncCalendar(this, calendarWorkID);
                 leaveCalendar = new SyncCalendar(this, calendarLeaveID);
                 technicianCalendar = new TechnicianWorkWeek(this, calendarTechnicianID);
+                extraCalendar = new SyncCalendar(this, calendarExtraID);
                 holidaysCalendar = new SyncCalendar(this, publicHolidaysID);
 
             }

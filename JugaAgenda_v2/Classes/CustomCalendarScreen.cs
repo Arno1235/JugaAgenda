@@ -448,7 +448,7 @@ namespace JugaAgenda_v2.Classes
                                 tech.getName());
 
                             newItem.setCalendarEvent(tech.getCalendarEvent());
-                            newItem.ApplyColor(System.Drawing.Color.Beige);
+                            newItem.ApplyColor(System.Drawing.Color.DarkGray);
 
                             newItem.Tag = "Leave";
 
@@ -474,7 +474,39 @@ namespace JugaAgenda_v2.Classes
                         Convert.ToDateTime(item.End.Date).AddSeconds(-1),
                         item.Summary);
 
+                    if (item.ColorId == "8")
+                    {
+                        newItem.ApplyColor(System.Drawing.Color.Black);
+                    }
+                    else
+                    {
+                        newItem.ApplyColor(System.Drawing.Color.Beige);
+                    }
+
+                    newItem.setCalendarEvent(item);
+
+                    newItem.Tag = "Extra";
+
+                    mainCalendarView.Items.Add(newItem);
+                }
+            }
+
+            if (this.homeForm.holidaysList != null)
+            {
+                foreach (Google.Apis.Calendar.v3.Data.Event item in this.homeForm.holidaysList)
+                {
+                    if (Convert.ToDateTime(item.Start.Date) > mainCalendarView.ViewEnd || Convert.ToDateTime(item.End.Date) < mainCalendarView.ViewStart)
+                        continue;
+
+                    CalendarItem newItem;
+
+                    newItem = new CalendarItem(this.mainCalendarView,
+                        Convert.ToDateTime(item.Start.Date),
+                        Convert.ToDateTime(item.End.Date).AddSeconds(-1),
+                        item.Summary);
+
                     newItem.ApplyColor(System.Drawing.Color.Black);
+
                     newItem.setCalendarEvent(item);
 
                     newItem.Tag = "Holiday";
@@ -495,9 +527,13 @@ namespace JugaAgenda_v2.Classes
             } else if (e.Item.Tag == "Leave")
             {
                 this.homeForm.openLeaveScreen_editItem(e.Item.getCalendarEvent());
-            } else
+            } else if (e.Item.Tag == "Extra")
             {
-                MessageBox.Show("oepsie");
+                this.homeForm.openExtraScreen_editItem(e.Item.getCalendarEvent());
+            }
+            else
+            {
+                MessageBox.Show("Can't edit this item");
             }
 
         }
@@ -512,7 +548,6 @@ namespace JugaAgenda_v2.Classes
             }
 
             e.Cancel = true;
-
         }
 
         // TODO
@@ -528,7 +563,7 @@ namespace JugaAgenda_v2.Classes
             }
             else if (response == 3)
             {
-                MessageBox.Show("todo");
+                this.homeForm.openExtraScreen_createItem((DateTime) date);
             }
 
             return 0;
@@ -571,6 +606,16 @@ namespace JugaAgenda_v2.Classes
                 calendarEvent.End.DateTime = null;
 
                 this.homeForm.googleCalendar.leaveCalendar.editEvent(calendarEvent);
+            }
+            else if (e.Item.Tag == "Extra")
+            {
+                calendarEvent.Start.Date = e.Item.StartDate.ToString("yyyy-MM-dd");
+                calendarEvent.End.Date = e.Item.EndDate.AddDays(1).ToString("yyyy-MM-dd");
+
+                calendarEvent.Start.DateTime = null;
+                calendarEvent.End.DateTime = null;
+
+                this.homeForm.googleCalendar.extraCalendar.editEvent(calendarEvent);
             }
             else
             {

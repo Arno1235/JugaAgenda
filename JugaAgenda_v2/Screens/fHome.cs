@@ -19,6 +19,7 @@ namespace JugaAgenda_v2
         public List<CustomDay> technicianLeaveList { get; private set; }
         public List<CustomDay> workList { get; private set; }
         public IList<Google.Apis.Calendar.v3.Data.Event> extraEventsList { get; private set; }
+        public IList<Google.Apis.Calendar.v3.Data.Event> holidaysList { get; private set; }
 
         private List<Tuple<DateTime, String, Decimal>> openWorkHoursList;
         private List<Technician> technicianList;
@@ -28,6 +29,7 @@ namespace JugaAgenda_v2
         private fPlanning planningScreen = null;
         private fTechSchedule scheduleScreen = null;
         private fLeaveEvent leaveEventScreen = null;
+        private fExtraEvent extraEventScreen = null;
 
         private Google.Apis.Calendar.v3.Data.Event wrongTitleSelected = null;
 
@@ -123,7 +125,7 @@ namespace JugaAgenda_v2
 
         private void loadHolidays()
         {
-            extraEventsList = googleCalendar.holidaysCalendar.getEvents();
+            holidaysList = googleCalendar.holidaysCalendar.getEvents();
         }
 
         private void loadStyleComponents()
@@ -172,6 +174,7 @@ namespace JugaAgenda_v2
             loadTechniciansWorkWeek();
             loadWork();
             loadTechnicianLeave();
+            loadExtraCalendar();
         }
 
         private void refreshTimer_Tick(object sender, EventArgs e)
@@ -204,6 +207,7 @@ namespace JugaAgenda_v2
             syncWorkCalendar();
             syncLeaveCalendar();
             syncTechnicianCalendar();
+            syncExtraCalendar();
         }
 
         public void syncTechnicianCalendar()
@@ -382,6 +386,61 @@ namespace JugaAgenda_v2
 
             }
         }
+
+        public void syncExtraCalendar()
+        {
+            IList<Google.Apis.Calendar.v3.Data.Event> syncList = googleCalendar.extraCalendar.sync();
+            if (syncList != null)
+            {
+
+                foreach (Google.Apis.Calendar.v3.Data.Event item in syncList)
+                {
+                    // Can happen:
+                    // - date changed
+                    // - name (summary) changed
+                    // - delete
+                    // - create
+
+                    // Find the item
+                    bool found = false;
+
+                    foreach(Google.Apis.Calendar.v3.Data.Event extraItem in extraEventsList)
+                    {
+                        if (extraItem.Id == item.Id)
+                        {
+                            // Item found
+                            found = true;
+
+                            if (item.Summary == null)
+                            {
+                                // Item deleted
+                                extraEventsList.Remove(extraItem);
+                            }
+                            else
+                            {
+                                // Item edited
+                                extraEventsList.Remove(extraItem);
+                                extraEventsList.Add(item);
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        // New item created
+                        extraEventsList.Add(item);
+                    }
+
+                }
+
+                // Can be more efficient
+                homeCustomCalendarScreen.loadCalendarData();
+
+            }
+        }
+
 
         #endregion
 
@@ -570,6 +629,11 @@ namespace JugaAgenda_v2
                 addWrongTitles(item);
             }
 
+        }
+
+        private void loadExtraCalendar()
+        {
+            extraEventsList = googleCalendar.extraCalendar.getEvents();
         }
 
         #endregion
@@ -981,6 +1045,12 @@ namespace JugaAgenda_v2
             syncWorkCalendar();
         }
 
+        public void clear_extra_calendar_screen()
+        {
+            extraEventScreen = null;
+            syncExtraCalendar();
+        }
+
         public void clear_search_screen()
         {
             searchScreen = null;
@@ -1002,7 +1072,6 @@ namespace JugaAgenda_v2
 
         public void openCalendarScreen_createItem(DateTime date)
         {
-
             if (calendarEventScreen == null)
             {
                 calendarEventScreen = new fCalendarEvent(this, date);
@@ -1012,7 +1081,6 @@ namespace JugaAgenda_v2
 
         public void openCalendarScreen_editItem(Google.Apis.Calendar.v3.Data.Event item)
         {
-
             if (calendarEventScreen == null)
             {
                 calendarEventScreen = new fCalendarEvent(this, item);
@@ -1031,11 +1099,28 @@ namespace JugaAgenda_v2
 
         public void openLeaveScreen_editItem(Google.Apis.Calendar.v3.Data.Event item)
         {
-
             if (leaveEventScreen == null)
             {
                 leaveEventScreen = new fLeaveEvent(this, item);
                 leaveEventScreen.Show();
+            }
+        }
+
+        public void openExtraScreen_createItem(DateTime date)
+        {
+            if (extraEventScreen == null)
+            {
+                extraEventScreen = new fExtraEvent(this, null, date);
+                extraEventScreen.Show();
+            }
+        }
+
+        public void openExtraScreen_editItem(Google.Apis.Calendar.v3.Data.Event item)
+        {
+            if (extraEventScreen == null)
+            {
+                extraEventScreen = new fExtraEvent(this, item);
+                extraEventScreen.Show();
             }
         }
 
@@ -1425,6 +1510,11 @@ namespace JugaAgenda_v2
             return googleCalendar.leaveCalendar.deleteEvent(eventID);
         }
 
+        public Boolean deleteExtraEvent(string eventID)
+        {
+            return googleCalendar.extraCalendar.deleteEvent(eventID);
+        }
+
         public Boolean updateLeaveEvent(Google.Apis.Calendar.v3.Data.Event newEvent)
         {
             return googleCalendar.leaveCalendar.editEvent(newEvent);
@@ -1433,6 +1523,16 @@ namespace JugaAgenda_v2
         public Boolean addLeaveEvent(Google.Apis.Calendar.v3.Data.Event newEvent)
         {
             return googleCalendar.leaveCalendar.addEvent(newEvent);
+        }
+
+        public Boolean updateExtraEvent(Google.Apis.Calendar.v3.Data.Event newEvent)
+        {
+            return googleCalendar.extraCalendar.editEvent(newEvent);
+        }
+
+        public Boolean addExtraEvent(Google.Apis.Calendar.v3.Data.Event newEvent)
+        {
+            return googleCalendar.extraCalendar.addEvent(newEvent);
         }
 
         // TODO: wtf is s?
